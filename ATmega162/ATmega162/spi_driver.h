@@ -1,6 +1,6 @@
 #pragma once
 
-void SPI_MasterInit(void);
+void SPI_MasterInit();
 void SPI_MasterTransmit(char cData);
 char mcp2515_read(char adress);
 void mcp2515_write(char adress, char data);
