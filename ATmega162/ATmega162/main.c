@@ -19,10 +19,8 @@
 
 
 typedef struct {
-		
-	void (*callback)();
 	char name[16];
-		
+	void (*callback)();	
 } MenuItem;
 
 void menu(MenuItem items[], int n_items) {	
@@ -70,9 +68,9 @@ void menu2() {
 
 void test_menu() {
 	MenuItem items[3] = {
-		{menu1, "test1"},
-		{menu2, "test2"},
-		{test_menu, "testmenu"}		
+		{"test1", menu1},
+		{"test2", menu2},
+		{"testmenu", test_menu}		
 	};
 	menu(items, 3);
 }
