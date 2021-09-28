@@ -19,6 +19,11 @@
 #include "oled.h"
 #include "spi_driver.h"
 
+int main()
+{
+	uart_init(9600);
+	init_xmem();
+	mcp
 
 typedef struct {
 	char name[16];
