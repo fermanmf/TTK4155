@@ -16,6 +16,8 @@
 #include "adc.h"
 #include "display.h"
 #include "controls.h"
+#include "oled.h"
+#include "spi_driver.h"
 
 
 typedef struct {
