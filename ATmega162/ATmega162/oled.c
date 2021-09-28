@@ -12,7 +12,7 @@ static void call_command(char command) {
 	COMMAND[0] = command;
 }
 
-static void display_on_off(bool on) {
+static void set_display_on_off(bool on) {
 	call_command(0xAE + on);
 }
 
@@ -22,9 +22,15 @@ typedef enum {
 	page
 } MemoryAdressingMode;
 
-static void memory_addressing_mode(MemoryAdressingMode mam) {
+static void set_memory_addressing_mode(MemoryAdressingMode mam) {
 	call_command(0x20);
 	call_command(mam);
+}
+
+static void set_column_address(uint8_t from, uint8_t to) {
+	call_command(0x21);
+	call_command(from);
+	call_command(to);	
 }
 
 void oled_init() {
@@ -32,8 +38,9 @@ void oled_init() {
 	DATA = (char*) 0x1200;
 	oled_segments = (char*)0x1800;
 	
-	display_on_off(true);
-	memory_addressing_mode(horizontal);
+	set_display_on_off(true);
+	set_memory_addressing_mode(horizontal);
+	set_column_address(0, 127);
 }
 
 void oled_update() {
