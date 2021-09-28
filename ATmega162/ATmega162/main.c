@@ -14,21 +14,17 @@
 #include "util/delay.h"
 #include "utils.h"
 #include "adc.h"
-#include "oled.h"
+#include "display.h"
+
+
 
 int main()
 {
 	uart_init(9600);
 	init_xmem();
-	oled_init();
-	oled_flush();
 	
-	oled_write_char('a', 0, 0);
-
+	display_init();
+	display_write_line("Hello", 0);
 	
-	
-
-	
+	printf("Terminated\n");
 }
-
-
