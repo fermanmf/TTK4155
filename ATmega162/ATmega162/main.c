@@ -23,8 +23,9 @@ int main()
 {
 	uart_init(9600);
 	init_xmem();
-	mcp2515_write(0x41,0b10101010);
-	printf(mcp2515_read(0x41));
+	SPI_MasterInit();
+	mcp2515_write(0x41,69);
+	printf("%i\n", mcp2515_read(0x41));
 
 typedef struct {
 	char name[16];
