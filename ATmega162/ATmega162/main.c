@@ -15,6 +15,7 @@
 #include "utils.h"
 #include "adc.h"
 #include "oled.h"
+#include "spi_driver.h"
 
 int main()
 {
