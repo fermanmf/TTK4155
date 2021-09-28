@@ -36,7 +36,7 @@ static void set_page_address(char from, char to) {
 }
 
 static void entire_display_on(bool on) {
-	*COMMAND = 0xA4 + on;
+	*COMMAND = 0xA4 | on;
 }
 
 static void init_oled_segments() {	
@@ -45,9 +45,18 @@ static void init_oled_segments() {
 	}	
 }
 
+static void set_segment_remap(bool remap) {
+	*COMMAND = 0xA0 | remap;
+}
+
+static void set_com_output_scan_direction(bool remap) {
+	*COMMAND = 0xC0 | remap << 3;
+	
+}
+
 void oled_init() {
-	*COMMAND = 0xA1;
-	*COMMAND = 0xC8;	
+	set_segment_remap(true);
+	set_com_output_scan_direction(true);	
 	set_memory_addressing_mode(horizontal);
 	set_column_address(0, 127);
 	set_page_address(0, 7);	

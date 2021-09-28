@@ -24,7 +24,8 @@ int main()
 	init_xmem();
 	
 	display_init();
-	display_write_line("Hello", 0);
+	display_write_line("HelloHelloHelloHello", 0);
+	display_write_line("HelloHelloHelloHello", 2);
 	
 	printf("Terminated\n");
 }
