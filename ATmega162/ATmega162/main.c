@@ -21,10 +21,7 @@ int main()
 {
 	uart_init(9600);
 	init_xmem();
-	oled_init();
-	oled_flush();
-	
-	oled_write_char('a', 0, 0);
+	mcp
 
 	
 	

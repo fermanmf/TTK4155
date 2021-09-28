@@ -1,16 +1,15 @@
-
-#include "oled.h"
+#include "spi_driver.h"
 
 #include <stdbool.h>
 #include <stdint.h>
 
-#include "fonts.h"
-
-#include iom162.h
+#include <avr/io.h>
 
 #define SS 4
+#define MOSI 5
+#define SCK 7
 
-void SPI_MasterInit(void) {
+void SPI_MasterInit() {
   /* Set MOSI and SCK output, all others input */
   DDRB = (1<<MOSI)|(1<<SCK)|(1<<SS);
   /* Enable SPI, Master, set clock rate fck/16 */
@@ -26,7 +25,7 @@ void SPI_MasterTransmit(char cData) {
 char mcp2515_read(char adress){
     //Set slave select low
     PORTB = 0<<SS;
-    SPI_MasterTransmit(0b00000011);
+    SPI_MasterTransmit(0b11);
     SPI_MasterTransmit(adress);
     SPI_MasterTransmit(0);
     PORTB = 1<<SS;
@@ -34,7 +33,7 @@ char mcp2515_read(char adress){
 }
 void mcp2515_write(char adress, char data){
     PORTB = 0<<SS;
-    SPI_MasterTransmit(0b00000010);
+    SPI_MasterTransmit(0b10);
     SPI_MasterTransmit(adress);
     SPI_MasterTransmit(data);
     PORTB = 1<<SS;
@@ -51,10 +50,10 @@ char mcp2515_read_status(){
     SPI_MasterTransmit(instruction);
     SPI_MasterTransmit(0);
     PORTB = 1<<SS;
-    return SPDR
+    return SPDR;
 }
 void mcp2515_bit_modify(char adress, char mask, char data){
-    char instruction = 0b00000101
+    char instruction = 0b00000101;
     PORTB = 0<<SS;
     SPI_MasterTransmit(instruction);
     SPI_MasterTransmit(adress);
@@ -63,7 +62,7 @@ void mcp2515_bit_modify(char adress, char mask, char data){
     PORTB = 1<<SS;
 }
 void macp2515_reset(){
-    char instruction = 0b11000000
+    char instruction = 0b11000000;
     PORTB = 0<<SS;
     SPI_MasterTransmit(instruction);
     PORTB = 1<<SS;
