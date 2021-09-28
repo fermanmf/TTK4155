@@ -16,7 +16,7 @@ void adc_init() {
 	TIMSK |= 1 << OCIE1A; //output compare interrupt enable
 }
 
-void adc_read(uint8_t values[]) {
+void adc_read(char values[]) {
 	volatile char *adc = (char*) 0x1400;
 	adc[0] = 0;
 	
@@ -26,8 +26,8 @@ void adc_read(uint8_t values[]) {
 	}
 }
 
-void adc_read_pretty(int8_t pretty_values[4]) {
-	uint8_t values[4];
+void adc_read_pretty(int pretty_values[4]) {
+	char values[4];
 	adc_read(values);
 	pretty_values[0] = round(0.0007774 * pow(values[0], 2) + 0.5907 * values[0] - 101.18); // Y
 	pretty_values[1] = round(0.0007774 * pow(values[1], 2) + 0.5907 * values[1] - 101.18); // X
