@@ -21,7 +21,7 @@ int main()
 {
 	uart_init(9600);
 	init_xmem();
-	mcp
+	mcp2515_write(0x)
 
 	
 	
