@@ -11,6 +11,8 @@
 #include "util/delay.h"
 
 
+#define RXB0DLC 0b01100101
+#define RXB0D0 0b01100110
 
 typedef struct {
     uint16_t id;
@@ -56,6 +58,19 @@ bool can_message_received(){
     char interrupt_flag = mcp2515_read(MCP_CANINTF); 
     return interrupt_flag & 1; 
 }
+void can_read_message(){
+    char idH_shifted = (mcp2515_read(MCP_RXB0SIDH) << 8) ;
+    char idL = mcp2515_read(MCP_RXB0SIDH + 1);
+    can_message message;
+    message.id = (idH_shifted | 0xff) & idL;
+    message.data_length = mcp2515_read(RXB0DLC);
+    for(char i = 0;i < 8;i++){
+        message.data[i] = mcp2515_read(RXB0D0 + i);
+    }
+    printf("id: %d\n", message.id);
+    printf("data_length : %d\n", message.data_length);
+    printf("data : %d\n", message.data[0]);
+}
 
 void can_test(){
     can_loopback_init();
@@ -66,5 +81,6 @@ void can_test(){
     can_send_message(&message);
 	_delay_ms(50);
     printf("%d\n",can_message_received());
+    can_read_message();
     
 }
