@@ -13,7 +13,7 @@
     <OutputFileExtension>.elf</OutputFileExtension>
     <OutputDirectory>$(MSBuildProjectDirectory)\$(Configuration)</OutputDirectory>
     <AssemblyName>ATmega162</AssemblyName>
-    <Name>ATmega162</Name>
+    <Name>Node1</Name>
     <RootNamespace>ATmega162</RootNamespace>
     <ToolchainFlavour>Native</ToolchainFlavour>
     <KeepTimersRunning>true</KeepTimersRunning>
@@ -148,12 +148,6 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="oled.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="spi_driver.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="spi_driver.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="uart.c">
