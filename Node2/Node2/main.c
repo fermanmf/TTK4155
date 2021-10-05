@@ -1,23 +1,21 @@
 /*
  * Node2.c
  *
- * Created: 05.10.2021 09:30:19
+ * Created: 05.10.2021 15:00:46
  * Author : vetlesr
- */
+ */ 
+
 
 #include "sam.h"
-#include "led.h"
 #include "uart.h"
 #include "printf-stdarg.h"
 
 
 int main(void)
 {
+    /* Initialize the SAM system */
     SystemInit();
 	configure_uart();
-	
-	led_init();
-	led_set(led_1, true);
-	
-	printf("Test\n");
+
+    printf("Hello\n");
 }
