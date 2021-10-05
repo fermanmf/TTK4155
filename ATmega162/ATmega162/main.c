@@ -18,6 +18,7 @@
 #include "controls.h"
 #include "oled.h"
 #include "spi_driver.h"
+#include "can.h"
 
 typedef struct {
 	char name[16];
@@ -81,11 +82,10 @@ int main(){
 	uart_init(9600);
 	init_xmem();
 	SPI_MasterInit();
-	mcp2515_write(0x41,69);
-	printf("%i\n", mcp2515_read(0x41));
 	controls_init();
 	display_init();
-	test_menu();
+	
+	can_test();
 	
 	printf("Terminated\n");
 	
