@@ -32,6 +32,7 @@ void can_send_message(can_message* message){
 }
 
 void can_loopback_init(){
+    // set can_controllerer in loopback mode
     char offset = 5;
     char canctrl = mcp2515_read(MCP_CANCTRL);
     canctrl &= 0b00011111;
@@ -49,7 +50,7 @@ bool can_message_received(){
 
 void can_test(){
     can_loopback_init();
-    printf("%d\n", can_message_received());
+    printf("first : %d\n", can_message_received());
     can_message message;
     message.id = 2;
     message.data_length = 1;
