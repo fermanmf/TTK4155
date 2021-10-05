@@ -7,6 +7,9 @@
 #include "mcp2515_register.h"
 #include "mcp2515.h"
 
+#define F_CPU 4915200
+#include "util/delay.h"
+
 
 
 typedef struct {
@@ -33,7 +36,7 @@ void can_send_message(can_message* message){
         data_address = data_address + 0b1;
     //tell controller to send message
     char txb0ctrl  = mcp2515_read(MCP_TXB0CTRL);
-    char new_txb0ctrl = txb0ctrl | 0b1000;
+	mcp2515_write(MCP_TXB0CTRL, txb0ctrl | 1 << 3);
     }
 }
 
@@ -56,12 +59,12 @@ bool can_message_received(){
 
 void can_test(){
     can_loopback_init();
-    printf("%d\n", can_message_received());
+    printf("first %d\n", can_message_received());
     can_message message = {
 		2, 1, "T"
 	};
     can_send_message(&message);
-    while (1){
-        printf("%d\n",can_message_received());
-    }
+	_delay_ms(50);
+    printf("%d\n",can_message_received());
+    
 }
