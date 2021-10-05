@@ -1,3 +1,5 @@
+#pragma once
+
 char mcp2515_read(char adress);
 void mcp2515_write(char adress, char data);
 void mcp2515_rts(char txb);
