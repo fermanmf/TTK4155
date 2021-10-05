@@ -24,11 +24,8 @@ void can_send_message(can_message* message){
     // write id to idH and idL registers
     char idL_address = 0b00110010;
     char idH_address = 0b00110001;
-    //char idL = message->id & 0b11111111;
-    //char idH = message->id & 0xff00 >> 8; //fix later
-	char idH = 0;
-	char idL = 2 << 5;
-
+    char idL = (message->id & 0b111) << 5;
+    char idH = message->id >> 3;
     mcp2515_write(idL_address, idL);
     mcp2515_write(idH_address,idH);
     //write to data length register
@@ -62,8 +59,8 @@ bool can_message_received(){
     return interrupt_flag & 1; 
 }
 void can_read_message(){
-    char idH_shifted = (mcp2515_read(MCP_RXB0SIDH) << 8) ;
-    char idL = mcp2515_read(MCP_RXB0SIDH + 1);
+    char idH_shifted = (mcp2515_read(MCP_RXB0SIDH) << 3);
+    char idL = mcp2515_read(MCP_RXB0SIDH + 1)>>5;
 	printf("%u %u\n", mcp2515_read(MCP_RXB0SIDH), mcp2515_read(MCP_RXB0SIDH + 1));
     can_message message;
     message.id = idH_shifted | idL;
