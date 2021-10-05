@@ -1,7 +1,13 @@
+#include "can.h"
+
+#include <stdint.h>
+#include <stdbool.h>
+#include <stdio.h>
+
 #include "mcp2515_register.h"
 #include "mcp2515.h"
-#include "stdint.h"
-#include "stdbool.h"
+
+
 
 typedef struct {
     uint16_t id;
@@ -18,7 +24,7 @@ void can_send_message(can_message* message){
     mcp2515_write(idL_address, idL);
     mcp2515_write(idH_address,idH);
     //write to data length register
-    char data_length_address = 00110101;
+    char data_length_address = 0b00110101;
     mcp2515_write(data_length_address, message->data_length);
     //write data to data registers 
     char data_address = 0b00110110;
@@ -50,11 +56,10 @@ bool can_message_received(){
 
 void can_test(){
     can_loopback_init();
-    printf("first : %d\n", can_message_received());
-    can_message message;
-    message.id = 2;
-    message.data_length = 1;
-    message.data = "T";
+    printf("%d\n", can_message_received());
+    can_message message = {
+		2, 1, "T"
+	};
     can_send_message(&message);
     while (1){
         printf("%d\n",can_message_received());
