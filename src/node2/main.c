@@ -9,13 +9,14 @@
 #include "sam.h"
 #include "uart.h"
 #include "printf-stdarg.h"
+#include "can_controller.h"
 
 
 int main(void)
 {
-    /* Initialize the SAM system */
     SystemInit();
 	configure_uart();
+	can_init_def_tx_rx_mb(0x1143);
 
     printf("Hello\n");
 }
