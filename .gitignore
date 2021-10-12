@@ -1,2 +1,6 @@
 .vs
-atmel_studio
+*.atsln
+*.componentinfo.xml
+*.cproj
+Debug
+Device_Startup

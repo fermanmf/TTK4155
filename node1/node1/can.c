@@ -73,9 +73,9 @@ void can_normal_init(){
     mcp2515_write(MCP_CANCTRL,canctrl);
 
     //set NBT values
-    char cnf1 = (BRP - 1) || (SJW - 1)<<6
-    mcp2515_write(MCP_CNF1,cnf1)
-    char cnf2 = (PROPSEG - 1) || (PH1 - 1)<<3
+    char cnf1 = (BRP - 1) || (SJW - 1)<<6;
+    mcp2515_write(MCP_CNF1,cnf1);
+    char cnf2 = (PROPSEG - 1) || (PH1 - 1)<<3;
     //TODO: consider setting cnf3
 
     // set can_controllerer in normal mode
@@ -114,8 +114,12 @@ void can_test(){
     can_message message = {
 		2, 1, "T"
 	};
-    can_send_message(&message);
-	_delay_ms(50);
+	while (1) {
+		can_send_message(&message);
+		_delay_ms(50);
+	}
+    
+	
     printf("%d\n",can_message_received());
     can_read_message();
 }
