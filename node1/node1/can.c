@@ -15,7 +15,7 @@
 #define SJW             2
 #define PROPSEG         2
 #define PH1             5
-#define PH2             4
+#define PH2             5
 
 #define REQOP_OFFSET    5
 
@@ -48,10 +48,10 @@ void can_send_message(can_message* message){
     for (int i = 0;i < 8;i++){
         mcp2515_write(data_address, message->data[i]);
         data_address = data_address + 1;
+    }
     //tell controller to send message
     char txb0ctrl  = mcp2515_read(MCP_TXB0CTRL);
 	mcp2515_write(MCP_TXB0CTRL, txb0ctrl | 1 << 3);
-    }
 }
 
 void can_loopback_init(){
@@ -121,8 +121,6 @@ void can_test(){
 		can_send_message(&message);
 		_delay_ms(50);
 	}
-    
-	
     printf("%d\n",can_message_received());
     can_read_message();
 }
