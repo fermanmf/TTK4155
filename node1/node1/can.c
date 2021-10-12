@@ -9,13 +9,13 @@
 
 #define F_CPU       4915200
 #define MSC         16000000
-#define BRP         0
+#define BRP         16
 #define TQ          2 * BRP / MSC
 
 #define SJW             2
 #define PROPSEG         2
 #define PH1             5
-#define PH2             4
+#define PH2             5
 
 #define REQOP_OFFSET    5
 
