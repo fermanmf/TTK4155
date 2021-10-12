@@ -19,7 +19,8 @@ int main(void)
 	configure_uart();
 	can_init_def_tx_rx_mb(0x1143);
 	
-	CAN_MESSAGE msg;
+	CAN_MESSAGE msg1;
+	CAN_MESSAGE msg2;
 
 	while (can_receive(&msg1, 1) && can_receive(&msg2, 2))
 	{
@@ -28,7 +29,8 @@ int main(void)
 	}
 	printf("Before\n\r");
 	
-	printf(msg.data);
+	printf(msg1.data);
+	printf(msg2.data);
 	
 
     printf("Terminated\n\r");
