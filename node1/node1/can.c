@@ -73,13 +73,13 @@ void can_normal_init(){
     mcp2515_write(MCP_CANCTRL,canctrl);
 
     //set NBT values
-    char cnf1 = (BRP - 1) || (SJW - 1)<<6;
+    char cnf1 = (BRP - 1) | (SJW - 1)<<6;
     mcp2515_write(MCP_CNF1,cnf1);
-    char cnf2 = (PROPSEG - 1) || (PH1 - 1)<<3;
+    char cnf2 = (PROPSEG - 1) | (PH1 - 1)<<3;
     mcp2515_write(MCP_CNF2, cnf2);
     //TODO: consider setting cnf3
-    printf("cnf1 should be %d, but is : %d/n", cnf1, mcp2515_read(MCP_CNF1));
-    printf("cnf2 should be %d, but is : %d/n", cnf2, mcp2515_read(MCP_CNF2));
+    printf("cnf1 should be %d, but is : %d\n", cnf1, mcp2515_read(MCP_CNF1));
+    printf("cnf2 should be %d, but is : %d\n", cnf2, mcp2515_read(MCP_CNF2));
 
     // set can_controllerer in normal mode
     canctrl = mcp2515_read(MCP_CANCTRL);
