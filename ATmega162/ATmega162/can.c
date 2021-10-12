@@ -7,7 +7,19 @@
 #include "mcp2515_register.h"
 #include "mcp2515.h"
 
-#define F_CPU 4915200
+#define F_CPU       4915200
+#define MSC         1/16000000
+#define BRP         0
+#define TQ          2 * BRP / MSC
+
+#define SJW             2
+#define PROPSEG         2
+#define PH1             5
+#define PH2             4
+
+#define REQOP_OFFSET    5
+
+
 #include "util/delay.h"
 
 
@@ -54,8 +66,19 @@ void can_loopback_init(){
     mcp2515_write(MCP_CANINTE,1);
 }
 void can_normal_init(){
+    //set can_controller in configuration mode
+    char canctrl = mcp2515_read(MCP_CANCTRL);
+    canctrl &= 0b00011111;
+    canctrl |= 100 << REQOP_OFFSET;
+    mcp2515_write(MCP_CANCTRL,canctrl);
+
+    //set NBT values
+    char cnf1 = (BRP - 1) || (SJW - 1)<<6
+    mcp2515_write(MCP_CNF1,cnf1)
+    char cnf2 = (PROPSEG - 1) || (PH1 - 1)<<3
+    //TODO: consider setting cnf3
+
     // set can_controllerer in normal mode
-    char offset = 5;
     char canctrl = mcp2515_read(MCP_CANCTRL);
     canctrl &= 0b00011111;
     mcp2515_write(MCP_CANCTRL,canctrl);
@@ -86,7 +109,7 @@ void can_read_message(){
 }
 
 void can_test(){
-    can_loopback_init();
+    can_normal_init();
     printf("first %d\n", can_message_received());
     can_message message = {
 		2, 1, "T"
