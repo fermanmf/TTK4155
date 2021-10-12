@@ -1,8 +1,11 @@
 // INIT_PWM
 
+#include <avr/io.h>
+
+#include "pwm_driver.h"
 
 // Prescaler settings
-uint16_t prescaler = 256;
+uint16_t prescaler = 8;
 
 // f_desired = system_clock / (prescaler*(1+Top))
 
@@ -10,10 +13,7 @@ uint16_t prescaler = 256;
 
 void setup_pwm(float period, int system_clock) {
 
-    // Set duty cycle
-    int prescaler = 256;
-
-    // Top / Period
+    // Set Duty Cycle
     set_periode(period, system_clock, prescaler);
 
     // Pulse
@@ -31,7 +31,7 @@ void setup_pwm(float period, int system_clock) {
     TCCR1A = (1<<COM1A1);
 
     // Set putput
-    DDRB |= (1<<PB1);
+    DDRB |= (1<<PB5);
 }
 
 // Set TOP / Periode

@@ -20,6 +20,9 @@
 #include "spi_driver.h"
 #include "can.h"
 
+#include "pwm_driver.h"
+#include "servo_driver.h"
+
 typedef struct {
 	char name[16];
 	void (*callback)();	
@@ -88,5 +91,7 @@ int main(){
 	can_test();
 	
 	printf("Terminated\n");
+
+	setup_servo(16000000);
 	
 }
