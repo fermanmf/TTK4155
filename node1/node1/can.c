@@ -45,7 +45,7 @@ void can_send_message(can_message* message){
     mcp2515_write(data_length_address, message->data_length);
     //write data to data registers 
     char data_address = 0b00110110;
-    for (char i = 0;i < 8;i++){
+    for (int i = 0;i < 8;i++){
         mcp2515_write(data_address, message->data[i]);
         data_address = data_address + 1;
     //tell controller to send message
@@ -76,13 +76,13 @@ void can_normal_init(){
     char cnf1 = (BRP - 1) || (SJW - 1)<<6;
     mcp2515_write(MCP_CNF1,cnf1);
     char cnf2 = (PROPSEG - 1) || (PH1 - 1)<<3;
-    mcp2515_write(MCP_CNF2, cnf2)
+    mcp2515_write(MCP_CNF2, cnf2);
     //TODO: consider setting cnf3
     printf("cnf1 should be %d, but is : %d/n", cnf1, mcp2515_read(MCP_CNF1));
     printf("cnf2 should be %d, but is : %d/n", cnf2, mcp2515_read(MCP_CNF2));
 
     // set can_controllerer in normal mode
-    char canctrl = mcp2515_read(MCP_CANCTRL);
+    canctrl = mcp2515_read(MCP_CANCTRL);
     canctrl &= 0b00011111;
     mcp2515_write(MCP_CANCTRL,canctrl);
 
