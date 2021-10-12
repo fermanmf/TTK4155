@@ -1,0 +1,1 @@
+void setup_servo(int system_clock);
