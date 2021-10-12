@@ -9,7 +9,7 @@
 
 #define F_CPU       4915200
 #define MSC         16000000
-#define BRP         0
+#define BRP         16
 #define TQ          2 * BRP / MSC
 
 #define SJW             2
