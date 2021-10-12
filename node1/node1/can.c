@@ -8,7 +8,7 @@
 #include "mcp2515.h"
 
 #define F_CPU       4915200
-#define MSC         1/16000000
+#define MSC         16000000
 #define BRP         0
 #define TQ          2 * BRP / MSC
 
