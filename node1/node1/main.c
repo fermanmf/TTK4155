@@ -17,7 +17,6 @@
 #include "display.h"
 #include "controls.h"
 #include "oled.h"
-#include "spi_driver.h"
 #include "can.h"
 
 typedef struct {
@@ -81,11 +80,16 @@ void test_menu() {
 int main(){
 	uart_init(9600);
 	init_xmem();
-	SPI_MasterInit();
 	controls_init();
 	display_init();
 	
-	can_test();
+	can_loopback_init();
+	CanMessage message = {
+		2, 6, "Hello2"
+	};
+	can_send(&message);
+	can_print();
+	
 	
 	printf("Terminated\n");
 	
