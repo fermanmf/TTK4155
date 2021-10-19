@@ -18,7 +18,7 @@ int main(void)
 	WDT->WDT_MR = WDT_MR_WDDIS;
 	configure_uart();
 	printf("Start\n\r");
-	can_init_def_tx_rx_mb(0x00541144);
+	can_init_def_tx_rx_mb(0x00143156);
 	
 	CAN_MESSAGE msg1;
 	CAN_MESSAGE msg2;
@@ -26,7 +26,6 @@ int main(void)
 
 	while (can_receive(&msg1, 1) && can_receive(&msg2, 2))
 	{
-		printf("In loop\n\r");
 		printf(msg1.data);
 		printf(msg2.data);
 		
