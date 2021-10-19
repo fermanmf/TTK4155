@@ -112,15 +112,15 @@ void can_read_message(){
 }
 
 void can_test(){
-    can_normal_init();
+    can_loopback_init();
     printf("first %d\n", can_message_received());
     can_message message = {
-		2, 1, "T"
+		2, 8, "HELLO123"
 	};
-	while (1) {
-		can_send_message(&message);
-		_delay_ms(50);
-	}
+	
+	can_send_message(&message);
+	_delay_ms(50);
+	
     printf("%d\n",can_message_received());
     can_read_message();
 }
