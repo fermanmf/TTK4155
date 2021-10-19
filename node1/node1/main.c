@@ -76,6 +76,7 @@ void test_menu() {
 	menu(items, 3);
 }
 
+// Send joystick data and slider data continuously in CAN message with id. Send other game data in another CAN message with sepearte id. Different receive buffers on the arduino
 
 int main(){
 	uart_init(9600);
@@ -88,10 +89,9 @@ int main(){
 	CanMessage message;
 	message.id = 0;
 	message.data_length = 2;
+
+	adc_read(message.data);
+	can_send(&message);
 	
-	while (1) {
-		adc_read(message.data);
-		can_send(&message);		
-	}	
 	printf("Terminated\n");	
 }
