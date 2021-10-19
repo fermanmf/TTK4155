@@ -80,17 +80,18 @@ void test_menu() {
 int main(){
 	uart_init(9600);
 	init_xmem();
-	controls_init();
+	adc_init();
 	display_init();
 	
-	can_loopback_init();
-	CanMessage message = {
-		2, 6, "Hello2"
-	};
-	can_send(&message);
-	can_print();
+	can_init();
 	
+	CanMessage message;
+	message.id = 0;
+	message.data_length = 2;
 	
-	printf("Terminated\n");
-	
+	while (1) {
+		adc_read(message.data);
+		can_send(&message);		
+	}	
+	printf("Terminated\n");	
 }

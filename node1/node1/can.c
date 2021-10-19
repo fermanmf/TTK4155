@@ -32,18 +32,12 @@ void can_send(CanMessage* can_message) {
 	mcp2515_rts();
 }
 
-static void _can_init(uint8_t mode) {
-	mcp2515_init();
-	mcp2515_reset();
-	mcp2515_write(MCP_RXB0CTRL, (1 << MCP_RXM0) | (1 << MCP_RXM1)); // disable filter
-	mcp2515_write(MCP_CANCTRL, mode); // set operation mode
-	mcp2515_write(MCP_CANINTE, 1); // enable receieve buffer 0 full interrupt
+void can_init() {
+	mcp2515_init(false);
 }
-
-void can_init() {}
 	
 void can_loopback_init(){
-	_can_init(MODE_LOOPBACK);
+	mcp2515_init(true);
 }
 
 void can_print() {

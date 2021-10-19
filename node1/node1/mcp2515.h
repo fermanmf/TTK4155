@@ -1,8 +1,9 @@
 #pragma once
 
 #include <stdint.h>
+#include <stdbool.h>
 
-void mcp2515_init();
+void mcp2515_init(bool loopback_mode);
 
 void mcp2515_reset();
 uint8_t mcp2515_read(uint8_t address);
