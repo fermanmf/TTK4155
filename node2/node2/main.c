@@ -11,12 +11,18 @@
 #include "printf-stdarg.h"
 #include "can_controller.h"
 
+#include "servo_driver.h"
+
 
 int main(void)
 {
     SystemInit();
 	WDT->WDT_MR = WDT_MR_WDDIS;
 	configure_uart();
+
+	setup_servo(84000000);
+
+
 	can_init_def_tx_rx_mb(0x1143);
 	
 	CAN_MESSAGE msg1;

@@ -1,8 +1,11 @@
 // INIT SERVO
-#include <avr/io.h>
+
+#include "servo_driver.h"
 
 #include "pwm_driver.h"
-#include "pwm_driver.h"
+
+
+#include "sam.h"
 
 void setup_servo(int system_clock) {
     float period = 0.02;
@@ -19,9 +22,9 @@ void set_servo(float value) {
     if (value < min) {
         setValue = min;
     }
-    else if (value > max) (
+    else if (value > max) {
         setValue = max;
-    )
+	}
 
     set_pulse(setValue);
 }

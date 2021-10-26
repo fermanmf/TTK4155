@@ -1,8 +1,10 @@
 // INIT_PWM
 
-#include <avr/io.h>
-
 #include "pwm_driver.h"
+
+#include <stdint.h>
+
+#include "sam.h"
 
 // Prescaler settings
 uint16_t prescaler = 8;
