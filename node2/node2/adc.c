@@ -1,13 +1,15 @@
 // Setup the internal adc on the arduino
+#include "adc.h"
 
-#include <stdlib.h>
+#include "sam.h"
 
 
 void adc_init() {
 
     // Enable ADC controller MCK in the PMC
     // ID_ADC = 37
-    PMC->PMC_PCER1 |= 1 << (5);
+	PIOA->PIO_PDR = PIO_PA2;
+    PMC->PMC_PCER1 |= PMC_PCER1_PID37;
 
     // Reset the adc
     ADC->ADC_CR |=1;
@@ -23,10 +25,12 @@ void adc_init() {
     
 }
 
+volatile unsigned int *IR = (unsigned int*) 0x400C0050;
+
 void adc_read() {
     
     // Read the data from the analog input after it is sampled at ADC_CDR0 bit 0 to 11
-    data = ADC->ADC_CDR[0];
+    //data = ADC->ADC_CDR[0];
     
     // Return data
 

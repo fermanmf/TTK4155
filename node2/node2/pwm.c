@@ -7,17 +7,16 @@
 #include "utils.h"
 #include "printf-stdarg.h"
 
-void pwm_init(unsigned int frequency) {
-	PIOB->PIO_PDR |= PIO_PB25;
-	PIOB->PIO_ABSR |= PIO_PB25;
-	PMC->PMC_PCER1 |= PMC_PCER1_PID36;
-	TC0->TC_CHANNEL->TC_CMR = TC_CMR_WAVSEL_UP_RC | TC_CMR_WAVE | TC_CMR_ACPA_SET | TC_CMR_ACPC_CLEAR;
+void pwm_init() {
+	PIOC->PIO_PDR |= PIO_PC19;
+	PIOC->PIO_ABSR |= PIO_PC19;
 	
-	const unsigned int COUNTER_FREQUENCY = MCK / 2;
-	const unsigned int TOP = COUNTER_FREQUENCY / frequency;
-	TC0->TC_CHANNEL->TC_RA = TOP;
-	TC0->TC_CHANNEL->TC_RC = TOP;
-	TC0->TC_CHANNEL->TC_CCR = TC_CCR_CLKEN; //enable
+	PMC->PMC_PCER1 |= PMC_PCER1_PID36;
+	
+	PWM->PWM_ENA |= PWM_DIS_CHID5;
+	PWM->PWM_CH_NUM[5].PWM_CMR |= PWM_CMR_CPRE_MCK_DIV_32;
+	PWM->PWM_CH_NUM[5].PWM_CPRD = MCK / (50 * 32);
+	printf("%u\n", PWM->PWM_CH_NUM[5].PWM_CPRD);
 }
 
 	
@@ -25,8 +24,7 @@ void pwm_set(float duty_cycle) {
 	if (duty_cycle < 0 || duty_cycle > 1) {
 		printf("Invalid duty cycle %f", duty_cycle);
 		panic();
+	} else {
+		PWM->PWM_CH_NUM[5].PWM_CDTY = round(PWM->PWM_CH_NUM[5].PWM_CPRD * (1 - duty_cycle));
 	}
-	
-	const unsigned int TOP = TC0->TC_CHANNEL->TC_RC;
-	TC0->TC_CHANNEL->TC_RA = round(TOP * (1 - duty_cycle));
 }
