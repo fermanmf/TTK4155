@@ -4,3 +4,5 @@
 *.cproj
 Debug
 Device_Startup
+component_dacc.h
+component_pmc.h
