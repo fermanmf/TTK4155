@@ -10,6 +10,7 @@
 #include "uart.h"
 #include "printf-stdarg.h"
 #include "can_controller.h"
+#include "dac.h"
 
 
 int main(void)
@@ -20,21 +21,7 @@ int main(void)
 	printf("Start\n\r");
 	can_init_def_tx_rx_mb(0x00143156);
 	
-	CAN_MESSAGE msg1;
-	CAN_MESSAGE msg2;
-	printf("Start\n\r");
-
-	while (can_receive(&msg1, 1) && can_receive(&msg2, 2))
-	{
-		printf(msg1.data);
-		printf(msg2.data);
-		
-	}
-	printf("Before\n\r");
-	
-	printf(msg1.data);
-	printf(msg2.data);
-	
+	dac_test(0.5);
 
     printf("Terminated\n\r");
 }
