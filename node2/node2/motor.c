@@ -1,6 +1,22 @@
 #include "motor.h"
 #include "dac.h"
+#include "sam.h"
 
+void motor_init(){
+    //Provide clock for input at PIOC
+    PMC->PMC_PCER0 |= PMC_PCER0_PID13;
+    //TODO: Verify that setting PMC_PCR register is not neccessary.
+
+    // enable I/O D controller and set as output
+    PIOD->PIO_PER |= 0b111 | 0b11<<9;
+    PIOD->PIO_OER |= 0b111 | 0b11<<9;
+
+    // enable PIOD controller and set as input
+    PIOD->PIO_PER |= 0x1fe;
+    PIOD->PIO_IER |= 0x1fe;
+
+    //dac_init();
+}
 void motor_run_open_loop(){
     while (1){
         dac_write(joystick_read());
@@ -13,21 +29,23 @@ void motor_run_closed_loop(){
         dac_write(joystick_read());
     }
 }
+#define NOT_OE 0b1
+#define NOT_RST 0b10
+#define SEL 0b100
+#define EN  1<<10
+#define DIR 1<<10
+#define MOTOR_OUTPUT_MASK 0x1fe
 
-void motor_reed_encoder(){
-    //D0-D7 er p33-p40
-    //32-DIR, 30-EN, 25-!OE, 26-!RST, 27-SEL
-    
-
-
-/*• Set !OE low to enable output of encoder 
-• Set SEL low to get high byte
-• Wait about 20 microseconds
-• Read MSB
-• Set SEL high to get low byte
-• Wait about 20 microseconds
-• Read LSB
-• Toggle !RST to reset encoder
-• Set !OE high to disable output of encoder • Process received data....
-*/
+int motor_read_encoder(){
+    PIOD->PIO_CODR = NOT_OE;
+    PIOD->PIO_CODR = SEL;
+    Delay(20);
+    int msb = (PIOC->PIO_PDSR | MOTOR_OUTPUT_MASK)>>1;
+    PIOD->PIO_SODR = SEL;
+    Delay(20);
+    int lsb = (PIOC->PIO_PDSR | MOTOR_OUTPUT_MASK)>>1;
+    PIOD->PIO_CODR = NOT_RST;
+    PIOD->PIO_SODR = NOT_RST;
+    return (msb <<8) | lsb;
+    //TODO: verify that lsb and msb should be shifted by 1
 }
