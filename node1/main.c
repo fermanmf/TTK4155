@@ -12,3 +12,6 @@ int main(){
 	
 	printf("Terminated\n");	
 }
+
+
+//set up pipelinen

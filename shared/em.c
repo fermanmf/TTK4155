@@ -33,7 +33,7 @@ EmEvent em_get_event() {
 	return pop(0);
 }
 
-void can_message_received (uint8_t id, uint8_t data[], uint8_t data_length) {
+void em_can_message_received (uint8_t id, uint8_t data[], uint8_t data_length) {
 	switch(id) {
 		case EmJoystickPressed:
 			append({EmJoystickPressed});
