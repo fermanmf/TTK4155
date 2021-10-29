@@ -12,7 +12,7 @@ static volatile int8_t end_index = -1;
 static volatile EmEvent[QUEUE_MAX_SIZE] queue;
 
 static void append(EmEvent event){
-	if (end_index < QUEUE_MAX_SIZE-1) {
+	if (end_index < QUEUE_MAX_LENGTH-1) {
 		queue[++end_index] = event;		
 	} else {
 		panic();		
@@ -33,14 +33,34 @@ EmEvent em_get_event() {
 	return pop(0);
 }
 
+void can_message_received (uint8_t id, uint8_t data[], uint8_t data_length) {
+	switch(id) {
+		case EmJoystickPressed:
+			append({EmJoystickPressed});
+			break;
+		
+		case EmJoystickDirectionChanged:
+			append({EmJoystickDirectionChanged, data[0]});
+			break;
+		
+		default:
+			panic();
+	}
+}
+
 void em_joystick_button_pressed() {
-	append({EmJoystickPressed});
-	
+	append({EmJoystickPressed});	
 	can_send_empty(EmJoystickPressed);
 }
 
-void em_joystick_direction_changed(ControllerJoystickDirection direction) {	
-	append({EmJoystickDirectionChanged, direction});
-	
-	can_send(EmJoystickDirectionChanged, 1, {direction})	
+void em_joystick_button_released() {
+	append({EmJoystickReleased});
+	can_send_empty(EmJoystickReleased);
 }
+
+void em_joystick_direction_changed(ControllerJoystickDirection direction) {	
+	append({EmJoystickDirectionChanged, direction});	
+	can_send(EmJoystickDirectionChanged, {direction}, 1)	
+}
+
+
