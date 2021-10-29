@@ -46,11 +46,11 @@ void motor_run_closed_loop(){
     int ref = 0;
     int deviation = 0;
     int prev_deviation = 0;
-    int period = 0;
+    int period = 100*pow(10,(-6));
     int deviation_sum = 0;
-    int k_p = 0;
+    int k_p = 1;
     int k_i = 0;
-    int k_d = 0;
+    int k_d = 1;
     int p_actuation = 0;
     int i_actuation =0;
     int d_actuation = 0;
@@ -59,12 +59,14 @@ void motor_run_closed_loop(){
         pos = motor_read_encoder();
         ref = joystick_read();
         deviation = ref - pos;
-        int p_actuation = k_p * deviation;
-        int i_actuation = k_i * period * deviation_sum;
-        int d_actuation = k_d / period * (deviation - prev_deviation);
-        int actuation = p_actuation + i_actuation + d_actuation;
-        }
+        p_actuation = k_p * deviation;
+        i_actuation = k_i * period * deviation_sum;
+        d_actuation = k_d / period * (deviation - prev_deviation);
+        actuation = p_actuation + i_actuation + d_actuation;
         set_speed(actuation);
+        prev_deviation = deviation;
+    }
+    
 }
 
 
