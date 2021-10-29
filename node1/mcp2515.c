@@ -5,7 +5,7 @@
 #include <stdint.h>
 
 #include "spi.h"
-#include "mcp2515_register.h"
+#include "mcp2515_consts.h"
 
 #define SS 4
 
@@ -24,6 +24,10 @@ static void slave_deselect(){
 #define PROPAG  2
 #define PS1     6
 #define PS2     7
+
+
+#define MCP_RXM0 5
+#define MCP_RXM1 6
 
 void mcp2515_init(bool loopback_mode) {
 	spi_init();

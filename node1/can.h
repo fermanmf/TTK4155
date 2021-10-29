@@ -2,13 +2,8 @@
 
 #include <stdint.h>
 
-typedef struct {
-	uint16_t id;
-	uint8_t data_length;
-	uint8_t data[8];
-} CanMessage;
-
-void can_send(CanMessage* can_message);
 void can_init();
 void can_loopback_init();
-void can_print();
+
+void can_send_empty(uint8_t id);
+void can_send(uint8_t id, uint8_t data_length, uint8_t data[]);
