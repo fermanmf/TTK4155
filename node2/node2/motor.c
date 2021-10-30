@@ -41,21 +41,22 @@ void motor_run_open_loop(){
         set_speed(joystick_read());
     }
 }
-void motor_run_closed_loop(){
-    int pos = 0;
-    int ref = 0;
-    int deviation = 0;
-    int prev_deviation = 0;
-    int period = 100*pow(10,(-6));
-    int deviation_sum = 0;
-    int k_p = 1;
-    int k_i = 0;
-    int k_d = 1;
-    int p_actuation = 0;
-    int i_actuation =0;
-    int d_actuation = 0;
-    int actuation = 0;
-    while (1){
+int pos = 0;
+int ref = 0;
+int deviation = 0;
+int prev_deviation = 0;
+int period = 0;
+int deviation_sum = 0;
+int k_p = 1;
+int k_i = 0;
+int k_d = 1;
+int p_actuation = 0;
+int i_actuation =0;
+int d_actuation = 0;
+int actuation = 0;
+
+void motor_control_pos(int interrupt_period){
+    period = interrupt_period;
         pos = motor_read_encoder();
         ref = joystick_read();
         deviation = ref - pos;
@@ -65,8 +66,6 @@ void motor_run_closed_loop(){
         actuation = p_actuation + i_actuation + d_actuation;
         set_speed(actuation);
         prev_deviation = deviation;
-    }
-    
 }
 
 
