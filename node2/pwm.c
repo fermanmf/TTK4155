@@ -13,10 +13,10 @@ void pwm_init() {
 	
 	PMC->PMC_PCER1 |= PMC_PCER1_PID36;
 	
-	PWM->PWM_ENA |= PWM_DIS_CHID5;
+	
 	PWM->PWM_CH_NUM[5].PWM_CMR |= PWM_CMR_CPRE_MCK_DIV_32;
 	PWM->PWM_CH_NUM[5].PWM_CPRD = MCK / (50 * 32);
-	printf("%u\n", PWM->PWM_CH_NUM[5].PWM_CPRD);
+	PWM->PWM_ENA |= PWM_DIS_CHID5;
 }
 
 	
