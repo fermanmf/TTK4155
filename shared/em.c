@@ -9,7 +9,7 @@
 #define QUEUE_MAX_LENGTH
 
 static volatile int8_t end_index = -1;
-static volatile EmEvent[QUEUE_MAX_SIZE] queue;
+static volatile EmEvent queue[QUEUE_MAX_LENGTH] = {};
 
 static void append(EmEvent event){
 	if (end_index < QUEUE_MAX_LENGTH-1) {
@@ -19,10 +19,10 @@ static void append(EmEvent event){
 	}	
 }
 
-static void pop(uint8_t index){
+static EmEvent pop(uint8_t index){
 	const EmEvent event = queue[index];
 	for (int i = index; i<=end_index; i++) {
-		event[i] = event[i+1];
+		queue[i] = queue[i+1];
 	}
 	end_index--;
 	return event;
@@ -40,19 +40,19 @@ EmEvent em_get_event() {
 void em_can_message_received (uint8_t id, uint8_t data[], uint8_t data_length) {
 	switch(id) {
 		case EmJoystickPressed:
-			append({EmJoystickPressed});
+			append((EmEvent){EmJoystickPressed});
 			break;
 		
-		case EmJoystickPressed:
-			append({EmJoystickReleased});
+		case EmJoystickReleased:
+			append((EmEvent){EmJoystickReleased});
 			break;
 		
 		case EmJoystickXDirectionChanged:
-			append({EmJoystickXDirectionChanged, data[0]});
+			append((EmEvent){EmJoystickXDirectionChanged, data[0]});
 			break;
 		
 		case EmJoystickYDirectionChanged:
-			append({EmJoystickYDirectionChanged, data[0]});
+			append((EmEvent){EmJoystickYDirectionChanged, data[0]});
 			break;
 		
 		default:
@@ -61,23 +61,23 @@ void em_can_message_received (uint8_t id, uint8_t data[], uint8_t data_length) {
 }
 
 void em_joystick_button_pressed() {
-	append({EmJoystickPressed});	
+	append((EmEvent){EmJoystickPressed});	
 	can_send_empty(EmJoystickPressed);
 }
 
 void em_joystick_button_released() {
-	append({EmJoystickReleased});
+	append((EmEvent){EmJoystickReleased});
 	can_send_empty(EmJoystickReleased);
 }
 
 void em_joystick_x_direction_changed(ControllerJoystickDirection direction) {	
-	append({EmJoystickXDirectionChanged, direction});	
-	can_send(EmJoystickXDirectionChanged, {direction}, 1)	
+	append((EmEvent){EmJoystickXDirectionChanged, direction});	
+	can_send(EmJoystickXDirectionChanged, (uint8_t[]){direction}, 1);	
 }
 
 void em_joystick_y_direction_changed(ControllerJoystickDirection direction) {
-	append({EmJoystickYDirectionChanged, direction});
-	can_send(EmJoystickYDirectionChanged, {direction}, 1)
+	append((EmEvent){EmJoystickYDirectionChanged, direction});
+	can_send(EmJoystickYDirectionChanged, (uint8_t[]){direction}, 1);
 }
 
 
