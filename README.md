@@ -1,5 +1,10 @@
 # TTK4155
 
 - Cranked up hastighet på SPI
-- Fikse interrupt på MCP2515
 - Endra CAN tror jeg
+- Interrupts
+-   ADC
+-   MCP2515
+-   Joystick-knapp
+-   Timer for controller
+- Muligens endre klokka til ADC-en (h;yre astighet, enklere config)
