@@ -16,13 +16,14 @@ void adc_init() {
 	TIMSK |= 1 << OCIE1A; //output compare interrupt enable
 }
 
-void adc_read(uint8_t values[]) {
+/*
+void adc_read(void (*callback)(uint8_t[4])) {
 	volatile uint8_t *adc = (uint8_t*) 0x1400;
 	adc[0] = 0;
 	
 	_delay_us(20);	
 	for (int i = 0; i<4; i++) {
-		values[i] = adc[0];
+		data[i] = adc[0];
 	}
 }
-
+*/
