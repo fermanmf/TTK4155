@@ -2,8 +2,8 @@
 #include <avr/io.h>
 
 #include "uart.h"
-#include "shared/panic.h"
-#include "shared/em.h"
+#include "panic.h"
+#include "em.h"
 
 
 int main(){

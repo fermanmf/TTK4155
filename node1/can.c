@@ -1,4 +1,4 @@
-#include "../shared/can.h"
+#include "can.h"
 
 #include <stdint.h>
 #include <stdbool.h>

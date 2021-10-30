@@ -1,3 +1,3 @@
-#include "shared/panic.h"
+#include "panic.h"
 
 void panic() {}
