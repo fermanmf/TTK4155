@@ -8,6 +8,8 @@
 	MB0 for controller and MB1 for em
 */
 
+
+/*
 void can_init() {
 	PMC->PMC_PCER1 |= PMC_PCER1_PID43; //CAN0	
 	CAN0->CAN_IER = CAN_IER_MB0 | CAN_IER_MB1; //enable interrupts
@@ -26,3 +28,4 @@ void can_init() {
 	CAN0->CAN_MR = CAN_MR_CANEN; //enable
 }
 
+*/
