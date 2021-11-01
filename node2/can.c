@@ -17,7 +17,6 @@ void can_init() {
 				   (CAN_SJW) << CAN_BR_SJW_Pos | 
 				   (33 - 1) << CAN_BR_BRP_Pos | // round(CAN_TQ * MCK_NODE2) = 33
 				   CAN_BR_SMP_THREE;
-	// continue from here
 	CAN0->CAN_MR = CAN_MR_CANEN; //enable
 }
 
