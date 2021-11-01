@@ -1,3 +1,3 @@
 #include "panic.h"
 
-void panic();
+void panic() {}
