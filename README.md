@@ -1,5 +1,10 @@
 # TTK4155
 
-- Definere memory map i kode
-- Interrupts på busy adc
-- Test SRAM chip select
+- Cranked up hastighet på SPI
+- Endra CAN tror jeg
+- Interrupts
+-   ADC
+-   MCP2515
+-   Joystick-knapp
+-   Timer for controller
+- Muligens endre klokka til ADC-en (h;yre astighet, enklere config)
