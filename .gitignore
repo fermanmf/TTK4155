@@ -2,5 +2,6 @@
 *.componentinfo.xml
 Debug
 Device_Startup
-*.cproj
 *.atsln
+*.cproj
+.vscode
