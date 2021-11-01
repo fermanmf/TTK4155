@@ -2,6 +2,7 @@
 #include "uart.h"
 #include "printf-stdarg.h"
 #include "em.h"
+#include "panic.h"
 
 
 int main(void)

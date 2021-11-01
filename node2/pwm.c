@@ -4,8 +4,8 @@
 
 #include "sam.h"
 #include "config.h"
-#include "utils.h"
 #include "printf-stdarg.h"
+#include "panic.h"
 
 void pwm_init() {
 	PIOC->PIO_PDR |= PIO_PC19;
