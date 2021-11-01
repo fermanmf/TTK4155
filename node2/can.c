@@ -2,6 +2,7 @@
 
 #include "sam.h"
 #include "consts.h"
+#include "printf-stdarg.h"
 
 /*
 	Dual mailbox setup.
@@ -17,12 +18,16 @@ void can_init() {
 				   (CAN_SJW) << CAN_BR_SJW_Pos | 
 				   (33 - 1) << CAN_BR_BRP_Pos | // round(CAN_TQ * MCK_NODE2) = 33
 				   CAN_BR_SMP_THREE;
-	CAN0->CAN_MB[0]->CAN_MMR = CAN_MMR_MOT_MB_RX_OVERWRITE;
-	CAN0->CAN_MB[0]->CAN_MAM = 0xFF | CAN_MAM_MIDE; // CAN 2.0 B (not A)
-	CAN0->CAN_MB[0]->CAN_MID = 0xFF;
+				   
+	CAN0->CAN_MB[0].CAN_MMR = CAN_MMR_MOT_MB_RX_OVERWRITE; // Message Mode Register
+	CAN0->CAN_MB[0].CAN_MAM = 0xFF << CAN_MAM_MIDvA_Pos; // Message Acceptance Mask
+	CAN0->CAN_MB[0].CAN_MID = 0xFF << CAN_MID_MIDvA_Pos; // Message ID
+	CAN0->CAN_MB[1].CAN_MMR = CAN_MMR_MOT_MB_RX; // Message Mode Register
 	
-	
-	CAN0->CAN_MB[1]->CAN_MMR = CAN_MMR_MOT_MB_RX;
 	CAN0->CAN_MR = CAN_MR_CANEN; //enable
+}
+
+void CAN0_Handler() {
+	printf("Hello from CAN interrupt\n\r");
 }
 
