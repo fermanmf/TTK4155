@@ -26,12 +26,3 @@ void adc_init() {
 }
 
 volatile unsigned int *IR = (unsigned int*) 0x400C0050;
-
-void adc_read() {
-    
-    // Read the data from the analog input after it is sampled at ADC_CDR0 bit 0 to 11
-    //data = ADC->ADC_CDR[0];
-    
-    // Return data
-
-}

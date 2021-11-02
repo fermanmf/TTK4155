@@ -3,6 +3,7 @@
 #include "printf-stdarg.h"
 #include "em.h"
 #include "panic.h"
+#include "adc.h"
 
 
 int main(void)
@@ -11,9 +12,13 @@ int main(void)
     SystemInit();
 	WDT->WDT_MR = WDT_MR_WDDIS; //disable watchdog
     configure_uart();
+	adc_init();
 	   	 
     printf("Start\n\r");  
 	while(1) {
+
+		printf(IR);
+		/*
 		EmEvent event = em_get_event();
 		switch (event.type) {
 			case EmJoystickPressed:
@@ -32,6 +37,8 @@ int main(void)
 				panic();
 				break;
 		}
+		*/
+		
 	}	
 
     printf("Terminated\n\r");
