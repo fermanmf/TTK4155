@@ -6,6 +6,7 @@
 #include "can.h"
 #include "mcp2515.h"
 #include "consts.h"
+#include "controller.h"
 
 #define F_CPU MCK_NODE1
 #include "util/delay.h"
@@ -13,6 +14,7 @@
 
 void setup(){
 	can_init();	
+	controller_init();
 }
 
 void _main(){

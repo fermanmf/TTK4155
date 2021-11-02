@@ -18,9 +18,11 @@ uint8_t controller_slider_left = 0;
 uint8_t controller_slider_right = 0;
 
 void controller_init() {
+	DDRE &= ~1;
 	PORTE |= 1 << PINE0; // With pull-up resistor
-	EMCUCR |= 1 << ISC2; // Interrupt on rising edge
-	GICR |= 1 << INT2; // Enable INT2 (interrupt pin 2) 
+	//EMCUCR |= 1 << ISC2; // Interrupt on rising edge
+	GICR |= 1 << INT2; // Enable INT2 (interrupt pin 2)
+	sei();
 }
 
 ISR(INT2_vect) {
