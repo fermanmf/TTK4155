@@ -24,5 +24,5 @@ void timer_init(){
 }
 void TC0_Handler(){
     motor_control_pos(INT_PERIOD);
-	printf("TC0 interrupt \n\r");
+	printf("%u TC0 interrupt \n\r", motor_read_encoder());
 }
