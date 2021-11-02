@@ -5,8 +5,8 @@
 #define MCK_MCP2515 16000000
 
 #define CAN_PROPSEG 2
-#define CAN_PS1 7
-#define CAN_PS2 6
-#define CAN_SJW 1
-#define CAN_NODE1_BRP 1
-#define CAN_NODE2_BRP 10
+#define CAN_PS1 6 //7
+#define CAN_PS2 7 //6
+#define CAN_SJW 4 //1
+#define CAN_NODE1_BRP 2
+#define CAN_NODE2_BRP 21

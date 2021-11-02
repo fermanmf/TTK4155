@@ -66,12 +66,11 @@ void can_init() {
 	
 	PMC->PMC_PCER1 |= PMC_PCER1_PID43; //CAN0	
 	CAN0->CAN_IER = CAN_IER_MB0 | CAN_IER_MB1; //enable interrupts
-	CAN0->CAN_BR = 0x00143156;
-	/*				(CAN_PS2 - 1) << CAN_BR_PHASE2_Pos | 
+	CAN0->CAN_BR = (CAN_PS2 - 1) << CAN_BR_PHASE2_Pos | 
 				   (CAN_PS1 - 1) << CAN_BR_PHASE1_Pos | 
 				   (CAN_PROPSEG - 1) << CAN_BR_PROPAG_Pos | 
 				   (CAN_SJW) << CAN_BR_SJW_Pos | 
-				   (CAN_NODE2_BRP - 1) << CAN_BR_BRP_Pos |
+				   (CAN_NODE2_BRP - 1) << CAN_BR_BRP_Pos; /*|
 				   CAN_BR_SMP_THREE;
 	*/
 	CAN0->CAN_MB[0].CAN_MAM = 0xFF << CAN_MAM_MIDvA_Pos; // Message Acceptance Mask
