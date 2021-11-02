@@ -25,7 +25,7 @@ static void set_speed(int value){
 
 void motor_init(){
     //Provide clock for input at PIOC
-	PMC->PMC_PCR = PMC_PCR_EN | PMC_PCR_DIV_PERIPH_DIV_MCK | 13;
+	//PMC->PMC_PCR = PMC_PCR_EN | PMC_PCR_DIV_PERIPH_DIV_MCK | 13;
     PMC->PMC_PCER0 |= PMC_PCER0_PID13;
     //TODO: Verify that setting PMC_PCR register is not neccessary.
 
@@ -48,41 +48,33 @@ void motor_run_open_loop(){
         set_speed(joystick_read());
     }
 }
-int pos = 0;
-int ref = 0;
-int deviation = 0;
-int prev_deviation = 0;
-int period = 0;
-int deviation_sum = 0;
-int k_p = 1;
-int k_i = 0;
-int k_d = 1;
-int p_actuation = 0;
-int i_actuation =0;
-int d_actuation = 0;
-int actuation = 0;
-
+struct controlVariables pid;
+pid = {
+    .pos = 0, 
+    .ref = 0,
+    .k_p = 3, 
+    .k_i = 1 , 
+    .k_d = 1, 
+    .deviation_sum = 0, 
+    .prev_deviation = 0
+};
 void motor_control_pos(int interrupt_period){
 	printf("motor_control_pos\n\r");
-    /*
-    period = interrupt_period;
-    pos = motor_read_encoder();
-    ref = 0.5;
-    deviation = ref - pos;
-    p_actuation = k_p * deviation;
-    i_actuation = k_i * period * deviation_sum;
-    d_actuation = k_d / period * (deviation - prev_deviation);
-    actuation = p_actuation + i_actuation + d_actuation;
-    set_speed(actuation);
-    prev_deviation = deviation;
-    */
-	set_speed(0.5);
+    pid.period = interrupt_period;
+    pid.pos = motor_read_encoder();
+    pid.ref = pid.pos + 0.1;
+    pid.deviation = pid.ref - pid.pos;
+    pid.p_actuation = pid.k_p * pid.deviation;
+    pid.i_actuation = pid.k_i * pid.period * pid.deviation_sum;
+    pid.d_actuation = pid.k_d / pid.period * (pid.deviation - pid.prev_deviation);
+    pid.actuation = pid.p_actuation + pid.i_actuation + pid.d_actuation;
+    set_speed(pid.actuation);
+    pid.prev_deviation = pid.deviation;
+    pid.deviation_sum += pid.deviation;
 }
 
 
 int motor_read_encoder(){
-	
-	 
     PIOD->PIO_CODR = NOT_OE;
     PIOD->PIO_CODR = SEL;
     timer_delay_u(20);
@@ -97,5 +89,4 @@ int motor_read_encoder(){
     int signed_pos = make_pos_signed((msb <<8) | lsb);
     printf("twos complement: %d signed int: %d\n\r", twos_complement_pos, signed_pos);
     return make_pos_signed((msb <<8) | lsb);
-    //TODO: verify that lsb and msb should be shifted by 1
 }
