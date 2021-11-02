@@ -90,8 +90,8 @@ void mcp2515_load_tx_buffer(uint8_t id, uint8_t data[8], uint8_t data_length){
 	}
 	slave_select();
 	spi_transmit(MCP_LOAD_TX0);
-	spi_transmit(0); // transmit buffer 0 standard identifier high
-	spi_transmit(id); // transmit buffer 0 standard identifier low
+	spi_transmit(id >> 3); // transmit buffer 0 standard identifier high
+	spi_transmit(id << 5); // transmit buffer 0 standard identifier low
 	spi_transmit(0); // transmit buffer 0 extended identifier high
 	spi_transmit(0); // transmit buffer 0 extended identifier low
 	spi_transmit(data_length); // transmit buffer 0 data length code
@@ -100,6 +100,14 @@ void mcp2515_load_tx_buffer(uint8_t id, uint8_t data[8], uint8_t data_length){
 		spi_transmit(data[i]); // transmit buffer 0 data byte
 	}
 	slave_deselect();
+}
+
+void mcp2515_load_tx_buffer_empty(uint8_t id) {
+	slave_select();
+	spi_transmit(MCP_LOAD_TX0);
+	spi_transmit(id >> 3); // transmit buffer 0 standard identifier high
+	spi_transmit(id << 5); // transmit buffer 0 standard identifier low
+	slave_deselect();	
 }
 
 
