@@ -57,22 +57,14 @@ uint8_t mcp2515_read(uint8_t address){
     return SPDR;
 }
 
-void mcp2515_read_rx_buffer(uint8_t *id, uint8_t data[8], uint8_t *data_length) {
+void mcp2515_read_rx_buffer(uint8_t data[8], uint8_t data_length) {
 	slave_select();
-	spi_transmit(MCP_READ_RX0);
-	spi_transmit(0); // receive buffer 0 standard identifier high
-	spi_transmit(0); // receive buffer 0 standard identifier low
-	*id = SPDR;
-	spi_transmit(0); // receive buffer 0 extended identifier high
-	spi_transmit(0); // receive buffer 0 extended identifier low
-	spi_transmit(0); // receive buffer 0 data length code
-	*data_length = SPDR & 0b1111;
-		
-	for (uint8_t i = 0; i<*data_length; i++) {
-		spi_transmit(0); // receive buffer 0 data byte
+	spi_transmit(MCP_READ_RX0 | (0b01 << 1));
+	for (uint8_t i = 0; i<data_length; i++) {
+		spi_transmit(0);
 		data[i] = SPDR;
-	}	
-	slave_deselect();	
+	}
+	slave_deselect();
 }
 
 void mcp2515_write(uint8_t address, uint8_t data){
