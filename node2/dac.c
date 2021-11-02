@@ -14,7 +14,7 @@ void dac_init(){
 
     // set mode register 
 
-    DACC->DACC_MR = DACC_MR_STARTUP_8 | DACC_MR_TAG_DIS | DACC_MR_WORD_HALF | DACC_MR_REFRESH(3);
+    DACC->DACC_MR = DACC_MR_STARTUP_8 | DACC_MR_TAG_DIS | DACC_MR_WORD_HALF | DACC_MR_REFRESH(3) | DACC_MR_USER_SEL_CHANNEL1;
     DACC->DACC_CHER = DACC_CHER_CH1;
     // TODO: Verify startup register
 
