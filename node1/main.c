@@ -4,15 +4,25 @@
 #include "uart.h"
 #include "panic.h"
 #include "can.h"
+#include "mcp2515.h"
 
 
 void setup(){
-	can_init();	
+	can_loopback_init();	
 }
 
 void _main(){
 	can_send_empty(0xFF);
+	uint8_t id = 0;
+	uint8_t data[8];
+	uint8_t data_length;
 	
+	while (id == 0)
+	{
+		mcp2515_read_rx_buffer(&id, data, &data_length);
+	}
+	
+	printf("%u\n\r", id);
 }
 
 int main(){
