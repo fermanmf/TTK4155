@@ -9,8 +9,7 @@
 
 void spi_init() {
 	DDRB |= (1<<MOSI)|(1<<SCK); // Set MOSI and SCK as outputs
-	SPCR = (1<<SPE)|(1<<MSTR); // SPI enable and master
-	SPSR = 1 << SPI2X; // f_osc / 2
+	SPCR = (1<<SPE)|(1<<MSTR)|(SPR0<<1); // SPI enable and master
 }
 
 void spi_transmit(uint8_t data) {

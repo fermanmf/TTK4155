@@ -6,8 +6,9 @@
 
 #include "spi.h"
 #include "mcp2515_consts.h"
-#include "../shared/consts.h"
-#include "../shared/panic.h"
+#include "consts.h"
+#include "panic.h"
+#include <stdio.h>
 
 #define SS 4
 
@@ -26,8 +27,9 @@ static void slave_deselect(){
 #define PHSEG10 3
 
 void mcp2515_init(bool loopback_mode) {
-	spi_init();
 	DDRB |= 1 << SS; // enable slave select as output
+	spi_init();
+	
 	
 	mcp2515_reset();
 	mcp2515_write(MCP_RXB0CTRL, (1 << RXM0) | (1 << RXM1)); // disable filter
