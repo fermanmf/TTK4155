@@ -5,6 +5,8 @@
 #include "timer.h"
 #include "dac.h"
 #include "motor.h"
+#include "panic.h"
+
 
 int main(void)
 {
@@ -38,6 +40,7 @@ int main(void)
 				//panic();
 				//break;
 		//}
+
 	}	
 
     printf("Terminated\n\r");

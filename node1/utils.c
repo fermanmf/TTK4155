@@ -37,8 +37,3 @@ void test_sram() {
 	}
 	printf("SRAM test completed with \n%4d errors in write phase and \n%4d errors in retrieval phase\n\n", write_errors, retrieval_errors);
 }
-
-void init_xmem() {
-	MCUCR |= 1 << SRE; // enable external memory
-	SFIOR |= 1 << XMM2; // release JTAG pins from external memory address pins
-}

@@ -16,21 +16,14 @@ void adc_init() {
 	TIMSK |= 1 << OCIE1A; //output compare interrupt enable
 }
 
-void adc_read(uint8_t values[]) {
+/*
+void adc_read(void (*callback)(uint8_t[4])) {
 	volatile uint8_t *adc = (uint8_t*) 0x1400;
 	adc[0] = 0;
 	
 	_delay_us(20);	
 	for (int i = 0; i<4; i++) {
-		values[i] = adc[0];
+		data[i] = adc[0];
 	}
 }
-
-void adc_read_pretty(int pretty_values[4]) {
-	uint8_t values[4];
-	adc_read(values);
-	pretty_values[0] = round(0.0007774 * pow(values[0], 2) + 0.5907 * values[0] - 101.18); // Y
-	pretty_values[1] = round(0.0007774 * pow(values[1], 2) + 0.5907 * values[1] - 101.18); // X
-	pretty_values[2] = values[2] * 100 / 255; //slider left
-	pretty_values[3] = values[3] * 100 / 255; //slider right
-}
+*/

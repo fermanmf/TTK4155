@@ -13,6 +13,7 @@ void dac_init(){
     PMC->PMC_PCER1 |= PMC_PCER1_PID38;
 
     // set mode register 
+
     DACC->DACC_MR = DACC_MR_STARTUP_8 | DACC_MR_TAG_DIS | DACC_MR_WORD_HALF | DACC_MR_REFRESH(3);
     DACC->DACC_CHER = DACC_CHER_CH1;
     // TODO: Verify startup register
@@ -26,7 +27,6 @@ void dac_init(){
 void dac_write(float value){
     
     if (DACC->DACC_ISR & DACC_ISR_TXRDY){
-		printf("%x\n", (unsigned int)round(value * 0xfff));
         DACC->DACC_CDR = (unsigned int)round(value * 0xfff);
     }
     else{

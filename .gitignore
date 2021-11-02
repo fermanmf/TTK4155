@@ -1,9 +1,7 @@
 .vs
-*.atsln
 *.componentinfo.xml
-*.cproj
 Debug
 Device_Startup
-component_dacc.h
-component_pmc.h
-sam/
+*.atsln
+*.cproj
+.vscode
