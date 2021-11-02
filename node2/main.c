@@ -17,7 +17,7 @@ int main(void)
     printf("Start\n\r");  
 	while(1) {
 
-		printf(IR);
+		printf("%u\n\r",IR);
 		/*
 		EmEvent event = em_get_event();
 		switch (event.type) {
