@@ -19,7 +19,7 @@ int main(void)
 	WDT->WDT_MR = WDT_MR_WDDIS; //disable watchdog
     configure_uart();
 		
-	print("Setting up\n\r");
+	printf("Setting up\n\r");
 	setup();
     printf("Done setting up. Starting main\n\r");
 	_main();
