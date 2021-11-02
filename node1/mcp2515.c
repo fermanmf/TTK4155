@@ -26,6 +26,14 @@ static void slave_deselect(){
 #define SJW0 6
 #define PHSEG10 3
 
+#define FCPU 16000000
+#define BAUDRATE        250000
+#define NUMBER_OF_TQ    16
+
+#define PROPAG  2
+#define PS1     6
+#define PS2     7
+
 void mcp2515_init(bool loopback_mode) {
 	DDRB |= 1 << SS; // enable slave select as output
 	spi_init();
@@ -33,9 +41,9 @@ void mcp2515_init(bool loopback_mode) {
 	
 	mcp2515_reset();
 	mcp2515_write(MCP_RXB0CTRL, (1 << RXM0) | (1 << RXM1)); // disable filter
-	mcp2515_write(MCP_CNF1, (CAN_SJW << SJW0) | (CAN_NODE1_BRP - 1));
-	mcp2515_write(MCP_CNF2, BTLMODE | SAMPLE_3X | ((CAN_PS1 - 1) << PHSEG10) | (CAN_PROPSEG - 1));
-	mcp2515_write(MCP_CNF3, CAN_PS2 - 1);
+	mcp2515_write(MCP_CNF1, SJW4 | (FCPU / (2 * NUMBER_OF_TQ * BAUDRATE) - 1));
+	mcp2515_write(MCP_CNF2, BTLMODE | SAMPLE_3X | ((PS1 - 1) << 3) | (PROPAG - 1));
+	mcp2515_write(MCP_CNF3, (PS2 - 1));
 	
 	if (loopback_mode) {
 		mcp2515_write(MCP_CANCTRL, MODE_LOOPBACK);		
