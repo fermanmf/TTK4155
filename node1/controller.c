@@ -1,13 +1,14 @@
-#include "../shared/controller.h"
+#include "controller.h"
 
 #include <stdbool.h>
 #include <stdio.h>
 #include <avr/io.h>
+#include <avr/interrupt.h>
 #include <math.h>
 
 #include "adc.h"
-#include "../shared/can.h"
-#include "../shared/em.h"
+#include "can.h"
+#include "em.h"
 
 #define JOYSTICK_DIRECTION_THRESHOLD 10
 
@@ -17,17 +18,13 @@ uint8_t controller_slider_left = 0;
 uint8_t controller_slider_right = 0;
 
 void controller_init() {
-	
+	PORTE |= 1 << PINE0; // With pull-up resistor
+	EMCUCR |= 1 << ISC2; // Interrupt on rising edge
+	GICR |= 1 << INT2; // Enable INT2 (interrupt pin 2) 
 }
 
-void controls_init() {
-	adc_init();
-	DDRB &= ~1;
-	PORTB |= 1;	
-}
-
-bool controls_joystick_pressed() {
-	return !(PINB & 1);
+ISR(INT2_vect) {
+	printf("Hello from INT2 handler\n");
 }
 
 static void adc_read_cb(uint8_t data[4]) {
