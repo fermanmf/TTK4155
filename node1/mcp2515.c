@@ -27,6 +27,7 @@ static void slave_deselect(){
 
 void mcp2515_init(bool loopback_mode) {
 	spi_init();
+	DDRB |= 1 << SS; // enable slave select as output
 	
 	mcp2515_reset();
 	mcp2515_write(MCP_RXB0CTRL, (1 << RXM0) | (1 << RXM1)); // disable filter
