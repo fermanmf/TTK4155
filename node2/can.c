@@ -18,7 +18,7 @@ void CAN0_Handler() {
 	printf("Hello from CAN interrupt\n\r");
 	const uint32_t mb_id = (CAN0->CAN_SR & 0xFF) / 2;	
 	if (CAN0->CAN_MB[mb_id].CAN_MSR & CAN_MSR_MMI) {
-		printf("Error: mailbox message ignored flag set for MB%u\n\r");
+		printf("Error: mailbox message ignored flag set for MB%u\n\r", mb_id);
 		panic();
 	}	
 	uint32_t data_low = CAN0->CAN_MB[mb_id].CAN_MDL;
