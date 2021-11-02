@@ -78,13 +78,13 @@ int motor_read_encoder(){
     PIOD->PIO_CODR = NOT_OE;
     PIOD->PIO_CODR = SEL;
     timer_delay_u(20);
-    int msb = (PIOC->PIO_PDSR | MOTOR_OUTPUT_MASK)>>1;
+    int msb = (PIOC->PIO_PDSR & MOTOR_OUTPUT_MASK)>>1;
     PIOD->PIO_SODR = SEL;
     timer_delay_u(20);
-    int lsb = (PIOC->PIO_PDSR | MOTOR_OUTPUT_MASK)>>1;
-    PIOD->PIO_CODR = NOT_RST;
+    int lsb = (PIOC->PIO_PDSR & MOTOR_OUTPUT_MASK)>>1;
+    //PIOD->PIO_CODR = NOT_RST;
     PIOD->PIO_SODR = NOT_RST;
 
-    return (msb <<8) | lsb;
+    return make_pos_signed((msb <<8) | lsb);
     //TODO: verify that lsb and msb should be shifted by 1
 }
