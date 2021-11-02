@@ -1,5 +1,7 @@
 #include "can.h"
 
+#include <stdint.h>
+
 #include "sam.h"
 #include "consts.h"
 #include "printf-stdarg.h"
@@ -19,8 +21,8 @@ void CAN0_Handler() {
 		printf("Error: mailbox message ignored flag set for MB%u\n\r");
 		panic();
 	}	
-	const uint32_t data_low = CAN0->CAN_MB[mb_id].CAN_MDL;
-	const uint32_t data_high = CAN0->CAN_MB[mb_id].CAN_MDL;
+	uint32_t data_low = CAN0->CAN_MB[mb_id].CAN_MDL;
+	uint32_t data_high = CAN0->CAN_MB[mb_id].CAN_MDL;
 	const uint8_t id = (CAN0->CAN_MB[mb_id].CAN_MID & CAN_MID_MIDvA_Msk) >> CAN_MID_MIDvA_Pos;
 	const uint8_t data_length = (CAN0->CAN_MB[mb_id].CAN_MSR & CAN_MSR_MDLC_Msk) >> CAN_MSR_MDLC_Pos;
 	
@@ -37,7 +39,7 @@ void CAN0_Handler() {
 			break;
 		
 		case 1:
-			uint8_t data[data_length];
+			uint8_t data[8];
 			for (int i = 0; i < data_length; i++) {
 				if (i<4) {
 					data[i] = data_low & 0xFF;
