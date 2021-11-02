@@ -56,6 +56,7 @@ int d_actuation = 0;
 int actuation = 0;
 
 void motor_control_pos(int interrupt_period){
+	/*
     period = interrupt_period;
         pos = motor_read_encoder();
         ref = joystick_read();
@@ -65,7 +66,8 @@ void motor_control_pos(int interrupt_period){
         d_actuation = k_d / period * (deviation - prev_deviation);
         actuation = p_actuation + i_actuation + d_actuation;
         set_speed(actuation);
-        prev_deviation = deviation;
+        prev_deviation = deviation;*/
+	set_speed(0.5);
 }
 
 

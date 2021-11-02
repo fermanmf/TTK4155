@@ -1,0 +1,1 @@
+void motor_control_pos(int interrupt_period);
