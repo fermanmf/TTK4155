@@ -38,8 +38,8 @@ void CAN0_Handler() {
 			controller_slider_right = data_low & 0xFF000000;
 			break;
 		
-		case 1:
-			uint8_t data[8];
+		case 1: {
+			uint8_t data[data_length];
 			for (int i = 0; i < data_length; i++) {
 				if (i<4) {
 					data[i] = data_low & 0xFF;
@@ -51,6 +51,7 @@ void CAN0_Handler() {
 			}		
 			can_message_received_cb(id, data, data_length);			
 			break;
+		}
 		
 		default:
 			printf("Error: message received in MB%u\n\r", id);
