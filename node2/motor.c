@@ -10,7 +10,7 @@
 #define DIR 1<<10
 #define MOTOR_OUTPUT_MASK 0x1fe
 
-static int make_pos_signed(int twos_complement){
+static int make_pos_signed(uint32_t twos_complement){
     if (twos_complement & 1<<15){
         int unsigned_pos = (~twos_complement) + 1;
         return -unsigned_pos;
@@ -86,14 +86,14 @@ int motor_read_encoder(){
     PIOD->PIO_CODR = NOT_OE;
     PIOD->PIO_CODR = SEL;
     timer_delay_u(20);
-    int msb = (PIOC->PIO_PDSR & MOTOR_OUTPUT_MASK)>>1;
+    uint32_t msb = (PIOC->PIO_PDSR & MOTOR_OUTPUT_MASK)>>1;
     PIOD->PIO_SODR = SEL;
     timer_delay_u(20);
-    int lsb = (PIOC->PIO_PDSR & MOTOR_OUTPUT_MASK)>>1;
+    uint32_t lsb = (PIOC->PIO_PDSR & MOTOR_OUTPUT_MASK)>>1;
     //PIOD->PIO_CODR = NOT_RST;
     PIOD->PIO_SODR = NOT_RST;
     printf("lsb: %d msb: %d\n\r", lsb, msb);
-    int twos_complement_pos  = (msb <<8) | lsb;
+    uint32_t twos_complement_pos  = (msb <<8) | lsb;
     int signed_pos = make_pos_signed((msb <<8) | lsb);
     printf("twos complement: %d signed int: %d\n\r", twos_complement_pos, signed_pos);
     return make_pos_signed((msb <<8) | lsb);
