@@ -31,7 +31,7 @@ void mcp2515_init(bool loopback_mode) {
 	
 	mcp2515_reset();
 	mcp2515_write(MCP_RXB0CTRL, (1 << RXM0) | (1 << RXM1)); // disable filter
-	mcp2515_write(MCP_CNF1, (CAN_SJW << SJW0) | (CAN_TQ * MCK_MCP2515 / 2 - 1));
+	mcp2515_write(MCP_CNF1, (CAN_SJW << SJW0) | (CAN_NODE1_BRP - 1));
 	mcp2515_write(MCP_CNF2, BTLMODE | SAMPLE_3X | ((CAN_PS1 - 1) << PHSEG10) | (CAN_PROPSEG - 1));
 	mcp2515_write(MCP_CNF3, CAN_PS2 - 1);
 	

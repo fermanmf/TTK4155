@@ -70,7 +70,7 @@ void can_init() {
 				   (CAN_PS1 - 1) << CAN_BR_PHASE1_Pos | 
 				   (CAN_PROPSEG - 1) << CAN_BR_PROPAG_Pos | 
 				   (CAN_SJW) << CAN_BR_SJW_Pos | 
-				   (33 - 1) << CAN_BR_BRP_Pos | // round(CAN_TQ * MCK_NODE2) = 33
+				   (CAN_NODE2_BRP - 1) << CAN_BR_BRP_Pos |
 				   CAN_BR_SMP_THREE;
 				   
 	CAN0->CAN_MB[0].CAN_MAM = 0xFF << CAN_MAM_MIDvA_Pos; // Message Acceptance Mask
