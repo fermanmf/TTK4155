@@ -20,11 +20,7 @@ int main(void)
     printf("Start\n\r");
 	printf("%u\n\r", TC0->TC_CHANNEL[0].TC_SR);
 	while(1) {
-		if ( TC0->TC_CHANNEL[0].TC_CV != 0){
-			printf("%x\n\r", TC0->TC_CHANNEL[0].TC_SR);
-			printf("%x\n\r", TC0->TC_CHANNEL[0].TC_CV);
-			printf("%x\n\r", TC0->TC_CHANNEL[0].TC_RC);
-		}
+		
 		//EmEvent event = em_get_event();
 		//switch (event.type) {
 			//case EmJoystickPressed:

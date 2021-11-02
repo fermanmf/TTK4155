@@ -6,7 +6,8 @@
 #include "dac.h"
 #include "motor.h"
 #include "printf-stdarg.h"
-#define REGISTER_C 100 
+#include <stdint.h>
+#define REGISTER_C 10000 
 #define INT_PERIOD REGISTER_C*128/84000000
 
 void timer_init(){
@@ -23,12 +24,13 @@ void timer_init(){
     NVIC_EnableIRQ(TC0_IRQn);
 }
 void TC0_Handler(){
-    motor_control_pos(INT_PERIOD);
+    printf("tc0 interrupt\n\r");
+	//motor_control_pos(INT_PERIOD);
 	printf("%u TC0 interrupt \n\r", motor_read_encoder());
 }
 
-void timer_delay_u(uint16_t time_us){
+void timer_delay_u(uint32_t time_us){
     SysTick->LOAD |= 84*time_us;
-    SysTick->CTRL |= (1<<SysTick_CTRL_CLKSOURCE_Pos);
+    SysTick->CTRL |= SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
     while(!(SysTick->CTRL & (1<<16)));
 }

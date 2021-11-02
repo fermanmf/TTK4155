@@ -1,11 +1,12 @@
 #include "motor.h"
 #include "dac.h"
 #include "sam.h"
+#include "timer.h"
 
 #define NOT_OE 0b1
 #define NOT_RST 0b10
 #define SEL 0b100
-#define EN  1<<10
+#define EN  1<<9
 #define DIR 1<<10
 #define MOTOR_OUTPUT_MASK 0x1fe
 
@@ -54,7 +55,7 @@ int d_actuation = 0;
 int actuation = 0;
 
 void motor_control_pos(int interrupt_period){
-	
+	printf("motor_control_pos\n\r");
     period = interrupt_period;
     pos = motor_read_encoder();
     ref = 0.5;
@@ -69,6 +70,8 @@ void motor_control_pos(int interrupt_period){
 
 
 int motor_read_encoder(){
+	PIOD->PIO_SODR = EN;
+	 
     PIOD->PIO_CODR = NOT_OE;
     PIOD->PIO_CODR = SEL;
     timer_delay_u(20);
