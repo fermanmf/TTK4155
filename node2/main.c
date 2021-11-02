@@ -13,7 +13,7 @@ void _main() {
 	
 }
 
-int main(void)
+int main()
 {
     SystemInit();
 	WDT->WDT_MR = WDT_MR_WDDIS; //disable watchdog
