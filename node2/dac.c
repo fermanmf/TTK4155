@@ -4,7 +4,7 @@
 
 #include "sam.h"
 #include "printf-stdarg.h"
-
+//dacc uses 25us maximum at each conversion 
 void dac_init(){
     // disable write_protect
     //DACC->DACC_WPMR = DACC_WPMR_WPEN | DACC_WPMR_WPKEY("DAC");
@@ -20,7 +20,6 @@ void dac_init(){
 
     // enable write_protect
     //DACC->DACC_WPMR = DACC_WPMR_WPKEY("DAC");
-
 }
 
 

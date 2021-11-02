@@ -5,3 +5,4 @@ Device_Startup
 *.atsln
 *.cproj
 .vscode
+node2/node2
