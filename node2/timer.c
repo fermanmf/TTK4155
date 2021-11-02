@@ -23,7 +23,6 @@ void timer_init(){
     NVIC_EnableIRQ(TC0_IRQn);
 }
 void TC0_Handler(){
-	dac_write(0.5);
     motor_control_pos(INT_PERIOD);
 	printf("TC0 interrupt \n\r");
 }

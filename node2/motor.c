@@ -54,26 +54,27 @@ int d_actuation = 0;
 int actuation = 0;
 
 void motor_control_pos(int interrupt_period){
+	
     period = interrupt_period;
-        pos = motor_read_encoder();
-        ref = joystick_read();
-        deviation = ref - pos;
-        p_actuation = k_p * deviation;
-        i_actuation = k_i * period * deviation_sum;
-        d_actuation = k_d / period * (deviation - prev_deviation);
-        actuation = p_actuation + i_actuation + d_actuation;
-        set_speed(actuation);
-        prev_deviation = deviation;
+    pos = motor_read_encoder();
+    ref = 0.5;
+    deviation = ref - pos;
+    p_actuation = k_p * deviation;
+    i_actuation = k_i * period * deviation_sum;
+    d_actuation = k_d / period * (deviation - prev_deviation);
+    actuation = p_actuation + i_actuation + d_actuation;
+    set_speed(actuation);
+    prev_deviation = deviation;
 }
 
 
 int motor_read_encoder(){
     PIOD->PIO_CODR = NOT_OE;
     PIOD->PIO_CODR = SEL;
-    Delay(20);
+    _delay_ms(20);
     int msb = (PIOC->PIO_PDSR | MOTOR_OUTPUT_MASK)>>1;
     PIOD->PIO_SODR = SEL;
-    Delay(20);
+    _delay_ms(20);
     int lsb = (PIOC->PIO_PDSR | MOTOR_OUTPUT_MASK)>>1;
     PIOD->PIO_CODR = NOT_RST;
     PIOD->PIO_SODR = NOT_RST;
