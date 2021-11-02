@@ -15,8 +15,7 @@
 */
 
 void CAN0_Handler() {
-	printf("Hello from CAN interrupt\n\r");
-	const uint32_t mb_id = (CAN0->CAN_SR & 0xFF) / 2;	
+	const uint32_t mb_id = (CAN0->CAN_SR & 0xFF) / 2;
 	if (CAN0->CAN_MB[mb_id].CAN_MSR & CAN_MSR_MMI) {
 		printf("Error: mailbox message ignored flag set for MB%u\n\r", mb_id);
 		panic();
@@ -26,7 +25,7 @@ void CAN0_Handler() {
 	const uint8_t id = (CAN0->CAN_MB[mb_id].CAN_MID & CAN_MID_MIDvA_Msk) >> CAN_MID_MIDvA_Pos;
 	const uint8_t data_length = (CAN0->CAN_MB[mb_id].CAN_MSR & CAN_MSR_MDLC_Msk) >> CAN_MSR_MDLC_Pos;
 	
-	switch(id) {
+	switch(mb_id) {
 		case 0:
 			if (id != 0xFF || data_length != 4) {
 				printf("Error: message received in MB0 had id %x and length %u\n\r", id, data_length);
@@ -36,6 +35,7 @@ void CAN0_Handler() {
 			controller_joystick_y = data_low & 0xFF00;
 			controller_slider_left = data_low & 0xFF0000;
 			controller_slider_right = data_low & 0xFF000000;
+			printf("Message received in MB0 had id %x and length %u\n\r", id, data_length);	
 			break;
 		
 		case 1: {
@@ -48,8 +48,9 @@ void CAN0_Handler() {
 					data[i] = data_high & 0xFF;
 					data_high >>= 8;
 				}
-			}		
-			can_message_received_cb(id, data, data_length);			
+			}
+			printf("Message received in MB1 had id %x and length %u\n\r", id, data_length);	
+			//can_message_received_cb(id, data, data_length);			
 			break;
 		}
 		
@@ -57,7 +58,7 @@ void CAN0_Handler() {
 			printf("Error: message received in MB%u\n\r", id);
 			break;
 	}
-	CAN0->CAN_MB[id].CAN_MCR = CAN_MCR_MTCR; // MB ready for new message
+	CAN0->CAN_MB[mb_id].CAN_MCR = CAN_MCR_MTCR; // MB ready for new message
 }
 
 void can_init() {

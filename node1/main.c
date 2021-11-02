@@ -5,6 +5,10 @@
 #include "panic.h"
 #include "can.h"
 #include "mcp2515.h"
+#include "consts.h"
+
+#define F_CPU MCK_NODE1
+#include "util/delay.h"
 
 
 void setup(){
@@ -12,16 +16,13 @@ void setup(){
 }
 
 void _main(){
-	
-
-	
-	while (1)
-	{
+	while (1){
+		uint8_t data[5] = "Hello";
+		can_send(0xFE, data, 5);
+		_delay_ms(1000);
 		can_send_empty(0xFF);
-
+		_delay_ms(1000);
 	}
-	
-
 }
 
 int main(){
