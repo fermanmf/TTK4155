@@ -33,8 +33,6 @@ void motor_init(){
     // enable PIOD controller and set as input
     PIOD->PIO_PER |= MOTOR_OUTPUT_MASK;
     PIOD->PIO_IER |= MOTOR_OUTPUT_MASK;
-
-    dac_init();
 }
 void motor_run_open_loop(){
     while (1){

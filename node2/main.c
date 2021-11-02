@@ -15,13 +15,16 @@ int main(void)
 	WDT->WDT_MR = WDT_MR_WDDIS; //disable watchdog
     configure_uart();
 	timer_init();
-	motor_init();
+	dac_init();
+	motor_init(); 
     printf("Start\n\r");
 	printf("%u\n\r", TC0->TC_CHANNEL[0].TC_SR);
 	while(1) {
-		printf("%x\n\r", TC0->TC_CHANNEL[0].TC_SR);
-		printf("%x\n\r", TC0->TC_CHANNEL[0].TC_CV);
-		printf("%x\n\r", TC0->TC_CHANNEL[0].TC_RC);
+		if ( TC0->TC_CHANNEL[0].TC_CV != 0){
+			printf("%x\n\r", TC0->TC_CHANNEL[0].TC_SR);
+			printf("%x\n\r", TC0->TC_CHANNEL[0].TC_CV);
+			printf("%x\n\r", TC0->TC_CHANNEL[0].TC_RC);
+		}
 		//EmEvent event = em_get_event();
 		//switch (event.type) {
 			//case EmJoystickPressed:
