@@ -71,10 +71,10 @@ void motor_control_pos(int interrupt_period){
 int motor_read_encoder(){
     PIOD->PIO_CODR = NOT_OE;
     PIOD->PIO_CODR = SEL;
-    _delay_ms(20);
+    timer_delay_u(20);
     int msb = (PIOC->PIO_PDSR | MOTOR_OUTPUT_MASK)>>1;
     PIOD->PIO_SODR = SEL;
-    _delay_ms(20);
+    timer_delay_u(20);
     int lsb = (PIOC->PIO_PDSR | MOTOR_OUTPUT_MASK)>>1;
     PIOD->PIO_CODR = NOT_RST;
     PIOD->PIO_SODR = NOT_RST;

@@ -26,3 +26,9 @@ void TC0_Handler(){
     motor_control_pos(INT_PERIOD);
 	printf("%u TC0 interrupt \n\r", motor_read_encoder());
 }
+
+void timer_delay_u(uint16_t time_us){
+    SysTick->LOAD |= 84*time_us;
+    SysTick->CTRL |= (1<<SysTick_CTRL_CLKSOURCE_Pos);
+    while(!(SysTick->CTRL & (1<<16)));
+}
