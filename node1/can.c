@@ -20,7 +20,7 @@ void can_loopback_init(){
 }
 
 void can_send_empty(uint8_t id) {
-	mcp2515_write(TXB0SIDL, id);
+	mcp2515_write(TXB0SIDL, id << 5); //temp fix
 	mcp2515_write(TXB0DLC, 0);
 	mcp2515_rts();
 }
