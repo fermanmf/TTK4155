@@ -3,29 +3,58 @@
 #include "sam.h"
 #include "consts.h"
 #include "printf-stdarg.h"
+#include "controller.h"
+#include "panic.h"
 
 /*
 	Dual mailbox setup.
 	MB0 for controller and MB1 for em
+	MB0 only receives messages with id 0xFF and MB1 takes all other messages
 */
-
-static void receive_and_clear() {
-	//remember to clear
-	
-}
 
 void CAN0_Handler() {
 	printf("Hello from CAN interrupt\n\r");
-	switch(CAN0->CAN_SR & 0xFF) {
-		case CAN_SR_MB0:
+	const uint32_t mb_id = (CAN0->CAN_SR & 0xFF) / 2;	
+	if (CAN0->CAN_MB[mb_id].CAN_MSR & CAN_MSR_MMI) {
+		printf("Error: mailbox message ignored flag set for MB%u\n\r");
+		panic();
+	}	
+	const uint32_t data_low = CAN0->CAN_MB[mb_id].CAN_MDL;
+	const uint32_t data_high = CAN0->CAN_MB[mb_id].CAN_MDL;
+	const uint8_t id = (CAN0->CAN_MB[mb_id].CAN_MID & CAN_MID_MIDvA_Msk) >> CAN_MID_MIDvA_Pos;
+	const uint8_t data_length = (CAN0->CAN_MB[mb_id].CAN_MSR & CAN_MSR_MDLC_Msk) >> CAN_MSR_MDLC_Pos;
+	
+	switch(id) {
+		case 0:
+			if (id != 0xFF || data_length != 4) {
+				printf("Error: message received in MB0 had id %x and length %u\n\r", id, data_length);
+				panic();
+			}
+			controller_joystick_x = data_low & 0xFF;
+			controller_joystick_y = data_low & 0xFF00;
+			controller_slider_left = data_low & 0xFF0000;
+			controller_slider_right = data_low & 0xFF000000;
 			break;
 		
-		case CAN_SR_MB1:
+		case 1:
+			uint8_t data[data_length];
+			for (int i = 0; i < data_length; i++) {
+				if (i<4) {
+					data[i] = data_low & 0xFF;
+					data_low >>= 8;
+				} else {
+					data[i] = data_high & 0xFF;
+					data_high >>= 8;
+				}
+			}		
+			can_message_received_cb(id, data, data_length);			
 			break;
 		
 		default:
+			printf("Error: message received in MB%u\n\r", id);
 			break;
 	}
+	CAN0->CAN_MB[id].CAN_MCR = CAN_MCR_MTCR; // MB ready for new message
 }
 
 void can_init() {
@@ -41,9 +70,9 @@ void can_init() {
 				   (33 - 1) << CAN_BR_BRP_Pos | // round(CAN_TQ * MCK_NODE2) = 33
 				   CAN_BR_SMP_THREE;
 				   
-	CAN0->CAN_MB[0].CAN_MMR = CAN_MMR_MOT_MB_RX_OVERWRITE; // Message Mode Register
 	CAN0->CAN_MB[0].CAN_MAM = 0xFF << CAN_MAM_MIDvA_Pos; // Message Acceptance Mask
 	CAN0->CAN_MB[0].CAN_MID = 0xFF << CAN_MID_MIDvA_Pos; // Message ID
+	CAN0->CAN_MB[0].CAN_MMR = CAN_MMR_MOT_MB_RX; // Message Mode Register
 	CAN0->CAN_MB[1].CAN_MMR = CAN_MMR_MOT_MB_RX; // Message Mode Register
 	
 	CAN0->CAN_MR = CAN_MR_CANEN; //enable
