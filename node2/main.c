@@ -14,11 +14,12 @@ int main(void)
     SystemInit();
 	WDT->WDT_MR = WDT_MR_WDDIS; //disable watchdog
     configure_uart();
-	timer_init();
+	//timer_init();
 	dac_init();
-	motor_init(); 
+	//motor_init(); 
     printf("Start\n\r");
 	printf("%u\n\r", TC0->TC_CHANNEL[0].TC_SR);
+	dac_write(0.7);
 	while(1) {
 		if ( TC0->TC_CHANNEL[0].TC_CV != 0){
 			printf("%x\n\r", TC0->TC_CHANNEL[0].TC_SR);
