@@ -7,7 +7,7 @@
 #include "motor.h"
 #include "printf-stdarg.h"
 #include <stdint.h>
-#define REGISTER_C 10000 
+#define REGISTER_C 100000 
 #define INT_PERIOD REGISTER_C*128/84000000
 
 void timer_init(){
@@ -25,7 +25,8 @@ void timer_init(){
 }
 void TC0_Handler(){
     printf("tc0 interrupt\n\r");
-	//motor_control_pos(INT_PERIOD);
+	motor_control_pos(INT_PERIOD);
+	
 	printf("%u TC0 interrupt \n\r", motor_read_encoder());
 }
 

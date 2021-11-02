@@ -24,6 +24,7 @@ static void set_speed(int value){
 
 void motor_init(){
     //Provide clock for input at PIOC
+	PMC->PMC_PCR = PMC_PCR_EN | PMC_PCR_DIV_PERIPH_DIV_MCK | 13;
     PMC->PMC_PCER0 |= PMC_PCER0_PID13;
     //TODO: Verify that setting PMC_PCR register is not neccessary.
 
@@ -55,7 +56,7 @@ int d_actuation = 0;
 int actuation = 0;
 
 void motor_control_pos(int interrupt_period){
-	printf("motor_control_pos\n\r");
+	printf("motor_control_pos\n\r");/*
     period = interrupt_period;
     pos = motor_read_encoder();
     ref = 0.5;
@@ -65,7 +66,9 @@ void motor_control_pos(int interrupt_period){
     d_actuation = k_d / period * (deviation - prev_deviation);
     actuation = p_actuation + i_actuation + d_actuation;
     set_speed(actuation);
-    prev_deviation = deviation;
+    prev_deviation = deviation;*/
+	PIOD->PIO_SODR = EN;
+	set_speed(0.5);
 }
 
 
