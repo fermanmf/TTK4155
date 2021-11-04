@@ -22,12 +22,14 @@ void timer_init(){
     NVIC_EnableIRQ(TC0_IRQn);
 }
 void TC0_Handler(){
-	motor_control_pos(INT_PERIOD);
+	printf("value: %d \n\r",motor_read_encoder());
+	//motor_control_pos(INT_PERIOD);
     TC0->TC_CHANNEL[0].TC_SR;
 }
 
 void timer_delay_u(uint32_t time_us){
     SysTick->LOAD |= 84*time_us;
+	SysTick->VAL = 0;
     SysTick->CTRL |= SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
     while(!(SysTick->CTRL & (1<<16)));
 }

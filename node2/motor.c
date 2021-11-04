@@ -75,14 +75,14 @@ void motor_control_pos(int interrupt_period){
 int motor_read_encoder(){
     PIOD->PIO_CODR = NOT_OE;
     PIOD->PIO_CODR = SEL;
-    timer_delay_u(2000);
+    timer_delay_u(20);
     uint32_t msb = (PIOC->PIO_PDSR & MOTOR_OUTPUT_MASK)>>1;
     PIOD->PIO_SODR = SEL;
-    timer_delay_u(2000);
+    timer_delay_u(20);
     uint32_t lsb = (PIOC->PIO_PDSR & MOTOR_OUTPUT_MASK)>>1;
     //PIOD->PIO_CODR = NOT_RST;
     PIOD->PIO_SODR = NOT_RST;
-    printf("lsb: %d msb: %d\n\r", lsb, msb);
+    printf("lsb: %x msb: %x\n\r", lsb, msb);
     uint32_t twos_complement_pos  = (msb <<8) | lsb;
     int signed_pos = make_pos_signed((msb <<8) | lsb);
     //printf("twos complement: %d signed int: %d\n\r", twos_complement_pos, signed_pos);
