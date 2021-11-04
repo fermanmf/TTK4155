@@ -12,21 +12,17 @@
 
 #define JOYSTICK_DIRECTION_THRESHOLD 10
 
-int8_t controller_joystick_x = 0;
-int8_t controller_joystick_y = 0;
-uint8_t controller_slider_left = 0;
-uint8_t controller_slider_right = 0;
-
 void controller_init() {
-	DDRE &= ~1;
-	PORTE |= 1 << PINE0; // With pull-up resistor
-	//EMCUCR |= 1 << ISC2; // Interrupt on rising edge
-	GICR |= 1 << INT2; // Enable INT2 (interrupt pin 2)
-	sei();
+	adc_init();
+	
+	//DDRD &= ~1 << PIND3; dont think this is needed?
+	PORTD |= 1 << PIND3; // With pull-up resistor
+	MCUCR |= 1 << ISC11; // Interrupt on falling edge
+	GICR |= 1 << INT1; // Enable INT1 (interrupt on pin 2)
 }
 
-ISR(INT2_vect) {
-	printf("Hello from INT2 handler\n");
+ISR(INT0_vect) {
+	em_joystick_button_pressed();
 }
 
 static void adc_read_cb(uint8_t data[4]) {

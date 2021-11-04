@@ -35,6 +35,7 @@ int main(){
 	printf("Setting up\n\r");
 	setup();
 	printf("Done setting up. Starting main\n\r");
+	sei();
 	_main();
 	printf("Main is done\n\r");
 }

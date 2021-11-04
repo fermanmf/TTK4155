@@ -43,10 +43,6 @@ void em_can_message_received (uint8_t id, uint8_t data[], uint8_t data_length) {
 			append((EmEvent){EmJoystickPressed});
 			break;
 		
-		case EmJoystickReleased:
-			append((EmEvent){EmJoystickReleased});
-			break;
-		
 		case EmJoystickXDirectionChanged:
 			append((EmEvent){EmJoystickXDirectionChanged, data[0]});
 			break;
@@ -63,11 +59,6 @@ void em_can_message_received (uint8_t id, uint8_t data[], uint8_t data_length) {
 void em_joystick_button_pressed() {
 	append((EmEvent){EmJoystickPressed});	
 	can_send_empty(EmJoystickPressed);
-}
-
-void em_joystick_button_released() {
-	append((EmEvent){EmJoystickReleased});
-	can_send_empty(EmJoystickReleased);
 }
 
 void em_joystick_x_direction_changed(ControllerJoystickDirection direction) {	
