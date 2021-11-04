@@ -36,5 +36,4 @@ void dac_write(float value){
 void dac_test(float value){
     dac_init();
     dac_write(value);
-	
 }

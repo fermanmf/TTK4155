@@ -10,16 +10,7 @@
 #define DIR 1<<10
 #define MOTOR_OUTPUT_MASK 0x1fe
 
-static int make_pos_signed(uint32_t twos_complement){
-    if (twos_complement & 1<<15){
-        int unsigned_pos = (~twos_complement) + 1;
-        return -unsigned_pos;
-    }
-    int pos = twos_complement;
-    return pos;
-}
-
-static void set_speed(int value){
+static void set_speed(float value){
     dac_write(value);
 }
 
@@ -39,34 +30,41 @@ void motor_init(){
 
     //enable motor
     PIOD->PIO_SODR = EN;
+	
+	//set dir 
+	PIOD->PIO_CODR = DIR;
+	
     //Reset encoder register
     PIOD->PIO_CODR = NOT_RST;
+	timer_delay_u(5);
     PIOD->PIO_SODR = NOT_RST;
-}
-void motor_run_open_loop(){
-    while (1){
-        set_speed(joystick_read());
-    }
 }
 struct controlVariables pid = {
     .pos = 0, 
     .ref = 0,
     .k_p = 3, 
     .k_i = 1 , 
-    .k_d = 1, 
+    .k_d = 0, 
     .deviation_sum = 0, 
     .prev_deviation = 0
 };
 void motor_control_pos(int interrupt_period){
     pid.period = interrupt_period;
-    pid.pos = motor_read_encoder();
-    pid.ref = pid.pos + 0.1;
+    pid.pos = motor_read_encoder()/8820*100;
+    pid.ref = 100;
     pid.deviation = pid.ref - pid.pos;
     pid.p_actuation = pid.k_p * pid.deviation;
     pid.i_actuation = pid.k_i * pid.period * pid.deviation_sum;
     pid.d_actuation = pid.k_d / pid.period * (pid.deviation - pid.prev_deviation);
     pid.actuation = pid.p_actuation + pid.i_actuation + pid.d_actuation;
-    set_speed(pid.actuation);
+	if (pid.actuation >= 0){
+		PIOD->PIO_CODR = DIR;
+		set_speed(pid.actuation);
+	}
+	else{
+		PIOD->PIO_SODR = DIR;
+		set_speed(pid.actuation);
+	}
     pid.prev_deviation = pid.deviation;
     pid.deviation_sum += pid.deviation;
 }
@@ -80,11 +78,5 @@ int motor_read_encoder(){
     PIOD->PIO_SODR = SEL;
     timer_delay_u(20);
     uint32_t lsb = (PIOC->PIO_PDSR & MOTOR_OUTPUT_MASK)>>1;
-    //PIOD->PIO_CODR = NOT_RST;
-    PIOD->PIO_SODR = NOT_RST;
-    printf("lsb: %x msb: %x\n\r", lsb, msb);
-    uint32_t twos_complement_pos  = (msb <<8) | lsb;
-    int signed_pos = make_pos_signed((msb <<8) | lsb);
-    //printf("twos complement: %d signed int: %d\n\r", twos_complement_pos, signed_pos);
-    return make_pos_signed((msb <<8) | lsb);
+    return (int16_t) ((msb <<8) | lsb); //apparently int16_t is implemented as twos complement so this will do
 }

@@ -7,10 +7,10 @@
 #include "motor.h"
 #include "printf-stdarg.h"
 #include <stdint.h>
-#define REGISTER_C 657
+#define REGISTER_C 6563 
 #define INT_PERIOD REGISTER_C*128/84000000
 
-//waveform mode clock is MCK/128 Period is therefore about 1 ms when RC = 657
+//waveform mode clock is MCK/128 period is therefore about 10 ms when Register_C = 6563
 void timer_init(){
     PMC->PMC_PCER0 |= PMC_PCER0_PID27;
 	
@@ -21,10 +21,21 @@ void timer_init(){
 
     NVIC_EnableIRQ(TC0_IRQn);
 }
+//int test = 1;
 void TC0_Handler(){
-	printf("value: %d \n\r",motor_read_encoder());
-	//motor_control_pos(INT_PERIOD);
-    TC0->TC_CHANNEL[0].TC_SR;
+	/*
+	if (test){
+		dac_write(0.2);
+		test = 0;	
+	}
+	else{
+		dac_write(0.7);
+		test = 1;
+	}*/
+	printf("%d\n\r",motor_read_encoder());
+	motor_control_pos(INT_PERIOD);	
+    TC0->TC_CHANNEL[0].TC_SR;	//Clear interrupt flag
+	
 }
 
 void timer_delay_u(uint32_t time_us){
