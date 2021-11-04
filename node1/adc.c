@@ -21,7 +21,7 @@ void adc_init() {
 
 ISR(TIMER1_COMPA_vect) {
 	*ADC = 0;	
-	while (!(PORTE & (1 << PINE0)));	
+	while (!(PINE & (1 << PINE0)));	
 	(*adc_reading_received_cb)(*ADC, *ADC, *ADC, *ADC);
 }
 
