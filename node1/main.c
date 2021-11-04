@@ -19,7 +19,15 @@ void setup(){
 void _main(){
 	while (1) {
 		EmEvent event = em_get_event();
-		printf("%u\n", event.type);
+		printf("%d %d\n", event.type, event.slider_left);
+		/*
+		switch (event.type) {
+			case EmJoystickXChanged:
+				printf("Hello from joystick x changed\n");
+				printf("%d\n", event.joystick_x);
+		}
+		*/
+		
 	}
 }
 
