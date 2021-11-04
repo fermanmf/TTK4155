@@ -4,7 +4,7 @@
 
 #include "sam.h"
 #include "printf-stdarg.h"
-
+//dacc uses 25us maximum at each conversion 
 void dac_init(){
     // disable write_protect
     //DACC->DACC_WPMR = DACC_WPMR_WPEN | DACC_WPMR_WPKEY("DAC");
@@ -14,13 +14,12 @@ void dac_init(){
 
     // set mode register 
 
-    DACC->DACC_MR = DACC_MR_STARTUP_8 | DACC_MR_TAG_DIS | DACC_MR_WORD_HALF | DACC_MR_REFRESH(3);
+    DACC->DACC_MR = DACC_MR_STARTUP_8 | DACC_MR_TAG_DIS | DACC_MR_WORD_HALF | DACC_MR_REFRESH(3) | DACC_MR_USER_SEL_CHANNEL1;
     DACC->DACC_CHER = DACC_CHER_CH1;
     // TODO: Verify startup register
 
     // enable write_protect
     //DACC->DACC_WPMR = DACC_WPMR_WPKEY("DAC");
-
 }
 
 
@@ -37,5 +36,4 @@ void dac_write(float value){
 void dac_test(float value){
     dac_init();
     dac_write(value);
-	
 }
