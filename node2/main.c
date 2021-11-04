@@ -2,14 +2,20 @@
 #include "uart.h"
 #include "printf-stdarg.h"
 #include "panic.h"
-#include "can.h"
+#include "em.h"
 
 void setup() {
-	can_init();
-	
+	em_init();	
 }
 
 void _main() {
+	while(1) {
+		EmEvent event = em_get_event()
+		switch(event.type) {
+			case EmSliderLeftChanged:
+				event.slider_left
+		}
+	}
 	
 }
 
