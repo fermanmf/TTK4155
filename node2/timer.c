@@ -22,8 +22,6 @@ void timer_init(){
     NVIC_EnableIRQ(TC0_IRQn);
 }
 void TC0_Handler(){
-
-    printf("tc0 interrupt\n\r");
 	motor_control_pos(INT_PERIOD);
     TC0->TC_CHANNEL[0].TC_SR;
 }

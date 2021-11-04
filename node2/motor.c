@@ -48,8 +48,7 @@ void motor_run_open_loop(){
         set_speed(joystick_read());
     }
 }
-struct controlVariables pid;
-pid = {
+struct controlVariables pid = {
     .pos = 0, 
     .ref = 0,
     .k_p = 3, 
@@ -59,7 +58,6 @@ pid = {
     .prev_deviation = 0
 };
 void motor_control_pos(int interrupt_period){
-	printf("motor_control_pos\n\r");
     pid.period = interrupt_period;
     pid.pos = motor_read_encoder();
     pid.ref = pid.pos + 0.1;
@@ -77,16 +75,16 @@ void motor_control_pos(int interrupt_period){
 int motor_read_encoder(){
     PIOD->PIO_CODR = NOT_OE;
     PIOD->PIO_CODR = SEL;
-    timer_delay_u(20);
+    timer_delay_u(2000);
     uint32_t msb = (PIOC->PIO_PDSR & MOTOR_OUTPUT_MASK)>>1;
     PIOD->PIO_SODR = SEL;
-    timer_delay_u(20);
+    timer_delay_u(2000);
     uint32_t lsb = (PIOC->PIO_PDSR & MOTOR_OUTPUT_MASK)>>1;
     //PIOD->PIO_CODR = NOT_RST;
     PIOD->PIO_SODR = NOT_RST;
     printf("lsb: %d msb: %d\n\r", lsb, msb);
     uint32_t twos_complement_pos  = (msb <<8) | lsb;
     int signed_pos = make_pos_signed((msb <<8) | lsb);
-    printf("twos complement: %d signed int: %d\n\r", twos_complement_pos, signed_pos);
+    //printf("twos complement: %d signed int: %d\n\r", twos_complement_pos, signed_pos);
     return make_pos_signed((msb <<8) | lsb);
 }
