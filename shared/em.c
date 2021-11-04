@@ -4,7 +4,6 @@
 
 #include "panic.h"
 #include "can.h"
-#include "controller.h"
 
 #define QUEUE_MAX_LENGTH
 
@@ -61,12 +60,12 @@ void em_joystick_button_pressed() {
 	can_send_empty(EmJoystickPressed);
 }
 
-void em_joystick_x_direction_changed(ControllerJoystickDirection direction) {	
+void em_joystick_x_direction_changed(EmJoystickDirection direction) {	
 	append((EmEvent){EmJoystickXDirectionChanged, direction});	
 	can_send(EmJoystickXDirectionChanged, (uint8_t[]){direction}, 1);	
 }
 
-void em_joystick_y_direction_changed(ControllerJoystickDirection direction) {
+void em_joystick_y_direction_changed(EmJoystickDirection direction) {
 	append((EmEvent){EmJoystickYDirectionChanged, direction});
 	can_send(EmJoystickYDirectionChanged, (uint8_t[]){direction}, 1);
 }

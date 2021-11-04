@@ -1,12 +1,20 @@
 #pragma once
 
-#include "controller.h"
+#include <stdint.h>
 
 typedef enum {
 	EmJoystickPressed,
 	EmJoystickXDirectionChanged,
 	EmJoystickYDirectionChanged
 } EmEventType;
+
+typedef enum {
+	controllerLeft,
+	controllerRight,
+	controllerUp,
+	controllerDown,
+	controllerNeutral,
+} EmJoystickDirection;
 
 typedef struct {
 	EmEventType type;
@@ -16,13 +24,7 @@ typedef struct {
 	};
 } EmEvent;
 
-typedef enum {
-	controllerLeft,
-	controllerRight,
-	controllerUp,
-	controllerDown,
-	controllerNeutral,
-} EmJoystickDirection;
+
 
 void em_init();
 EmEvent em_get_event();

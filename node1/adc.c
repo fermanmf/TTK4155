@@ -2,6 +2,9 @@
 
 #include <stdint.h>
 #include <avr/io.h>
+#include <avr/interrupt.h>
+
+#define ADC ((volatile uint8_t*)0x1400)
 
 void adc_init() {
 	// ADC clock
@@ -11,13 +14,15 @@ void adc_init() {
 	
 	
 	// Timer interrupt
-	OCR1A = 480 // Output compare register at 480, i.e. 10 Hz interrupt frequency with prescalar 1024
+	OCR1A = 480; // Output compare register at 480, i.e. 10 Hz interrupt frequency with prescalar 1024
 	TCCR1B = (1 << WGM12) | (1 << CS12) | (1 << CS10); // CTC, 1024 prescaling
 	TIMSK |= 1 << OCIE1A; //output compare interrupt enable
 }
 
 ISR(TIMER1_COMPA_vect) {
-	do the read
+	*ADC = 0;	
+	while (!(PORTE & (1 << PINE0)));	
+	(*adc_reading_received_cb)(*ADC, *ADC, *ADC, *ADC);
 }
 
 /*

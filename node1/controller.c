@@ -24,7 +24,7 @@ void controller_init() {
 ISR(INT0_vect) {
 	em_joystick_button_pressed();
 }
-
+/*
 static void adc_read_cb(uint8_t data[4]) {
 	data[0] = round(0.0007774 * pow(data[0], 2) + 0.5907 * data[0] - 101.18);
 	data[1] = round(0.0007774 * pow(data[1], 2) + 0.5907 * data[1] - 101.18);
@@ -71,3 +71,5 @@ static void adc_read_cb(uint8_t data[4]) {
 void interrupt() {
 	adc_read(&adc_read_cb);
 }
+
+*/

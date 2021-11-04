@@ -1,30 +1,31 @@
 #include <stdio.h>
 #include <avr/io.h>
+#include <avr/interrupt.h>
 
 #include "uart.h"
-#include "panic.h"
-#include "can.h"
-#include "mcp2515.h"
 #include "consts.h"
-#include "controller.h"
+
+// include other files under this
+
+#include "adc.h"
+
 
 #define F_CPU MCK_NODE1
 #include "util/delay.h"
 
+void print_adc(uint8_t v1, uint8_t v2, uint8_t v3, uint8_t v4) {
+	printf("%u %u %u %u\n\r", v1, v2, v3, v4);
+}
+
 
 void setup(){
-	can_init();	
-	controller_init();
+	adc_reading_received_cb = &print_adc;
+	adc_init();
+	sei();
 }
 
 void _main(){
-	while (1){
-		uint8_t data[5] = "Hello";
-		can_send(0xFE, data, 5);
-		_delay_ms(1000);
-		can_send_empty(0xFF);
-		_delay_ms(1000);
-	}
+	while (1);
 }
 
 int main(){
@@ -35,7 +36,6 @@ int main(){
 	printf("Setting up\n\r");
 	setup();
 	printf("Done setting up. Starting main\n\r");
-	sei();
 	_main();
 	printf("Main is done\n\r");
 }
