@@ -6,7 +6,22 @@
 #include "dac.h"
 #include "motor.h"
 #include "panic.h"
+#include "em.h"
 
+void setup() {
+	em_init();	
+}
+
+void _main() {
+	while(1) {
+		EmEvent event = em_get_event()
+		switch(event.type) {
+			case EmSliderLeftChanged:
+				event.slider_left
+		}
+	}
+	
+}
 
 int main(void)
 {

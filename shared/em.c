@@ -1,16 +1,17 @@
 #include "em.h"
 
 #include <stdint.h>
+#include <stdio.h>
 
 #include "panic.h"
 #include "can.h"
 
-#define QUEUE_MAX_LENGTH
+#define QUEUE_MAX_LENGTH 10
 
 static volatile int8_t end_index = -1;
 static volatile EmEvent queue[QUEUE_MAX_LENGTH] = {};
 
-static void append(EmEvent event){
+static void append(EmEvent event) {
 	if (end_index < QUEUE_MAX_LENGTH-1) {
 		queue[++end_index] = event;		
 	} else {

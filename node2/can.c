@@ -5,7 +5,6 @@
 #include "sam.h"
 #include "consts.h"
 #include "printf-stdarg.h"
-#include "controller.h"
 #include "panic.h"
 
 /*
@@ -15,50 +14,29 @@
 */
 
 void CAN0_Handler() {
-	const uint32_t mb_id = (CAN0->CAN_SR & 0xFF) / 2;
-	if (CAN0->CAN_MB[mb_id].CAN_MSR & CAN_MSR_MMI) {
-		printf("Error: mailbox message ignored flag set for MB%u\n\r", mb_id);
+	if (CAN0->CAN_MB[0].CAN_MSR & CAN_MSR_MMI) {
+		printf("Error: mailbox message ignored flag set for MB0\n\r");
 		panic();
 	}	
-	uint32_t data_low = CAN0->CAN_MB[mb_id].CAN_MDL;
-	uint32_t data_high = CAN0->CAN_MB[mb_id].CAN_MDL;
-	const uint8_t id = (CAN0->CAN_MB[mb_id].CAN_MID & CAN_MID_MIDvA_Msk) >> CAN_MID_MIDvA_Pos;
-	const uint8_t data_length = (CAN0->CAN_MB[mb_id].CAN_MSR & CAN_MSR_MDLC_Msk) >> CAN_MSR_MDLC_Pos;
+	uint32_t data_low = CAN0->CAN_MB[0].CAN_MDL;
+	uint32_t data_high = CAN0->CAN_MB[0].CAN_MDL;
+	const uint8_t id = (CAN0->CAN_MB[0].CAN_MID & CAN_MID_MIDvA_Msk) >> CAN_MID_MIDvA_Pos;
+	const uint8_t data_length = (CAN0->CAN_MB[0].CAN_MSR & CAN_MSR_MDLC_Msk) >> CAN_MSR_MDLC_Pos;
 	
-	switch(mb_id) {
-		case 0:
-			if (id != 0xFF || data_length != 4) {
-				printf("Error: message received in MB0 had id %x and length %u\n\r", id, data_length);
-				panic();
-			}
-			controller_joystick_x = data_low & 0xFF;
-			controller_joystick_y = data_low & 0xFF00;
-			controller_slider_left = data_low & 0xFF0000;
-			controller_slider_right = data_low & 0xFF000000;
-			printf("Message received in MB0 had id %x and length %u\n\r", id, data_length);	
-			break;
-		
-		case 1: {
-			uint8_t data[data_length];
-			for (int i = 0; i < data_length; i++) {
-				if (i<4) {
-					data[i] = data_low & 0xFF;
-					data_low >>= 8;
-				} else {
-					data[i] = data_high & 0xFF;
-					data_high >>= 8;
-				}
-			}
-			printf("Message received in MB1 had id %x and length %u\n\r", id, data_length);	
-			//can_message_received_cb(id, data, data_length);			
-			break;
+	uint8_t data[data_length];
+	for (int i = 0; i < data_length; i++) {
+		if (i<4) {
+			data[i] = data_low & 0xFF;
+			data_low >>= 8;
+		} else {
+			data[i] = data_high & 0xFF;
+			data_high >>= 8;
 		}
-		
-		default:
-			printf("Error: message received in MB%u\n\r", id);
-			break;
 	}
-	CAN0->CAN_MB[mb_id].CAN_MCR = CAN_MCR_MTCR; // MB ready for new message
+	printf("Message received in MB had id %x and length %u\n\r", id, data_length);	
+	//can_message_received_cb(id, data, data_length);			
+
+	CAN0->CAN_MB[0].CAN_MCR = CAN_MCR_MTCR; // MB ready for new message
 }
 
 void can_init() {
@@ -74,10 +52,7 @@ void can_init() {
 				   (CAN_NODE2_BRP - 1) << CAN_BR_BRP_Pos |
 				   CAN_BR_SMP_THREE;
 	
-	CAN0->CAN_MB[0].CAN_MAM = 0xFF << CAN_MAM_MIDvA_Pos; // Message Acceptance Mask
-	CAN0->CAN_MB[0].CAN_MID = 0xFF << CAN_MID_MIDvA_Pos; // Message ID
 	CAN0->CAN_MB[0].CAN_MMR = CAN_MMR_MOT_MB_RX; // Message Mode Register
-	CAN0->CAN_MB[1].CAN_MMR = CAN_MMR_MOT_MB_RX; // Message Mode Register
 	
 	CAN0->CAN_MR = CAN_MR_CANEN; //enable
 	NVIC_EnableIRQ(ID_CAN0);
