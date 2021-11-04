@@ -7,12 +7,69 @@
 #include <math.h>
 
 #include "adc.h"
-#include "can.h"
 #include "em.h"
 
 #define JOYSTICK_DIRECTION_THRESHOLD 10
 
+static void reading_received_cb(uint8_t joystick_x_raw, uint8_t joystick_y_raw, uint8_t slider_left_raw, uint8_t slider_right_raw) {
+	static uint8_t joystick_x_raw_last = 127;
+	static uint8_t joystick_y_raw_last = 127;
+	static uint8_t slider_left_raw_last = 0;
+	static uint8_t slider_right_raw_last = 0;
+	
+	if (joystick_x_raw_last != joystick_x_raw) {
+		const int8_t joystick_x = round(0.0007774 * pow(joystick_x_raw, 2) + 0.5907 * joystick_x_raw - 101.18);
+		em_joystick_x_changed(joystick_x);
+		
+		static EmJoystickDirection last_x_direction = emJoystickNeutral;
+		EmJoystickDirection x_direction;
+		if (joystick_x < -JOYSTICK_DIRECTION_THRESHOLD) {
+			x_direction = emJoystickLeft;
+		} else if (joystick_x > JOYSTICK_DIRECTION_THRESHOLD) {
+			x_direction = emJoystickRight;
+		} else {
+			x_direction = emJoystickNeutral;
+		}
+		if (last_x_direction != x_direction) {
+			em_joystick_x_direction_changed(x_direction);
+			last_x_direction = x_direction;
+		}	
+		joystick_x_raw_last = joystick_x_raw;
+	}
+	
+	if (joystick_y_raw_last != joystick_y_raw) {
+		const int8_t joystick_y = round(0.0007774 * pow(joystick_y_raw, 2) + 0.5907 * joystick_y_raw - 101.18);
+		em_joystick_y_changed(joystick_y);
+		
+		static EmJoystickDirection last_y_direction = emJoystickNeutral;
+		EmJoystickDirection y_direction;
+		if (joystick_y > JOYSTICK_DIRECTION_THRESHOLD) {
+			y_direction = emJoystickUp;
+		} else if (joystick_y < -JOYSTICK_DIRECTION_THRESHOLD) {
+			y_direction = emJoystickDown;
+		} else {
+			y_direction = emJoystickNeutral;
+		}
+		if (last_y_direction != y_direction) {
+			em_joystick_y_direction_changed(y_direction);
+			last_y_direction = y_direction;
+		}
+		joystick_y_raw_last = joystick_y_raw;
+	}
+	
+	if (slider_left_raw_last != slider_left_raw) {
+		em_slider_left_changed(slider_left_raw / 255);
+		slider_left_raw_last = slider_left_raw;
+	}
+	
+	if (slider_right_raw_last != slider_right_raw) {
+		em_slider_right_changed(slider_right_raw / 255);
+		slider_right_raw_last = slider_right_raw_last;
+	}
+}
+
 void controller_init() {
+	adc_reading_received_cb = &reading_received_cb;
 	adc_init();
 	
 	//DDRD &= ~1 << PIND3; dont think this is needed?
@@ -24,52 +81,3 @@ void controller_init() {
 ISR(INT0_vect) {
 	em_joystick_button_pressed();
 }
-/*
-static void adc_read_cb(uint8_t data[4]) {
-	data[0] = round(0.0007774 * pow(data[0], 2) + 0.5907 * data[0] - 101.18);
-	data[1] = round(0.0007774 * pow(data[1], 2) + 0.5907 * data[1] - 101.18);
-	data[2] = data[2] * 100 / 255;
-	data[3] = data[3] * 100 / 255;
-	
-	can_send(0xFF, data, 4);
-	
-	controller_joystick_x = data[0];
-	controller_joystick_y = data[1];
-	controller_slider_left = data[2];
-	controller_slider_right = data[3];
-	
-	static ControllerJoystickDirection last_x_direction = controllerNeutral;
-	ControllerJoystickDirection x_direction;
-	if (controller_joystick_x < -JOYSTICK_DIRECTION_THRESHOLD) {
-		x_direction = controllerLeft;				
-	} else if (controller_joystick_x > JOYSTICK_DIRECTION_THRESHOLD) {
-		x_direction = controllerRight;
-	} else {
-		x_direction = controllerNeutral;
-	}
-	if (last_x_direction != x_direction) {
-		em_joystick_x_direction_changed(x_direction);
-		last_x_direction = x_direction;
-	}
-	
-	static ControllerJoystickDirection last_y_direction = controllerNeutral;
-	ControllerJoystickDirection y_direction;
-	if (controller_joystick_y > JOYSTICK_DIRECTION_THRESHOLD) {
-		y_direction = controllerUp;
-	} else if (controller_joystick_y < -JOYSTICK_DIRECTION_THRESHOLD) {
-		y_direction = controllerDown;
-	} else {
-		y_direction = controllerNeutral;
-	}
-	if (last_y_direction != y_direction) {
-		em_joystick_y_direction_changed(y_direction);
-		last_y_direction = y_direction;
-	}
-}
-
-
-void interrupt() {
-	adc_read(&adc_read_cb);
-}
-
-*/

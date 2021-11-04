@@ -28,7 +28,7 @@ static EmEvent pop(uint8_t index){
 }
 
 void em_init() {
-	
+	can_init();	
 }
 
 EmEvent em_get_event() {
@@ -38,36 +38,98 @@ EmEvent em_get_event() {
 
 void em_can_message_received (uint8_t id, uint8_t data[], uint8_t data_length) {
 	switch(id) {
-		case EmJoystickPressed:
-			append((EmEvent){EmJoystickPressed});
+		case EmJoystickPressed: {
+			const EmEvent event = {EmJoystickPressed};
+			append(event);
 			break;
+		}
 		
-		case EmJoystickXDirectionChanged:
-			append((EmEvent){EmJoystickXDirectionChanged, data[0]});
+		case EmJoystickXDirectionChanged: {
+			const EmEvent event = {EmJoystickXDirectionChanged, .joystick_x_direction=data[0]};
+			append(event);
 			break;
+		}
 		
-		case EmJoystickYDirectionChanged:
-			append((EmEvent){EmJoystickYDirectionChanged, data[0]});
+		case EmJoystickYDirectionChanged: {
+			const EmEvent event = {EmJoystickYDirectionChanged, .joystick_y_direction=data[0]};
+			append(event);
 			break;
+		}
+		
+		case EmJoystickXChanged: {
+			const EmEvent event = {EmJoystickXChanged, .joystick_x=data[0]};
+			append(event);
+			break;
+		}
+		
+		case EmJoystickYChanged: {
+			const EmEvent event = {EmJoystickYChanged, .joystick_y=data[0]};
+			append(event);
+			break;
+		}	
+
+		case EmSliderLeftChanged: {
+			const EmEvent event = {EmSliderLeftChanged, .slider_left=data[0]};
+			append(event);
+			break;
+		}
+		
+		case EmSliderRightChanged: {
+			const EmEvent event = {EmSliderRightChanged, .slider_right=data[0]};
+			append(event);
+			break;
+		}
 		
 		default:
 			panic();
+			break;
 	}
 }
 
 void em_joystick_button_pressed() {
-	append((EmEvent){EmJoystickPressed});	
-	can_send_empty(EmJoystickPressed);
+	const EmEvent event = {EmJoystickPressed};
+	append(event);
+	can_send_empty(event.type);
 }
 
-void em_joystick_x_direction_changed(EmJoystickDirection direction) {	
-	append((EmEvent){EmJoystickXDirectionChanged, direction});	
-	can_send(EmJoystickXDirectionChanged, (uint8_t[]){direction}, 1);	
+void em_joystick_x_direction_changed(EmJoystickDirection direction) {
+	const EmEvent event = {EmJoystickXDirectionChanged, .joystick_x_direction=direction};
+	append(event);
+	uint8_t data[1] = {direction};
+	can_send(event.type, data, 1);	
 }
 
 void em_joystick_y_direction_changed(EmJoystickDirection direction) {
-	append((EmEvent){EmJoystickYDirectionChanged, direction});
-	can_send(EmJoystickYDirectionChanged, (uint8_t[]){direction}, 1);
+	const EmEvent event = {EmJoystickYDirectionChanged, .joystick_y_direction=direction};
+	append(event);
+	uint8_t data[1] = {direction};
+	can_send(event.type, data, 1);
 }
 
+void em_joystick_x_changed(int8_t value) {
+	const EmEvent event = {EmJoystickXChanged, .joystick_x=value};
+	append(event);
+	uint8_t data[1] = {value};
+	can_send(event.type, data, 1);
+}
 
+void em_joystick_y_changed(int8_t value) {
+	const EmEvent event = {EmJoystickYChanged, .joystick_y=value};
+	append(event);
+	uint8_t data[1] = {value};
+	can_send(event.type, data, 1);
+}
+
+void em_slider_left_changed(uint8_t value) {
+	const EmEvent event = {EmSliderLeftChanged, .slider_left=value};
+	append(event);
+	uint8_t data[1] = {value};
+	can_send(event.type, data, 1);
+}
+
+void em_slider_right_changed(uint8_t value) {
+	const EmEvent event = {EmSliderRightChanged, .slider_right=value};
+	append(event);
+	uint8_t data[1] = {value};
+	can_send(event.type, data, 1);
+}
