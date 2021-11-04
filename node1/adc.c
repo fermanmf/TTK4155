@@ -3,6 +3,11 @@
 #include <stdint.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <stdio.h>
+
+#include "consts.h"
+#define F_CPU MCK_NODE1
+#include "util/delay.h"
 
 #define ADC ((volatile uint8_t*)0x1400)
 
@@ -20,9 +25,19 @@ void adc_init() {
 }
 
 ISR(TIMER1_COMPA_vect) {
+	printf("Hello from TC1\n\r");
 	*ADC = 0;	
-	while (!(PORTE & (1 << PINE0)));	
-	(*adc_reading_received_cb)(*ADC, *ADC, *ADC, *ADC);
+	_delay_ms(1);
+	/*
+	while (1) { //!(PORTE & (1 << PINE0))
+		printf("%u\n", PORTE);
+	}
+	*/
+	uint8_t v1 = ADC[0];
+	uint8_t v2 = *ADC;	
+	uint8_t v3 = *ADC;	
+	uint8_t v4 = *ADC;	
+	(*adc_reading_received_cb)(v1, v2, v3, v4);
 }
 
 /*
