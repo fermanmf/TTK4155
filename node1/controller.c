@@ -79,6 +79,6 @@ void controller_init() {
 	GICR |= 1 << INT1; // Enable INT1 (interrupt on pin 2)
 }
 
-ISR(INT0_vect) {
+ISR(INT1_vect) {
 	em_joystick_button_pressed();
 }

@@ -33,8 +33,7 @@ void CAN0_Handler() {
 			data_high >>= 8;
 		}
 	}
-	printf("Message received in MB had id %x and length %u\n\r", id, data_length);	
-	//can_message_received_cb(id, data, data_length);			
+	(*can_message_received_cb)(id, data, data_length);			
 
 	CAN0->CAN_MB[0].CAN_MCR = CAN_MCR_MTCR; // MB ready for new message
 }

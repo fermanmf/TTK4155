@@ -16,3 +16,4 @@ struct controlVariables{
     int d_actuation;
     int actuation;
 };
+struct controlVariables pid;

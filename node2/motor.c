@@ -2,6 +2,7 @@
 #include "dac.h"
 #include "sam.h"
 #include "timer.h"
+#include "printf-stdarg.h"
 
 #define NOT_OE 0b1
 #define NOT_RST 0b10
@@ -42,16 +43,17 @@ void motor_init(){
 struct controlVariables pid = {
     .pos = 0, 
     .ref = 0,
-    .k_p = 3, 
+    .k_p = 1, 
     .k_i = 1 , 
     .k_d = 0, 
     .deviation_sum = 0, 
     .prev_deviation = 0
 };
 void motor_control_pos(int interrupt_period){
+	
     pid.period = interrupt_period;
-    pid.pos = motor_read_encoder()/8820*100;
-    pid.ref = 100;
+    pid.pos = 100*motor_read_encoder()/8820;
+	printf("%d %d\n\r", pid.pos, pid.ref);
     pid.deviation = pid.ref - pid.pos;
     pid.p_actuation = pid.k_p * pid.deviation;
     pid.i_actuation = pid.k_i * pid.period * pid.deviation_sum;
@@ -59,7 +61,7 @@ void motor_control_pos(int interrupt_period){
     pid.actuation = pid.p_actuation + pid.i_actuation + pid.d_actuation;
 	if (pid.actuation >= 0){
 		PIOD->PIO_CODR = DIR;
-		set_speed(pid.actuation);
+		set_speed(pid.actuation/10);
 	}
 	else{
 		PIOD->PIO_SODR = DIR;

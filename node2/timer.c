@@ -32,7 +32,7 @@ void TC0_Handler(){
 		dac_write(0.7);
 		test = 1;
 	}*/
-	printf("%d\n\r",motor_read_encoder());
+
 	motor_control_pos(INT_PERIOD);	
     TC0->TC_CHANNEL[0].TC_SR;	//Clear interrupt flag
 	

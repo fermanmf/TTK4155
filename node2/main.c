@@ -8,20 +8,6 @@
 #include "panic.h"
 #include "em.h"
 
-void setup() {
-	em_init();	
-}
-
-void _main() {
-	while(1) {
-		EmEvent event = em_get_event()
-		switch(event.type) {
-			case EmSliderLeftChanged:
-				event.slider_left
-		}
-	}
-	
-}
 
 int main(void)
 {
@@ -31,34 +17,22 @@ int main(void)
     configure_uart();
 	timer_init();
 	dac_init();
-	motor_init(); 
+	motor_init();
+	em_init();
     printf("Start\n\r");
 	//printf("%u\n\r", TC0->TC_CHANNEL[0].TC_SR);
 	//motor_control_pos(5);
 	while(1) {
-		//printf("%d TC0 interrupt \n\r", motor_read_encoder());
-		
+		EmEvent event = em_get_event();
+		switch(event.type) {
+			case EmSliderLeftChanged:
+				//printf("Hello from em slider left %u\n\r", event.slider_left);
+				pid.ref = (int8_t) event.slider_left;
+				break;
+		}
+	}
 
-		//EmEvent event = em_get_event();
-		//switch (event.type) {
-			//case EmJoystickPressed:
-				//break;
-			//
-			//case EmJoystickReleased:
-				//break;
-			//
-			//case EmJoystickXDirectionChanged:
-				//break;
-			//
-			//case EmJoystickYDirectionChanged:
-				//break;
-			//
-			//default:
-				//panic();
-				//break;
-		//}
-
-	}	
+	
 
     printf("Terminated\n\r");
 }
