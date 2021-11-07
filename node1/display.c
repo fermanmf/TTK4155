@@ -36,23 +36,16 @@ void display_invert_line(int line) {
 	}
 	oled_update();
 }
-struct menu{
-	char *lines [];
-	int number_of_lines;
-	int current_choice;
-};
-struct menu mainMenu = {["Main menu","Play","HighScore"], 3, 1};
-struct menu characterMenu = {["Choose character","<3",":)",":(","-_-",":S",":,("],7,1};
-struct menu highscoreMenu = {["HighScore","1.","2.","3.","4.","5.","6.","7."], 8, 9};
 
-void display_menu(int current_choice, struct menu menu){
+
+void display_menu(struct menu menu){
 	char arrow [] = "--> "
 	for (int i = 0;i<menu.number_of_lines;i++){
 		if (i == menu.current_choice){
-			display_write_line("%s %s",arrow,*menu.lines[i];
+			display_write_line("%s %s",arrow,menu.lines[i];
 		}
 		else (){
-			display_write_line("%s %s",*menu.lines[i]]);
+			display_write_line("%s",menu.lines[i]]);
 		}
 	}
 }
