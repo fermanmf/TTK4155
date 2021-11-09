@@ -2,8 +2,8 @@ void motor_control_pos(int interrupt_period);
 void motor_init();
 int motor_read_encoder();
 struct controlVariables{
-    int pos;
-    int ref;
+    float pos;
+    float ref;
     int deviation;
     int prev_deviation;
     int period;
