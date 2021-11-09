@@ -7,6 +7,12 @@
 #include "motor.h"
 #include "panic.h"
 #include "em.h"
+#include "ir.h"
+
+
+void ir_print() {
+	printf("Hello from IR callback\n\r");
+}
 
 
 int main(void)
@@ -19,6 +25,8 @@ int main(void)
 	dac_init();
 	motor_init();
 	em_init();
+	ir_beam_broken_cb = &ir_print;
+	ir_init();
     printf("Start\n\r");
 	//printf("%u\n\r", TC0->TC_CHANNEL[0].TC_SR);
 	//motor_control_pos(5);

@@ -4,7 +4,7 @@
 #include "sam.h"
 
 
-void adc_init() {
+void ir_init() {
 
     // Enable ADC controller MCK in the PMC
     // ID_ADC = 37
