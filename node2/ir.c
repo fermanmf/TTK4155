@@ -4,6 +4,8 @@
 #include "sam.h"
 #include "printf-stdarg.h"
 
+#include <stdbool.h>
+
 void ir_init() {
 
     // Enable ADC controller MCK in the PMC
@@ -32,16 +34,20 @@ void ir_init() {
     ADC->ADC_EMR |= ADC_EMR_CMPMODE_LOW | ADC_EMR_CMPSEL(0);
 
     // Setting the LOW threshold
-    ADC->ADC_CWR = 300;
-	
-	NVIC_EnableIRQ(ID_ADC);
-    
+    ADC->ADC_CWR = 300;    
 }
 
 volatile unsigned int *IR = (unsigned int*) 0x400C0050;
 
-void ADC_Handler(){
-	printf("Hello from ADC Handler\n\r");
-    (*ir_beam_broken_cb)();
-	const uint32_t _ = ADC->ADC_ISR;	
+void TC5_Handler(){
+	static bool last_under_threshold = false;
+	if (*IR < 300) {
+		if (!last_under_threshold) {
+			(*ir_beam_broken_cb)();
+			last_under_threshold = true;
+		}		
+	} else if (*IR > 500) {
+		last_under_threshold = false;
+	}
+	TC1->TC_CHANNEL[2].TC_SR;
 }
