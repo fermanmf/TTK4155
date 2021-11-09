@@ -8,7 +8,7 @@
 #include "printf-stdarg.h"
 #include <stdint.h>
 #define REGISTER_C 6563 
-#define TC1_REGISTER_C 656250
+#define TC1_REGISTER_C 65625
 #define INT_PERIOD REGISTER_C*128/84000000
 
 //waveform mode clock is MCK/128 period is therefore about 10 ms when Register_C = 6563
@@ -28,7 +28,7 @@ void timer_init(){
     NVIC_EnableIRQ(TC0_IRQn);
 	NVIC_EnableIRQ(TC4_IRQn);
 }
-//int test = 1;
+int test = 1;
 void TC0_Handler(){
 	/*
 	if (test){
@@ -44,7 +44,14 @@ void TC0_Handler(){
 	
 }
 void TC4_Handler(){
-	pid.ref = pid.ref + 1;
+	if (test){
+		pid.ref = 300;
+		test = 0;	
+	}
+	else{
+		pid.ref = 800;
+		test = 1;
+	}
     TC1->TC_CHANNEL[1].TC_SR;	//Clear interrupt flag
 	
 }
