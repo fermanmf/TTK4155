@@ -10,7 +10,6 @@
 #define REGISTER_C 6563 
 #define TC4_REGISTER_C 656250
 #define TC5_REGISTER_C 65625
-
 #define INT_PERIOD REGISTER_C*128/84000000
 
 //waveform mode clock is MCK/128 period is therefore about 10 ms when Register_C = 6563
@@ -18,6 +17,8 @@ void timer_init(){
     PMC->PMC_PCER0 |= PMC_PCER0_PID27 | PMC_PCER0_PID31;
 	PMC->PMC_PCER1 |= PMC_PCER1_PID32;
 	
+
+
     TC0->TC_CHANNEL[0].TC_IER = TC_IER_CPCS;
     TC0->TC_CHANNEL[0].TC_RC = REGISTER_C; 
     TC0->TC_CHANNEL[0].TC_CMR = TC_CMR_TCCLKS_TIMER_CLOCK4 | TC_CMR_WAVE | TC_CMR_WAVSEL_UP_RC;
@@ -35,7 +36,8 @@ void timer_init(){
 	TC1->TC_CHANNEL[2].TC_CCR = TC_CCR_CLKEN | TC_CCR_SWTRG;
 
     NVIC_EnableIRQ(TC0_IRQn);
-	NVIC_EnableIRQ(TC4_IRQn);
+
+	//NVIC_EnableIRQ(TC4_IRQn);
 	NVIC_EnableIRQ(TC5_IRQn);
 }
 int test = 1;
@@ -55,15 +57,14 @@ void TC0_Handler(){
 }
 void TC4_Handler(){
 	if (test){
-		pid.ref = 300;
-		test = 0;	
+		pid.ref = 10;
+		test = 0;
 	}
 	else{
-		pid.ref = 800;
+		pid.ref = 90;
 		test = 1;
 	}
     TC1->TC_CHANNEL[1].TC_SR;	//Clear interrupt flag
-	
 }
 
 

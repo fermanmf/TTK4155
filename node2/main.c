@@ -43,6 +43,7 @@ int main(void)
 			default:
 				break;
 	}
+
 	}
 
     printf("Terminated\n\r");

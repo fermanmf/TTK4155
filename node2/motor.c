@@ -5,6 +5,9 @@
 #include "printf-stdarg.h"
 #include "dac.h"
 
+#include <math.h>
+
+
 #define NOT_OE PIO_PD0 //TODO mer av dette
 #define NOT_RST 0b10
 #define SEL 0b100
@@ -14,15 +17,17 @@
 
 
 
-static void set_speed(float speed){
+void set_speed(float speed){
+	
 	float value = speed/100*0xfff;
+	
 	if (value >= 0){
 		if (value > 0xfff){value = 0xfff;}
 		PIOD->PIO_SODR = DIR;
 		dac_write_uint(value);
 	}
 	else{
-		value = abs(value);
+		value = -value;
 		if (value > 0xfff){value = 0xfff;}
 
 		PIOD->PIO_CODR = DIR;
@@ -58,8 +63,8 @@ void motor_init(){
 struct controlVariables pid = {
     .pos = 0, 
     .ref = 0,
-    .k_p = 10, 
-    .k_i = 0 , 
+    .k_p = 1, 
+    .k_i = 3 , 
     .k_d = 0, 
     .deviation_sum = 0, 
     .prev_deviation = 0
@@ -69,16 +74,17 @@ void motor_control_pos(int interrupt_period){
     //pid.period = interrupt_period;
     pid.pos = 100*motor_read_encoder()/8820;
 	//pid.pos = motor_read_encoder();
-	//printf("%f %f\n\r", pid.pos, pid.ref);
+	
+	//printf("%d %d\n\r", (int)round(pid.pos), (int)round(pid.ref));
     pid.deviation = pid.ref - pid.pos;
     pid.p_actuation = pid.k_p * pid.deviation;
-    //pid.i_actuation = pid.k_i * pid.period * pid.deviation_sum;
-    //pid.d_actuation = pid.k_d / pid.period * (pid.deviation - pid.prev_deviation);
-    pid.actuation = pid.p_actuation; //+ pid.i_actuation + pid.d_actuation;
+    pid.i_actuation = pid.k_i * pid.period * pid.deviation_sum;
+    pid.d_actuation = pid.k_d / pid.period * (pid.deviation - pid.prev_deviation);
+    pid.actuation = pid.p_actuation + pid.i_actuation + pid.d_actuation;
 	
 	set_speed(pid.actuation);
-    //pid.prev_deviation = pid.deviation;
-    //pid.deviation_sum += pid.deviation;
+    pid.prev_deviation = pid.deviation;
+    pid.deviation_sum += pid.deviation;
 }
 
 

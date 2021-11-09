@@ -23,15 +23,15 @@ void dac_init(){
 }
 
 
-void dac_write(float value){
-    
-    if (DACC->DACC_ISR & DACC_ISR_TXRDY){
-        DACC->DACC_CDR = (unsigned int)round(value * 0xfff);
-    }
-    else{
-        printf("ERROR: DAC NOT READY!");
-    }
-}
+//void dac_write(float value){
+    //
+    //if (DACC->DACC_ISR & DACC_ISR_TXRDY){
+        //DACC->DACC_CDR = (unsigned int)round(value * 0xfff);
+    //}
+    //else{
+        //printf("ERROR: DAC NOT READY!");
+    //}
+//}
 
 void dac_write_uint(uint32_t value){
 	
