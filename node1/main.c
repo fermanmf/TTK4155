@@ -17,6 +17,7 @@ void setup(){
 }
 
 void _main(){
+	/*
 	while (1) {
 		EmEvent event = em_get_event();
 		printf("%d %d\n", event.type, event.slider_left);
@@ -29,6 +30,7 @@ void _main(){
 		
 		
 	}
+	*/
 }
 
 int main(){

@@ -13,6 +13,8 @@
 #define CHANGE_THRESHOLD 3
 
 static void reading_received_cb(uint8_t joystick_x_raw, uint8_t joystick_y_raw, uint8_t slider_left_raw, uint8_t slider_right_raw) {
+	printf("%u\n", slider_left_raw);
+	/*
 	static uint8_t joystick_x_raw_last = 127;
 	static uint8_t joystick_y_raw_last = 127;
 	static uint8_t slider_left_raw_last = 0;
@@ -67,6 +69,7 @@ static void reading_received_cb(uint8_t joystick_x_raw, uint8_t joystick_y_raw, 
 		em_slider_right_changed(slider_right_raw / 2.55);
 		slider_right_raw_last = slider_right_raw;
 	}
+	*/
 }
 
 void controller_init() {
