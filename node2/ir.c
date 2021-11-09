@@ -33,11 +33,13 @@ void adc_init() {
 
     // Setting the LOW threshold
     ADC->ADC_CWR = 300;
+	
+	NVIC_EnableIRQ(ID_ADC);
     
 }
 
 volatile unsigned int *IR = (unsigned int*) 0x400C0050;
 
-ADC_Handler(){
+void ADC_Handler(){
     (*ir_beam_broken_cb)();
 }
