@@ -1,5 +1,5 @@
 // Setup the internal adc on the arduino
-#include "adc.h"
+#include "ir.h"
 
 #include "sam.h"
 
@@ -22,16 +22,22 @@ void adc_init() {
     
     // ADC Control Register to start conversion
     ADC->ADC_CR |= 1 << 1;
+
+    // ------- Setting up interrupt --------
+
+    // Enable comparison interrupt
+    ADC->ADC_IER |= ADC_IER_COMPE;
+
+    // Selecting comparison mode to LOW
+    ADC->ADC_EMR |= ADC_EMR_CMPMODE_LOW | ADC_EMR_CMPFILTER(1) | ADC_EMR_CMPSEL(0);
+
+    // Setting the LOW threshold
+    ADC->ADC_CWR = 300;
     
 }
 
 volatile unsigned int *IR = (unsigned int*) 0x400C0050;
 
-void adc_read() {
-    
-    // Read the data from the analog input after it is sampled at ADC_CDR0 bit 0 to 11
-    //data = ADC->ADC_CDR[0];
-    
-    // Return data
-
+ADC_Handler(){
+    (*ir_beam_broken_cb)();
 }
