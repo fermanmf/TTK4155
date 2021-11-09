@@ -31,16 +31,15 @@ int main(void)
 	//printf("%u\n\r", TC0->TC_CHANNEL[0].TC_SR);
 	//motor_control_pos(5);
 	while(1) {
-		// EmEvent event = em_get_event();
-		// switch(event.type) {
-		// 	case EmSliderLeftChanged:
-		// 		//printf("Hello from em slider left %u\n\r", event.slider_left);
-		// 		//pid.ref = (int8_t) event.slider_left;
-		// 		break;
-		// }
-		//timer_delay(1);
-		//pid.ref = pid.ref + 8820/200;
-		//printf("yo\n\r");
+		 EmEvent event = em_get_event();
+		 switch(event.type) {
+		 	case EmSliderLeftChanged:
+		 		printf("Hello from em slider left %u\n\r", event.slider_left);
+		 		pid.ref = event.slider_left;
+		 		break;
+		 }
+		
+
 
 	}
 
