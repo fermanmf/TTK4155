@@ -3,12 +3,14 @@
 #include <avr/io.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include <stdio.h>
+#include <avr/interrupt.h>
 
 #include "spi.h"
 #include "mcp2515_consts.h"
 #include "consts.h"
 #include "panic.h"
-#include <stdio.h>
+
 
 #define SS 4
 
@@ -34,6 +36,7 @@ void mcp2515_init(bool loopback_mode) {
 	MCUCR |= 1 << ISC01; // Interrupt on falling edge
 	GICR |= 1 << INT0; // Enable INT0 (interrupt on pin 0)
 	
+	
 	mcp2515_reset();
 	mcp2515_write(MCP_RXB0CTRL, (1 << RXM0) | (1 << RXM1)); // disable filter
 	mcp2515_write(MCP_CNF1, ((CAN_SJW - 1) << SJW0) | (CAN_NODE1_BRP - 1));
@@ -45,6 +48,7 @@ void mcp2515_init(bool loopback_mode) {
 	} else {
 		mcp2515_write(MCP_CANCTRL, MODE_NORMAL);
 	}
+	
 	mcp2515_write(MCP_CANINTE, MCP_ERRIF | MCP_RX0IF); // enable receive buffer 0 full and error interrupt
 }
 
@@ -134,7 +138,9 @@ void mcp2515_rts(){
 	slave_deselect();
 }
 
+
 ISR(INT0_vect) {
+	printf("Hello form ISR INT0\n");
 	const uint8_t canintf = mcp2515_read(MCP_CANINTF);
 	switch(canintf) {
 		case MCP_ERRIF:
@@ -142,7 +148,7 @@ ISR(INT0_vect) {
 			mcp2515_bit_modify(MCP_CANINTF, MCP_ERRIF, 0);
 			break;
 		
-		case MCP_RX0IF: 
+		case MCP_RX0IF:
 			(*mcp2515_message_received_cb)();
 			mcp2515_bit_modify(MCP_CANINTF, MCP_RX0IF, 0);
 			break;
@@ -150,6 +156,8 @@ ISR(INT0_vect) {
 		default:
 			printf("mcp2515 error: unsupported interrupt flag. CANINTF: 0x%x\n", canintf);
 			mcp2515_write(MCP_CANINTF, 0);
-			break;	
+			break;
 	}
 }
+
+

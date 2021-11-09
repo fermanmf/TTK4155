@@ -10,17 +10,16 @@
 #include "em.h"
 
 #define JOYSTICK_DIRECTION_THRESHOLD 10
-#define CHANGE_THRESHOLD 3
+#define JOYSTICK_CHANGE_THRESHOLD 3
+#define SLIDER_CHANGE_THRESHOLD 10
 
 static void reading_received_cb(uint8_t joystick_x_raw, uint8_t joystick_y_raw, uint8_t slider_left_raw, uint8_t slider_right_raw) {
-	printf("%u\n", slider_left_raw);
-	/*
 	static uint8_t joystick_x_raw_last = 127;
 	static uint8_t joystick_y_raw_last = 127;
 	static uint8_t slider_left_raw_last = 0;
-	static uint8_t slider_right_raw_last = 0;
+	static uint8_t slider_right_raw_last = 0;	
 	
-	if (abs(joystick_x_raw_last - joystick_x_raw) > CHANGE_THRESHOLD) {
+	if (abs(joystick_x_raw_last - joystick_x_raw) > JOYSTICK_CHANGE_THRESHOLD) {
 		const int8_t joystick_x = round(0.0007774 * pow(joystick_x_raw, 2) + 0.5907 * joystick_x_raw - 101.18);
 		em_joystick_x_changed(joystick_x);
 		
@@ -40,7 +39,7 @@ static void reading_received_cb(uint8_t joystick_x_raw, uint8_t joystick_y_raw, 
 		joystick_x_raw_last = joystick_x_raw;
 	}
 	
-	if (abs(joystick_y_raw_last - joystick_y_raw) > CHANGE_THRESHOLD) {
+	if (abs(joystick_y_raw_last - joystick_y_raw) > JOYSTICK_CHANGE_THRESHOLD) {
 		const int8_t joystick_y = round(0.0007774 * pow(joystick_y_raw, 2) + 0.5907 * joystick_y_raw - 101.18);
 		em_joystick_y_changed(joystick_y);
 		
@@ -60,16 +59,16 @@ static void reading_received_cb(uint8_t joystick_x_raw, uint8_t joystick_y_raw, 
 		joystick_y_raw_last = joystick_y_raw;
 	}
 	
-	if (abs(slider_left_raw_last - slider_left_raw) > CHANGE_THRESHOLD) {
+	
+	if (abs(slider_left_raw_last - slider_left_raw) > SLIDER_CHANGE_THRESHOLD) {
 		em_slider_left_changed(slider_left_raw / 2.55);
 		slider_left_raw_last = slider_left_raw;
 	}
 	
-	if (abs(slider_right_raw_last - slider_right_raw) > CHANGE_THRESHOLD) {
+	if (abs(slider_right_raw_last - slider_right_raw) > SLIDER_CHANGE_THRESHOLD) {
 		em_slider_right_changed(slider_right_raw / 2.55);
 		slider_right_raw_last = slider_right_raw;
 	}
-	*/
 }
 
 void controller_init() {
