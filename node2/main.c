@@ -15,6 +15,7 @@ void ir_print() {
 }
 
 
+
 int main(void)
 {
     /* Initialize the SAM system */
@@ -28,8 +29,6 @@ int main(void)
 	ir_beam_broken_cb = &ir_print;
 	ir_init();
     printf("Start\n\r");
-	//printf("%u\n\r", TC0->TC_CHANNEL[0].TC_SR);
-	//motor_control_pos(5);
 	while(1) {
 		 EmEvent event = em_get_event();
 		 switch(event.type) {
@@ -40,6 +39,7 @@ int main(void)
 		 }
 		
 
+		printf("%u\n", *IR);
 
 	}
 
