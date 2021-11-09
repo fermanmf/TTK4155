@@ -73,10 +73,9 @@ void controller_init() {
 	adc_reading_received_cb = &reading_received_cb;
 	adc_init();
 	
-	//DDRD &= ~1 << PIND3; //dont think this is needed?
 	PORTD |= 1 << PIND3; // With pull-up resistor
 	MCUCR |= 1 << ISC11; // Interrupt on falling edge
-	GICR |= 1 << INT1; // Enable INT1 (interrupt on pin 2)
+	GICR |= 1 << INT1; // Enable INT1 (interrupt on pin 1)
 }
 
 ISR(INT1_vect) {

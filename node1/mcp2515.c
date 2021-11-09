@@ -20,24 +20,19 @@ static void slave_deselect(){
 	PORTB |= 1<<SS;
 }
 
-
 #define RXM0 5
 #define RXM1 6
 #define SJW0 6
 #define PHSEG10 3
 
-#define FCPU 16000000
-#define BAUDRATE        250000
-#define NUMBER_OF_TQ    16
-
-#define PROPAG  2
-#define PS1     6
-#define PS2     7
-
 void mcp2515_init(bool loopback_mode) {
 	DDRB |= 1 << SS; // enable slave select as output
 	spi_init();
 	
+	// Enable interrupt on PD2
+	PORTD |= 1 << PIND2; // With pull-up resistor
+	MCUCR |= 1 << ISC01; // Interrupt on falling edge
+	GICR |= 1 << INT0; // Enable INT0 (interrupt on pin 0)
 	
 	mcp2515_reset();
 	mcp2515_write(MCP_RXB0CTRL, (1 << RXM0) | (1 << RXM1)); // disable filter
@@ -50,7 +45,7 @@ void mcp2515_init(bool loopback_mode) {
 	} else {
 		mcp2515_write(MCP_CANCTRL, MODE_NORMAL);
 	}
-	mcp2515_write(MCP_CANINTE, 1); // enable receieve buffer 0 full interrupt
+	mcp2515_write(MCP_CANINTE, MCP_ERRIF | MCP_RX0IF); // enable receive buffer 0 full and error interrupt
 }
 
 void mcp2515_reset(){
@@ -123,9 +118,38 @@ void mcp2515_load_tx_buffer_empty(uint8_t id) {
 	slave_deselect();	
 }
 
+void mcp2515_bit_modify(uint8_t address, uint8_t mask, uint8_t data) {
+	slave_select();
+	spi_transmit(MCP_BITMOD);
+	spi_transmit(address);
+	spi_transmit(mask);
+	spi_transmit(data);
+	slave_deselect();
+}
+
 
 void mcp2515_rts(){
     slave_select();
 	spi_transmit(MCP_RTS_TX0);
 	slave_deselect();
+}
+
+ISR(INT0_vect) {
+	const uint8_t canintf = mcp2515_read(MCP_CANINTF);
+	switch(canintf) {
+		case MCP_ERRIF:
+			printf("mcp2515 error: error flag set. EFLG: 0x%x\n", mcp2515_read(MCP_EFLG));
+			mcp2515_bit_modify(MCP_CANINTF, MCP_ERRIF, 0);
+			break;
+		
+		case MCP_RX0IF: 
+			(*mcp2515_message_received_cb)();
+			mcp2515_bit_modify(MCP_CANINTF, MCP_RX0IF, 0);
+			break;
+		
+		default:
+			printf("mcp2515 error: unsupported interrupt flag. CANINTF: 0x%x\n", canintf);
+			mcp2515_write(MCP_CANINTF, 0);
+			break;	
+	}
 }
