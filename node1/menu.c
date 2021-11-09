@@ -2,16 +2,24 @@
 #include "display.h"
 #include "stdbool.h"
 
-typedef struct {
-	char lines [8][16];
-	int number_of_lines;
-	int current_choice;
-}Menu;
+
 typedef struct {
 	char lines [8][16];
 	int number_of_lines;
 	int current_choice;
 }Display;
+
+typedef struct {
+	char lines [8][16];
+	int number_of_lines;
+	int current_choice;
+}Menu;
+
+Menu MainMenu = {{"Main menu","Play","HighScore"}, 3, 1};
+Menu CharacterMenu = {{"Pick character","<3",":)",":(","-_-",":S",":,("},7,1};
+Menu Highscore = {{"HighScore","1.","2.","3.","4.","5.","6.","7."}, 8,7};
+Menu EndMenu = {{"End of Game", "Play again", "Replay", "Highscore"}, 4, 1};
+	
 typedef enum {
     setup,
     mainMenu,
@@ -61,7 +69,4 @@ void menu(){
 	}
 }
 
-Menu MainMenu = {["Main menu","Play","HighScore"], 3, 1};
-Menu CharacterMenu = {["Pick character","<3",":)",":(","-_-",":S",":,("],7,1};
-Menu Highscore = {["HighScore","1.","2.","3.","4.","5.","6.","7."], 8,7};
-Menu EndMenu = {["End of Game", "Play again", "Replay", "Highscore"], 4, 1};
+
