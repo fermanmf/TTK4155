@@ -8,6 +8,7 @@
 // include other files under this
 #include "controller.h"
 #include "em.h"
+#include "display.h"
 
 
 void setup(){
@@ -33,5 +34,26 @@ int main(){
 	printf("Done setting up. Starting main\n\r");
 	_main();
 	printf("Main is done\n\r");
+	switch (state){
+			case(0):
+				break;
+			case(mainMenu):
+				display_menu(MainMenu);
+				break;
+			case(highScore):
+				display_menu(HighscoreMenu);
+				break;
+			case(characterSelect):
+				display_menu(CharacterMenu);
+				break;
+			case(inGame):
+				//display_menu());
+				break;
+			case(endOfGame):
+				display_menu(EndMenu);
+				break;
+			case(replay):
+				break;
+		}
 }
 
