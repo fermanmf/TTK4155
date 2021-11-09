@@ -35,7 +35,6 @@ int main(void)
 			case(setup):
 				break;
 			case(mainMenu):
-			
 				break;
 			case(highScore):
 				break;
@@ -46,6 +45,8 @@ int main(void)
 			case(endOfGame):
 				break;
 			case(replay):
+				break;
+			default:
 				break;
 		}
 	}

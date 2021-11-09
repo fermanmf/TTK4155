@@ -10,15 +10,3 @@
 #define CAN_SJW 1
 #define CAN_NODE1_BRP 2
 #define CAN_NODE2_BRP 21
-
-enum {
-    setup,
-    mainMenu,
-    highScore,
-    characterSelect,
-    inGame,
-    endOfGame,
-    replay
-};
-
-int state = setup;

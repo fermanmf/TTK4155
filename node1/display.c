@@ -38,17 +38,7 @@ void display_invert_line(int line) {
 }
 
 
-void display_menu(struct menu menu){
-	char arrow [] = "--> "
-	for (int i = 0;i<menu.number_of_lines;i++){
-		if (i == menu.current_choice){
-			display_write_line("%s %s",arrow,menu.lines[i];
-		}
-		else (){
-			display_write_line("%s",menu.lines[i]]);
-		}
-	}
-}
+
 
 // const unsigned char PROGMEM space4 [] = {
 // 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
