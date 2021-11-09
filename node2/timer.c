@@ -25,7 +25,7 @@ void timer_init(){
 	TC1->TC_CHANNEL[1].TC_CCR = TC_CCR_CLKEN | TC_CCR_SWTRG;
 
     NVIC_EnableIRQ(TC0_IRQn);
-	NVIC_EnableIRQ(TC4_IRQn);
+	//NVIC_EnableIRQ(TC4_IRQn);
 }
 int test = 1;
 void TC0_Handler(){
