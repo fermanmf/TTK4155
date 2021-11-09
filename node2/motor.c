@@ -4,12 +4,14 @@
 #include "timer.h"
 #include "printf-stdarg.h"
 
-#define NOT_OE 0b1
+#define NOT_OE PIO_PD0 //TODO mer av dette
 #define NOT_RST 0b10
 #define SEL 0b100
 #define EN  1<<9
 #define DIR 1<<10
 #define MOTOR_OUTPUT_MASK 0x1fe
+
+
 
 static void set_speed(float value){
     dac_write(value);
@@ -43,7 +45,7 @@ void motor_init(){
 struct controlVariables pid = {
     .pos = 0, 
     .ref = 0,
-    .k_p = 0.1, 
+    .k_p = 1, 
     .k_i = 0.05 , 
     .k_d = 0, 
     .deviation_sum = 0, 
@@ -53,7 +55,7 @@ void motor_control_pos(int interrupt_period){
 	
     pid.period = interrupt_period;
     pid.pos = 100*motor_read_encoder()/8820;
-	printf("%d %d\n\r", pid.pos, pid.ref);
+	//printf("%d %d\n\r", pid.pos, pid.ref);
     pid.deviation = pid.ref - pid.pos;
     pid.p_actuation = pid.k_p * pid.deviation;
     pid.i_actuation = pid.k_i * pid.period * pid.deviation_sum;

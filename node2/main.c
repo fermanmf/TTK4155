@@ -30,8 +30,9 @@ int main(void)
 		// 		//pid.ref = (int8_t) event.slider_left;
 		// 		break;
 		// }
-		timer_delay(1);
-		pid.ref = pid.ref + 8820/200;
+		//timer_delay(1);
+		//pid.ref = pid.ref + 8820/200;
+		//printf("yo\n\r");
 
 	}
 
