@@ -17,3 +17,5 @@ struct controlVariables{
     int actuation;
 };
 struct controlVariables pid;
+
+void set_speed(float speed);
