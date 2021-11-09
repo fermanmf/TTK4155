@@ -39,8 +39,16 @@ void TC0_Handler(){
 }
 
 void timer_delay_u(uint32_t time_us){
+	SysTick->CTRL |= SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
     SysTick->LOAD |= 84*time_us;
 	SysTick->VAL = 0;
-    SysTick->CTRL |= SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
     while(!(SysTick->CTRL & (1<<16)));
 }
+
+void timer_delay(uint32_t time){
+	SysTick->CTRL = SysTick_CTRL_ENABLE_Msk; //clocksource is MCK/8
+    SysTick->LOAD |= (uint32_t) 10.5*time*10^6;
+	SysTick->VAL = 0;
+    while(!(SysTick->CTRL & (1<<16)));
+}
+

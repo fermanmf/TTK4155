@@ -43,8 +43,8 @@ void motor_init(){
 struct controlVariables pid = {
     .pos = 0, 
     .ref = 0,
-    .k_p = 1, 
-    .k_i = 1 , 
+    .k_p = 0.1, 
+    .k_i = 0.05 , 
     .k_d = 0, 
     .deviation_sum = 0, 
     .prev_deviation = 0
@@ -61,7 +61,7 @@ void motor_control_pos(int interrupt_period){
     pid.actuation = pid.p_actuation + pid.i_actuation + pid.d_actuation;
 	if (pid.actuation >= 0){
 		PIOD->PIO_CODR = DIR;
-		set_speed(pid.actuation/10);
+		set_speed(pid.actuation);
 	}
 	else{
 		PIOD->PIO_SODR = DIR;
