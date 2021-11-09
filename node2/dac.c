@@ -33,6 +33,16 @@ void dac_write(float value){
     }
 }
 
+void dac_write_uint(uint32_t value){
+	
+	if (DACC->DACC_ISR & DACC_ISR_TXRDY){
+		DACC->DACC_CDR = value;
+	}
+	else{
+		printf("ERROR: DAC NOT READY!");
+	}
+}
+
 void dac_test(float value){
     dac_init();
     dac_write(value);

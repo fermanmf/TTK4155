@@ -7,11 +7,21 @@
 #include "mcp2515_consts.h"
 #include "mcp2515.h"
 
+static void message_received_cb() {
+	uint8_t id;
+	uint8_t data[8];
+	uint8_t data_length;
+	mcp2515_read_rx_buffer(&id, data, &data_length);
+	(*can_message_received_cb)(id, data, data_length);
+}
+
 void can_init() {
+	mcp2515_message_received_cb = &message_received_cb;
 	mcp2515_init(false);
 }
 	
 void can_loopback_init(){
+	mcp2515_message_received_cb = &message_received_cb; 
 	mcp2515_init(true);
 }
 

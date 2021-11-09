@@ -12,3 +12,4 @@ void mcp2515_write(uint8_t address, uint8_t data);
 void mcp2515_load_tx_buffer(uint8_t id, uint8_t data[8], uint8_t data_length);
 void mcp2515_load_tx_buffer_empty(uint8_t id);
 void mcp2515_rts();
+void (*mcp2515_message_received_cb)();

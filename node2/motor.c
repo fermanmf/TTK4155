@@ -3,16 +3,31 @@
 #include "sam.h"
 #include "timer.h"
 #include "printf-stdarg.h"
+#include "dac.h"
 
-#define NOT_OE 0b1
+#define NOT_OE PIO_PD0 //TODO mer av dette
 #define NOT_RST 0b10
 #define SEL 0b100
 #define EN  1<<9
 #define DIR 1<<10
 #define MOTOR_OUTPUT_MASK 0x1fe
 
-static void set_speed(float value){
-    dac_write(value);
+
+
+static void set_speed(float speed){
+	float value = speed/100*0xfff;
+	if (value >= 0){
+		if (value > 0xfff){value = 0xfff;}
+		PIOD->PIO_SODR = DIR;
+		dac_write_uint(value);
+	}
+	else{
+		value = abs(value);
+		if (value > 0xfff){value = 0xfff;}
+
+		PIOD->PIO_CODR = DIR;
+		dac_write_uint(value);
+	}
 }
 
 void motor_init(){
@@ -43,32 +58,27 @@ void motor_init(){
 struct controlVariables pid = {
     .pos = 0, 
     .ref = 0,
-    .k_p = 1, 
-    .k_i = 1 , 
+    .k_p = 10, 
+    .k_i = 0 , 
     .k_d = 0, 
     .deviation_sum = 0, 
     .prev_deviation = 0
 };
 void motor_control_pos(int interrupt_period){
 	
-    pid.period = interrupt_period;
+    //pid.period = interrupt_period;
     pid.pos = 100*motor_read_encoder()/8820;
-	printf("%d %d\n\r", pid.pos, pid.ref);
+	//pid.pos = motor_read_encoder();
+	//printf("%f %f\n\r", pid.pos, pid.ref);
     pid.deviation = pid.ref - pid.pos;
     pid.p_actuation = pid.k_p * pid.deviation;
-    pid.i_actuation = pid.k_i * pid.period * pid.deviation_sum;
-    pid.d_actuation = pid.k_d / pid.period * (pid.deviation - pid.prev_deviation);
-    pid.actuation = pid.p_actuation + pid.i_actuation + pid.d_actuation;
-	if (pid.actuation >= 0){
-		PIOD->PIO_CODR = DIR;
-		set_speed(pid.actuation/10);
-	}
-	else{
-		PIOD->PIO_SODR = DIR;
-		set_speed(pid.actuation);
-	}
-    pid.prev_deviation = pid.deviation;
-    pid.deviation_sum += pid.deviation;
+    //pid.i_actuation = pid.k_i * pid.period * pid.deviation_sum;
+    //pid.d_actuation = pid.k_d / pid.period * (pid.deviation - pid.prev_deviation);
+    pid.actuation = pid.p_actuation; //+ pid.i_actuation + pid.d_actuation;
+	
+	set_speed(pid.actuation);
+    //pid.prev_deviation = pid.deviation;
+    //pid.deviation_sum += pid.deviation;
 }
 
 
@@ -80,5 +90,5 @@ int motor_read_encoder(){
     PIOD->PIO_SODR = SEL;
     timer_delay_u(20);
     uint32_t lsb = (PIOC->PIO_PDSR & MOTOR_OUTPUT_MASK)>>1;
-    return (int16_t) ((msb <<8) | lsb); //apparently int16_t is implemented as twos complement so this will do
+    return - (int16_t) ((msb <<8) | lsb); //apparently int16_t is implemented as twos complement so this will do
 }
