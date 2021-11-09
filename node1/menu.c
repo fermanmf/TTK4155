@@ -48,27 +48,26 @@ static void write_static_display(Display display){
 			display_write_line(display.lines[i],i);
 	}
 }
-void menu(){
-	write_menu(CharacterMenu);
 
-	
-	//while (!exit_menu){
-		//switch (state){
-			//case(mainMenu):
-				//write_menu(MainMenu);
-				//break;
-			//case(characterSelect):
-				//write_menu(CharacterMenu);
-				//break;
-			//case(endOfGame):
-				//write_menu(EndMenu);
-				//break;
-			//case (highScore):
-				//write_menu(Highscore);
-			//default:
-				//break;
-		//}
-	//}
+void menu(){
+	bool exit_menu = false;
+	while (!exit_menu){
+		switch (state){
+			case(mainMenu):
+				write_menu(MainMenu);
+				break;
+			case(characterSelect):
+				write_menu(CharacterMenu);
+				break;
+			case(endOfGame):
+				write_menu(EndMenu);
+				break;
+			case (highScore):
+				write_menu(Highscore);
+			default:
+				break;
+		}
+	}
 }
 
 
