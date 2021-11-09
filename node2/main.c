@@ -32,7 +32,5 @@ int main(void)
 		}
 	}
 
-	
-
     printf("Terminated\n\r");
 }
