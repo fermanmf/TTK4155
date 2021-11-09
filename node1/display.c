@@ -4,6 +4,7 @@
 
 #include "oled.h"
 #include "fonts.h"
+#include <stdio.h>
 
 static void write_char(char c, int line, int pos) {
 	const int offset = 128 * line + 8 * pos;

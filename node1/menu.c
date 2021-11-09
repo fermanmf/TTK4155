@@ -30,13 +30,13 @@ typedef enum {
     replay
 }MenuState;
 
-MenuState state;
+MenuState state = characterSelect;
 
 static void write_menu(Menu menu){
-	char arrow [] = "--> ";
 	for (int i = 0;i<menu.number_of_lines;i++){
 		if (i == menu.current_choice){
 			display_write_line(menu.lines[i],i);
+			display_invert_line(i);
 		}
 		else {
 			display_write_line(menu.lines[i],i);
@@ -49,24 +49,26 @@ static void write_static_display(Display display){
 	}
 }
 void menu(){
-	bool exit_menu = false;
-	while (!exit_menu){
-		switch (state){
-			case(mainMenu):
-				write_menu(MainMenu);
-				break;
-			case(characterSelect):
-				write_menu(CharacterMenu);
-				break;
-			case(endOfGame):
-				write_menu(EndMenu);
-				break;
-			case (highScore):
-				write_menu(Highscore);
-			default:
-				break;
-		}
-	}
+	write_menu(CharacterMenu);
+
+	
+	//while (!exit_menu){
+		//switch (state){
+			//case(mainMenu):
+				//write_menu(MainMenu);
+				//break;
+			//case(characterSelect):
+				//write_menu(CharacterMenu);
+				//break;
+			//case(endOfGame):
+				//write_menu(EndMenu);
+				//break;
+			//case (highScore):
+				//write_menu(Highscore);
+			//default:
+				//break;
+		//}
+	//}
 }
 
 

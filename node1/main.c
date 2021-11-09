@@ -29,8 +29,8 @@ int main(){
 	setup();
 	printf("Done setting up. Starting main\n\r");
 	printf("Main is done\n\r");
+	menu();	
 	
-	menu();
 	//switch (state){
 			//case(0):
 				//break;

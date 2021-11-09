@@ -32,11 +32,13 @@ int main(void)
 	ir_init();
 	printf("Nor crashed\n\r");
 	timer_init();
+	pwm_init();
     
 	while(1) {
 		EmEvent event = em_get_event();
 		switch(event.type) {
 			case EmJoystickXChanged:
+				printf("HEllo from event\n\r");
 				pwm_set(event.joystick_x / 100); 
 				break;
 			
