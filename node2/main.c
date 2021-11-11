@@ -4,14 +4,11 @@
 
 // include other files under this
 #include "em.h"
-
-
-void ir_print() {
-	printf("Hello from IR callback\n\r");
-}
+#include "servo.h"
 
 void setup(){
 	em_init();	
+	servo_init();
 }
 
 void _main(){
@@ -36,6 +33,7 @@ void _main(){
 				
 			case EmJoystickYChanged:
 				printf("em: joystick y changed, %d\n\r", event.joystick_y);
+				servo_set(event.joystick_y / 100);
 				break;
 				
 			case EmSliderLeftChanged:
