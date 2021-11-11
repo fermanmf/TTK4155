@@ -57,7 +57,6 @@ void can_send_empty(uint8_t id) {
 
 
 void CAN0_Handler() {
-	printf("hello from CAN\n\r");
 	if (CAN0->CAN_MB[0].CAN_MSR & CAN_MSR_MMI) {
 		printf("can error: mailbox message ignored flag set for MB0\n\r");
 		panic();
