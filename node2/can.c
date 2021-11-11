@@ -27,7 +27,7 @@ void can_init() {
 				   CAN_BR_SMP_THREE;
 	
 	CAN0->CAN_MB[0].CAN_MMR = CAN_MMR_MOT_MB_RX; // Message Mode Register
-	CAN0->CAN_MB[0].CAN_MMR = CAN_MMR_MOT_MB_TX; // Message Mode Register
+	CAN0->CAN_MB[1].CAN_MMR = CAN_MMR_MOT_MB_TX; // Message Mode Register
 	
 	CAN0->CAN_MR = CAN_MR_CANEN; // CAN ENable
 	NVIC_EnableIRQ(ID_CAN0);
