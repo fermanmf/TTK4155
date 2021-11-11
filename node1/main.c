@@ -9,6 +9,7 @@
 #include "controller.h"
 #include "em.h"
 #include "display.h"
+#include "menu.h"
 
 
 void setup(){
@@ -18,39 +19,39 @@ void setup(){
 	sei();
 }
 
-
+typedef enum {
+	inMenu,
+	inReplay,
+	inGame	
+} State;
 
 int main(){
 	MCUCR |= 1 << SRE; // enable external memory
 	SFIOR |= 1 << XMM2; // release JTAG pins from external memory address pins
 	uart_init(9600);
-	
+	State state = Menu;
 	printf("Setting up\n\r");
 	setup();
 	printf("Done setting up. Starting main\n\r");
 	printf("Main is done\n\r");
-	menu();	
-	
-	//switch (state){
-			//case(0):
-				//break;
-			//case(mainMenu):
-				//display_menu(MainMenu);
-				//break;
-			//case(highScore):
-				//display_menu(HighscoreMenu);
-				//break;
-			//case(characterSelect):
-				//display_menu(CharacterMenu);
-				//break;
-			//case(inGame):
-				////display_menu());
-				//break;
-			//case(endOfGame):
-				//display_menu(EndMenu);
-				//break;
-			//case(replay):
-				//break;
-		//}
+	while(1){
+		EmEvent event = em_get_event();
+		
+		switch (state){
+			case(inMenu):
+				menu_handle_select();
+				menu_handle_scroll(bool up);
+				switch(event.type) {
+					case EmStartReplay:
+						state = inReplay;
+					case 
+					default:
+						break;
+				}
+
+			default:
+				break;
+		}
+	}
 }
 
