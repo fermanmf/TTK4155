@@ -5,10 +5,12 @@
 // include other files under this
 #include "em.h"
 #include "servo.h"
+#include "solenoid.h"
 
 void setup(){
 	em_init();	
 	servo_init();
+	solenoid_init();
 }
 
 void _main(){
