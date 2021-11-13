@@ -44,9 +44,11 @@ MenuItem main_menu_item = {"Main menu",main_menu_id};
 
 Menu main_menu = {"Main menu", {&play_item, &highscore_item}, 2, 0, 0, main_menu_id};
 Menu character_menu = {"Character select:", {&player1, &player2, &player3, &player4, &player5, &player6, &back_item}, 7, 0, 0, character_menu_id};
+//foreløpig en liten hack på highscore
 Menu highscore_menu = {"Highscore", {&back_item, &back_item, &back_item, &back_item, &back_item, &back_item, &back_item}, 7, 6, 6, highscore_menu_id};
 Menu end_menu= {"Well played!", {&main_menu_item, &replay_item}, 2, 0, 0, end_menu_id}; 
 Menu *menu = &main_menu;
+
 static MenuItem *get_choice(Menu *menu) {
 	return menu->items[menu->choice];
 }

@@ -17,6 +17,7 @@ void setup(){
 	em_init();
 	display_init();
 	sei();
+	menu_init();
 }
 
 typedef enum {
@@ -38,12 +39,14 @@ int main(){
 		EmEvent event = em_get_event();
 		
 		switch (state){
+
 			case(inMenu):
-				
 				menu_handle_scroll(bool up);
 				switch(event.type) {
-					case EmStartReplay:
+					case EmReplayStart:
 						state = inReplay;
+					case EmGameStart:
+						state = inGame;
 					case EmJoystickPressed:
 						menu_handle_select();
 					case EmJoystickXDirectionChanged:
@@ -51,7 +54,30 @@ int main(){
 					default:
 						break;
 				}
+			
+			case(inGame):
+				//enable pid-interrupt
+				//enable motor
+				switch (event.type){
+				case /* constant-expression */:
+					/* code */
+					break;
+				
+				default:
+					break;
+				}
 
+			case(inReplay):
+				//enable pid-interrupt
+				//enable motor
+				switch (event.type){
+				case /* constant-expression */:
+					/* code */
+					break;
+				
+				default:
+					break;
+				}
 			default:
 				break;
 		}
