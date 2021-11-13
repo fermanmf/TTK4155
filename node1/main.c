@@ -29,7 +29,7 @@ int main(){
 	MCUCR |= 1 << SRE; // enable external memory
 	SFIOR |= 1 << XMM2; // release JTAG pins from external memory address pins
 	uart_init(9600);
-	State state = Menu;
+	State state = inMenu;
 	printf("Setting up\n\r");
 	setup();
 	printf("Done setting up. Starting main\n\r");
@@ -39,12 +39,15 @@ int main(){
 		
 		switch (state){
 			case(inMenu):
-				menu_handle_select();
+				
 				menu_handle_scroll(bool up);
 				switch(event.type) {
 					case EmStartReplay:
 						state = inReplay;
-					case 
+					case EmJoystickPressed:
+						menu_handle_select();
+					case EmJoystickXDirectionChanged:
+						menu_handle_scroll(event.joystick_x_direction);
 					default:
 						break;
 				}

@@ -2,125 +2,19 @@
 #include "display.h"
 #include "stdbool.h"
 
-
-typedef struct {
-	char lines [8][16];
-	int number_of_lines;
-	int current_choice;
-}Display;
-
-typedef struct {
-	char lines [8][16];
-	int number_of_lines;
-	int current_choice;
-	int default_choice;
-}Menu;
-
-
 #define HIGHSCOREMENU		{{"HighScore","1.","2.","3.","4.","5.","6.","<--Back"}, 8, 7, 7}
 #define MAIN_MENU			{{"Main menu","Play","HighScore"}, 3, 1, 1};
 #define CHARACTERMENU		{{"Pick character","<3",":)",":(","-_-",":S",":,("}, 7, 1, 1};
 #define ENDMENU				{{"End of Game", "Play again", "Replay", "Highscore"}, 4, 1, 1};
-	
-Menu current_menu;
 
-//Menu menus [] ={MAIN_MENU,CharacterMenu,HighscoreMenu,EndMenu};
-////static void reset_menu__current_select(){
-	//for (int i = 0;i < sizeof(menus)/sizeof(Menu);i++){
-		//menus[i].current_choice = menus[i].default_choice;
-	//}
-	//
-//} 
 typedef enum {
-    setup,
-    MAIN_MENU,
-    highScore,
-    characterSelect,
-    inGame,
-    endOfGame,
-    replay
-}MenuState;
-
-MenuState state = characterSelect;
-
-void menu_scroll(bool up) {
-	if (up){
-		if (current_menu.current_choice == current_menu.default_choice){
-			return;
-		}
-		current_menu.current_choice++;
-	}
-	else {
-		if (current_menu.current_choice == current_menu.number_of_lines-1){
-			return;
-		}
-		current_menu.current_choice--;
-	}	
-}
-
-
-
-static void write_menu(Menu menu){
-	for (int i = 0;i<menu.number_of_lines;i++){
-		if (i == menu.current_choice){
-			display_write_line(menu.lines[i],i);
-			display_invert_line(i);
-		}
-		else {
-			display_write_line(menu.lines[i],i);
-		}
-	}
-}
-static void write_static_display(Display display){
-	for (int i = 0;i<display.number_of_lines;i++){
-			display_write_line(display.lines[i],i);
-	}
-}
-void menu_joystick_callback(){
-					
-}
-void menu_select_callback(){
-	
-}
-
-void menu(){
-	bool exit_menu = false;
-	while (!exit_menu){
-		switch (state){
-			case(MAIN_MENU):
-			write_menu(MAIN_MENU);
-			break;
-			case(characterSelect):
-			write_menu(CharacterMenu);
-			break;
-			case(endOfGame):
-			write_menu(EndMenu);
-			break;
-			case (highScore):
-			write_menu(HighscoreMenu);
-			default:
-			break;
-		}
-	}
-}
-
-
-
-void menu_init() {
-	state = MAIN_MENU
-	current_menu = MAIN_MENU;
-	write_menu(current_menu);
-}
-
-
-
-
-
-
-
-
-
-
+	main_menu_id,
+	highscore_menu_id,
+	character_menu_id,
+	end_menu_id,
+	play_id,
+	replay_id
+}Id;
 
 typedef struct {
 	char header[16];
@@ -128,39 +22,113 @@ typedef struct {
 	uint8_t n_items;
 	uint8_t choice;
 	uint8_t default_choice;
+	Id	id; 
 } Menu;
 
 typedef struct {
 	char text[16];
+	Id action_id;
 } MenuItem;
-	
+
+MenuItem play_item = {"Play",character_menu_id};
+MenuItem highscore_item = {"Highscore",highscore_menu_id};
+MenuItem player1 = {"<3", play_id};
+MenuItem player2 = {":)", play_id};
+MenuItem player3 = {":(", play_id};
+MenuItem player4 = {"--__--", play_id};
+MenuItem player5 = {":S", play_id};
+MenuItem player6 = {":,(", play_id};
+MenuItem back_item = {"<-- back",main_menu_id};
+MenuItem replay_item = {"Replay", replay_id};
+MenuItem main_menu_item = {"Main menu",main_menu_id};
+
+Menu main_menu = {"Main menu", {&play_item, &highscore_item}, 2, 0, 0, main_menu_id};
+Menu character_menu = {"Character select:", {&player1, &player2, &player3, &player4, &player5, &player6, &back_item}, 7, 0, 0, character_menu_id};
+Menu highscore_menu = {"Highscore", {&back_item, &back_item, &back_item, &back_item, &back_item, &back_item, &back_item}, 7, 6, 6, highscore_menu_id};
+Menu end_menu= {"Well played!", {&main_menu_item, &replay_item}, 2, 0, 0, end_menu_id}; 
 Menu *menu = &main_menu;
-
-MenuItem play_item = {"Play"};
-MenuItem highscore_item = {"Highscore"};
-	
-Menu main_menu = {"Main menu", {&play_item, &highscore_item}, 2, 1, 1};
-
-MenuItem *get_choice(Menu *menu) {
+static MenuItem *get_choice(Menu *menu) {
 	return menu->items[menu->choice];
 }
+static Id get_choice_id(Menu *menu){
+	return menu->items[menu->choice]->id;
+}
+static char* get_item_text(uint8_t item_number){
+	return menu->items[item_number]->text;
+}
+void menu_init() {
+	menu = &main_menu;
+	write_menu(menu);
+}
 
+static void scroll(bool down) {
+	if (down){
+		if (menu->choice == menu->n_items - 1){
+			return;
+		}
+		menu->choice++;
+	}
+	else {
+		if (menu->choice == menu->default_choice){
+			return;
+		}
+		menu->choice--;
+	}
+	if (menu->choice < menu->default_choice || menu->choice >= menu->n_items){
+		printf("menu error: choice out of range");
+	}
+}
 
-void menu_select() {
-	switch (menu){
-		case(&main_menu):
-			switch(get_choice(menu)){
-				case &play_item:
-					menu = &character_menu;
-					update_menu();
-				case &highscore_item:
-					menu = &highscore_menu;
-					update_menu();
-				default:
-					printf("menu error: invalid main menu choice\n");
-					break;
-			}
+static void display_character(){
+	display_write_line("Playing...",0);
+	for (int i = 0;i<character_menu.n_items;i++){
+		if (i == character_menu.choice){
+			display_write_line(character_menu.items[i]->text,5);
+		}
+	}
+}
+
+static void write_menu(Menu *menu){
+	uint8_t display_offset = 1;
+	display_write_line(menu->header,0);
+	for (int i = 0;i<menu->n_items ;i++){
+		if (i == menu->choice){
+			display_write_line(get_item_text(i),i + display_offset);
+			display_invert_line(i+1);
+		}
+		else {
+			display_write_line(get_item_text(i),i+1);
+		}
+	}
+}
+
+void menu_handle_select() {
+	switch(get_choice_id((menu))){
+		case character_menu_id:
+			menu = &character_menu;
+			update_menu();
+		case highscore_menu_id:
+			menu = &highscore_menu;
+			update_menu();
+		case play_id:
+			em_game_start();
+			display_character();
+			menu = &end_menu;
+		case end_menu_id:
+			menu = &highscore_menu;
+			update_menu();
+		case replay_id:
+			em_replay_start();
+			display_character();
+			menu = &main_menu;
+		case main_menu_id:
+			menu = &main_menu;
+		default:
+			printf("menu error: invalid main menu choice\n");
 			break;
 	}
 }
 
+void menu_handle_scroll(bool up) {
+	scroll(up);
+}
