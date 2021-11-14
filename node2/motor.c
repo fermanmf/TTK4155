@@ -37,9 +37,7 @@ void set_speed(float speed){
 
 void motor_init(){
     //Provide clock for input at PIOC
-	//PMC->PMC_PCR = PMC_PCR_EN | PMC_PCR_DIV_PERIPH_DIV_MCK | 13;
     PMC->PMC_PCER0 |= PMC_PCER0_PID13;
-    //TODO: Verify that setting PMC_PCR register is not neccessary.
 
     // enable I/O D controller and set as output
     PIOD->PIO_PER |= 0b111 | 0b11<<9;

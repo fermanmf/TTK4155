@@ -12,4 +12,4 @@ void timer_pid_clock_disable();
 
 void timer_game_clock_start();
 
-void timer_get_game_clock();
+uint32_t timer_get_game_clock();

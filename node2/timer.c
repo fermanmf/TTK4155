@@ -98,6 +98,6 @@ void timer_pid_clock_disable(){
 void timer_game_clock_start(){
 	TC0->TC_CHANNEL[1].TC_CCR = TC_CCR_CLKEN | TC_CCR_SWTRG;
 }
-void timer_get_game_clock(){
-	return TC0->TC_CHANNEL[1].TC_CV/3276.8;
+uint32_t timer_get_game_clock(){
+	return round(TC0->TC_CHANNEL[1].TC_CV/3276.8);
 }

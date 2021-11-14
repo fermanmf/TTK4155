@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include "motor.h"
 
-#define QUEUE_MAX_LENGTH 3000
+#define QUEUE_MAX_LENGTH 500
 
 
 typedef struct {

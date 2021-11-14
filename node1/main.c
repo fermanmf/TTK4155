@@ -91,33 +91,31 @@ int main(){
 				}
 				break;
 
-			
-			///*
-			//case(inGame):
-				////enable pid-interrupt
-				////enable motor
-				//switch (event.type){
-				//case /* constant-expression */:
-					///* code */
-					//break;
-				//
-				//default:
-					//break;
-				//}
-//
-			//case(inReplay):
-				////enable pid-interrupt
-				////enable motor
-				//switch (event.type){
-				//case /* constant-expression */:
-					///* code */
-					//break;
-				//
-				//default:
-					//break;
-					//
-				//}
-				//
+			case(inGame):
+				//enable pid-interrupt
+				//enable motor
+				switch (event.type){
+					case EmGameEnd:
+						state = inMenu;
+						break;
+				
+				default:
+					break;
+				}
+
+			case(inReplay):
+				//enable pid-interrupt
+				//enable motor
+				switch (event.type){
+					case EmReplayEnd:
+						state = inMenu;
+						break;
+				
+				default:
+					break;
+					
+				}
+				
 			default:
 				break;
 		}
