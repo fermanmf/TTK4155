@@ -1,6 +1,8 @@
 #include "menu.h"
 #include "display.h"
-#include "stdbool.h"
+#include <stdbool.h>
+
+#include <stdio.h>
 
 #define HIGHSCOREMENU		{{"HighScore","1.","2.","3.","4.","5.","6.","<--Back"}, 8, 7, 7}
 #define MAIN_MENU			{{"Main menu","Play","HighScore"}, 3, 1, 1};
@@ -15,7 +17,10 @@ typedef enum {
 	play_id,
 	replay_id
 }Id;
-
+typedef struct {
+	char text[16];
+	Id action_id;
+} MenuItem;
 typedef struct {
 	char header[16];
 	MenuItem *items[7];
@@ -25,10 +30,7 @@ typedef struct {
 	Id	id; 
 } Menu;
 
-typedef struct {
-	char text[16];
-	Id action_id;
-} MenuItem;
+
 
 MenuItem play_item = {"Play",character_menu_id};
 MenuItem highscore_item = {"Highscore",highscore_menu_id};
@@ -105,7 +107,7 @@ static void write_menu(Menu *menu){
 }
 
 void menu_handle_select() {
-	switch(get_choice_id((menu))){
+	switch(get_choice_id(menu)){
 		case character_menu_id:
 			menu = &character_menu;
 			update_menu();

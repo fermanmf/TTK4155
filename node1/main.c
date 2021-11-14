@@ -41,7 +41,6 @@ int main(){
 		switch (state){
 
 			case(inMenu):
-				menu_handle_scroll(bool up);
 				switch(event.type) {
 					case EmReplayStart:
 						state = inReplay;
@@ -54,30 +53,32 @@ int main(){
 					default:
 						break;
 				}
-			
-			case(inGame):
-				//enable pid-interrupt
-				//enable motor
-				switch (event.type){
-				case /* constant-expression */:
-					/* code */
-					break;
-				
-				default:
-					break;
-				}
-
-			case(inReplay):
-				//enable pid-interrupt
-				//enable motor
-				switch (event.type){
-				case /* constant-expression */:
-					/* code */
-					break;
-				
-				default:
-					break;
-				}
+			///*
+			//case(inGame):
+				////enable pid-interrupt
+				////enable motor
+				//switch (event.type){
+				//case /* constant-expression */:
+					///* code */
+					//break;
+				//
+				//default:
+					//break;
+				//}
+//
+			//case(inReplay):
+				////enable pid-interrupt
+				////enable motor
+				//switch (event.type){
+				//case /* constant-expression */:
+					///* code */
+					//break;
+				//
+				//default:
+					//break;
+					//
+				//}
+				//
 			default:
 				break;
 		}
