@@ -76,7 +76,7 @@ static void write_menu(){
 }
 void menu_init() {
 	menu = &main_menu;
-	write_menu(menu);
+	write_menu();
 }
 
 static void scroll(bool down) {
@@ -115,24 +115,36 @@ void menu_handle_select() {
 		case character_menu_id:
 			menu = &character_menu;
 			update_menu();
+			break;
+			
 		case highscore_menu_id:
 			menu = &highscore_menu;
 			update_menu();
+			break;
+			
 		case play_id:
 			//em_game_start();
 			display_character();
 			menu = &end_menu;
+			break;
+			
 		case end_menu_id:
 			menu = &highscore_menu;
 			update_menu();
+			break;
+			
 		case replay_id:
 			//em_replay_start();
 			display_character();
 			menu = &main_menu;
+			break;
+			
 		case main_menu_id:
 			menu = &main_menu;
+			break;
+			
 		default:
-			printf("menu error: invalid main menu choice\n");
+			printf("menu error: invalid main menu choice: %u\n", get_choice_id(menu));
 			break;
 	}
 }
