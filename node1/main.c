@@ -16,8 +16,9 @@
 void setup(){
 	controller_init();
 	em_init();
-	sei();
+	display_init();
 	menu_init();
+	sei();
 }
 
 
@@ -35,7 +36,6 @@ int main(){
 	printf("Setting up\n\r");
 	setup();
 	printf("Done setting up. Starting main\n\r");
-	_main();
 	printf("Main is done\n\r");
 	while(1){
 		EmEvent event = em_get_event();
@@ -52,48 +52,45 @@ int main(){
 						break;
 					case EmJoystickPressed:
 						menu_handle_select();
+						printf("em: joystick pressed\n\r");
 						break;
 					case EmJoystickXDirectionChanged:
-						if (event.joystick_x_direction<2){
-							menu_handle_scroll(event.joystick_x_direction);	
+						printf("em: joystick x direction changed, %u\n\r", event.joystick_x_direction);
+						if (event.joystick_x_direction == emJoystickDown){
+							menu_handle_scroll(true);	
 						}
+						else if (event.joystick_x_direction == emJoystickUp) { //hvorfor skjer aldri menu_handle_scroll!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+							menu_handle_scroll(false);
+						}
+						break;
+					case EmJoystickYDirectionChanged:
+						printf("em: joystick y direction changed, %u\n\r", event.joystick_y_direction);
+						break;
+					
+					case EmJoystickXChanged:
+						printf("em: joystick x changed, %d\n\r", event.joystick_x);
+						break;
+					
+					case EmJoystickYChanged:
+						printf("em: joystick y changed, %d\n\r", event.joystick_y);
+						break;
+					
+					case EmSliderLeftChanged:
+						printf("em: slider left changed, %u\n\r", event.slider_left);
+						break;
+					
+					case EmSliderRightChanged:
+						printf("em: slider right changed, %u\n\r", event.slider_left);
+						break;
+					
+					case EmIrBeamBroken:
+						printf("em: ir beam broken\n\r");
 						break;
 					default:
 						break;
 				}
 				break;
 
-			case EmJoystickPressed:
-				printf("em: joystick pressed\n\r");
-				break;
-				
-			case EmJoystickXDirectionChanged:
-				printf("em: joystick x direction changed, %u\n\r", event.joystick_x_direction);
-				break;
-			
-			case EmJoystickYDirectionChanged:
-				printf("em: joystick y direction changed, %u\n\r", event.joystick_y_direction);
-				break;
-			
-			case EmJoystickXChanged:
-				printf("em: joystick x changed, %d\n\r", event.joystick_x);
-				break;
-			
-			case EmJoystickYChanged:
-				printf("em: joystick y changed, %d\n\r", event.joystick_y);
-				break;
-			
-			case EmSliderLeftChanged:
-				printf("em: slider left changed, %u\n\r", event.slider_left);
-				break;
-			
-			case EmSliderRightChanged:
-				printf("em: slider right changed, %u\n\r", event.slider_left);
-				break;
-			
-			case EmIrBeamBroken:
-				printf("em: ir beam broken\n\r");
-				break;
 			
 			///*
 			//case(inGame):

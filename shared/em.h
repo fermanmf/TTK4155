@@ -11,7 +11,7 @@ typedef enum {
 	EmSliderLeftChanged,
 	EmSliderRightChanged,
 	EmReplayStart,
-	EmGameStart
+	EmGameStart,
 	EmIrBeamBroken
 } EmEventType;
 

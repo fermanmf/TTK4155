@@ -21,6 +21,7 @@ typedef struct {
 	char text[16];
 	Id action_id;
 } MenuItem;
+
 typedef struct {
 	char header[16];
 	MenuItem *items[7];
@@ -104,10 +105,13 @@ static void scroll(bool down) {
 
 static void display_character(){
 	display_write_line("Playing...",0);
-	for (int i = 0;i<character_menu.n_items;i++){
-		if (i == character_menu.choice){
-			display_write_line(character_menu.items[i]->text,5);
+	display_write_line(character_menu.items[character_menu.choice]->text,5);
+	for (int i = 0; i<8;i++){
+		if (i != 0 && i != 5){
+			display_write_line("",i);
 		}
+		
+		
 	}
 }
 
@@ -146,6 +150,7 @@ void menu_handle_select() {
 			
 		case main_menu_id:
 			menu = &main_menu;
+			update_menu();
 			break;
 			
 		default:
@@ -156,4 +161,6 @@ void menu_handle_select() {
 
 void menu_handle_scroll(bool down) {
 	scroll(down);
+	update_menu();
+	printf("handle scroll\n\r");
 }
