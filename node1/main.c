@@ -54,17 +54,17 @@ int main(){
 						menu_handle_select();
 						printf("em: joystick pressed\n\r");
 						break;
-					case EmJoystickXDirectionChanged:
-						printf("em: joystick x direction changed, %u\n\r", event.joystick_x_direction);
-						if (event.joystick_x_direction == emJoystickDown){
+					case EmJoystickYDirectionChanged:
+						printf("em: joystick y direction changed, %u\n\r", event.joystick_x_direction);
+						if (event.joystick_y_direction == emJoystickDown){
 							menu_handle_scroll(true);	
 						}
-						else if (event.joystick_x_direction == emJoystickUp) { //hvorfor skjer aldri menu_handle_scroll!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+						else if (event.joystick_y_direction == emJoystickUp) {
 							menu_handle_scroll(false);
 						}
 						break;
-					case EmJoystickYDirectionChanged:
-						printf("em: joystick y direction changed, %u\n\r", event.joystick_y_direction);
+					case EmJoystickXDirectionChanged:
+						printf("em: joystick x direction changed, %u\n\r", event.joystick_y_direction);
 						break;
 					
 					case EmJoystickXChanged:
@@ -92,19 +92,31 @@ int main(){
 				break;
 
 			
-			///*
-			//case(inGame):
-				////enable pid-interrupt
-				////enable motor
-				//switch (event.type){
-				//case /* constant-expression */:
-					///* code */
-					//break;
-				//
-				//default:
-					//break;
-				//}
-//
+		
+			case(inGame):
+				//enable pid-interrupt
+				//enable motor
+				switch(event.type) {
+					case EmReplayStart:
+						state = inReplay;
+						break;
+					case EmJoystickPressed:
+					menu_handle_select();
+					printf("em: joystick pressed\n\r");
+					break;
+					case EmJoystickYDirectionChanged:
+					printf("em: joystick y direction changed, %u\n\r", event.joystick_x_direction);
+					if (event.joystick_y_direction == emJoystickDown){
+						menu_handle_scroll(true);
+					}
+					else if (event.joystick_y_direction == emJoystickUp) {
+						menu_handle_scroll(false);
+					}
+					break;
+					default:
+						break;
+					}
+				break<
 			//case(inReplay):
 				////enable pid-interrupt
 				////enable motor
