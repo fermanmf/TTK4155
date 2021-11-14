@@ -45,7 +45,7 @@ MenuItem replay_item = {"Replay", replay_id};
 MenuItem main_menu_item = {"Main menu",main_menu_id};
 
 Menu main_menu = {"Main menu", {&play_item, &highscore_item}, 2, 0, 0, main_menu_id};
-Menu character_menu = {"Character select:", {&player1, &player2, &player3, &player4, &player5, &player6, &back_item}, 7, 0, 0, character_menu_id};
+Menu character_menu = {"Character select", {&player1, &player2, &player3, &player4, &player5, &player6, &back_item}, 7, 0, 0, character_menu_id};
 //foreløpig en liten hack på highscore
 Menu highscore_menu = {"Highscore", {&back_item, &back_item, &back_item, &back_item, &back_item, &back_item, &back_item}, 7, 6, 6, highscore_menu_id};
 Menu end_menu= {"Well played!", {&main_menu_item, &replay_item}, 2, 0, 0, end_menu_id}; 
@@ -55,10 +55,24 @@ static MenuItem *get_choice(Menu *menu) {
 	return menu->items[menu->choice];
 }
 static Id get_choice_id(Menu *menu){
-	return menu->items[menu->choice]->id;
+	return menu->items[(menu->choice)]->action_id;
 }
 static char* get_item_text(uint8_t item_number){
 	return menu->items[item_number]->text;
+}
+
+static void write_menu(){
+	uint8_t display_offset = 1;
+	display_write_line(menu->header,0);
+	for (int i = 0;i<menu->n_items ;i++){
+		if (i == menu->choice){
+			display_write_line(get_item_text(i),i + display_offset);
+			display_invert_line(i+1);
+		}
+		else {
+			display_write_line(get_item_text(i),i+1);
+		}
+	}
 }
 void menu_init() {
 	menu = &main_menu;
@@ -92,20 +106,10 @@ static void display_character(){
 	}
 }
 
-static void write_menu(Menu *menu){
-	uint8_t display_offset = 1;
-	display_write_line(menu->header,0);
-	for (int i = 0;i<menu->n_items ;i++){
-		if (i == menu->choice){
-			display_write_line(get_item_text(i),i + display_offset);
-			display_invert_line(i+1);
-		}
-		else {
-			display_write_line(get_item_text(i),i+1);
-		}
-	}
-}
 
+static void update_menu(){
+	write_menu(menu);
+}
 void menu_handle_select() {
 	switch(get_choice_id(menu)){
 		case character_menu_id:
@@ -115,14 +119,14 @@ void menu_handle_select() {
 			menu = &highscore_menu;
 			update_menu();
 		case play_id:
-			em_game_start();
+			//em_game_start();
 			display_character();
 			menu = &end_menu;
 		case end_menu_id:
 			menu = &highscore_menu;
 			update_menu();
 		case replay_id:
-			em_replay_start();
+			//em_replay_start();
 			display_character();
 			menu = &main_menu;
 		case main_menu_id:
