@@ -62,15 +62,20 @@ static char* get_item_text(uint8_t item_number){
 }
 
 static void write_menu(){
-	uint8_t display_offset = 1;
+	uint8_t item_offset = 1;
 	display_write_line(menu->header,0);
-	for (int i = 0;i<menu->n_items ;i++){
-		if (i == menu->choice){
-			display_write_line(get_item_text(i),i + display_offset);
-			display_invert_line(i+1);
+	for (int i = 0;i<7 ;i++){
+		if (i < menu->n_items){
+			if (i == menu->choice){
+				display_write_line(get_item_text(i),i+item_offset);
+				display_invert_line(i+1);
+			}
+			else {
+				display_write_line(get_item_text(i),i+item_offset);
+			}
 		}
-		else {
-			display_write_line(get_item_text(i),i+1);
+		else{
+			display_write_line("",i+item_offset);
 		}
 	}
 }
@@ -108,7 +113,7 @@ static void display_character(){
 
 
 static void update_menu(){
-	write_menu(menu);
+	write_menu();
 }
 void menu_handle_select() {
 	switch(get_choice_id(menu)){
