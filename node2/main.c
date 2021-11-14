@@ -7,12 +7,19 @@
 #include "servo.h"
 #include "ir.h"
 #include "solenoid.h"
+#include "timer.h"
+#include "motor.h"
+#include "dac.h"
 
 void setup(){
 	em_init();	
 	servo_init();
 	ir_init(&em_ir_beam_broken);
 	solenoid_init();
+	motor_init();
+	dac_init();
+	timer_init();
+	
 }
 
 void _main(){
@@ -43,6 +50,7 @@ void _main(){
 				
 			case EmSliderLeftChanged:
 				printf("em: slider left changed, %u\n\r", event.slider_left);
+					pid.ref = event.slider_left;
 				break;
 				
 			case EmSliderRightChanged:
