@@ -4,9 +4,10 @@
 #include "sam.h"
 #include "printf-stdarg.h"
 
-#include <stdbool.h>
+static void (*IR_BEAM_BROKEN_CB)();
 
-void ir_init() {
+void ir_init(void (*callback)()) {
+	IR_BEAM_BROKEN_CB = callback;
 
     // Enable ADC controller MCK in the PMC
     // ID_ADC = 37
@@ -34,20 +35,28 @@ void ir_init() {
     ADC->ADC_EMR |= ADC_EMR_CMPMODE_LOW | ADC_EMR_CMPSEL(0);
 
     // Setting the LOW threshold
-    ADC->ADC_CWR = 300;    
+    ADC->ADC_CWR = 300;   
+	
+	PMC->PMC_PCER1 |= PMC_PCER1_PID32;
+
+	
+	TC1->TC_CHANNEL[2].TC_IER = TC_IER_CPCS;
+	TC1->TC_CHANNEL[2].TC_RC = 65625/10; // 20 hz?
+	TC1->TC_CHANNEL[2].TC_CMR = TC_CMR_TCCLKS_TIMER_CLOCK4 | TC_CMR_WAVE | TC_CMR_WAVSEL_UP_RC;
+	TC1->TC_CHANNEL[2].TC_CCR = TC_CCR_CLKEN | TC_CCR_SWTRG; 
+	
+	NVIC_EnableIRQ(TC5_IRQn);
 }
 
-volatile unsigned int *IR = (unsigned int*) 0x400C0050;
+#define ir_value ((volatile uint32_t*) 0x400C0050)
+#define TRESHOLD 300
 
-void TC5_Handler(){
-	static bool last_under_threshold = false;
-	if (*IR < 300) {
-		if (!last_under_threshold) {
-			(*ir_beam_broken_cb)();
-			last_under_threshold = true;
-		}		
-	} else if (*IR > 500) {
-		last_under_threshold = false;
+static uint32_t last_ir_value = 0;
+
+void TC5_Handler(){	
+	if (*ir_value < TRESHOLD && last_ir_value > TRESHOLD) {
+		(*IR_BEAM_BROKEN_CB)();
 	}
+	last_ir_value = *ir_value;
 	TC1->TC_CHANNEL[2].TC_SR;
 }

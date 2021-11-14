@@ -5,10 +5,12 @@
 // include other files under this
 #include "em.h"
 #include "servo.h"
+#include "ir.h"
 
 void setup(){
 	em_init();	
 	servo_init();
+	ir_init(&em_ir_beam_broken);
 }
 
 void _main(){
@@ -33,7 +35,7 @@ void _main(){
 				
 			case EmJoystickYChanged:
 				printf("em: joystick y changed, %d\n\r", event.joystick_y);
-				servo_set(event.joystick_y / 100);
+				servo_set(event.joystick_y / 100.0);
 				break;
 				
 			case EmSliderLeftChanged:
@@ -44,6 +46,10 @@ void _main(){
 				printf("em: slider right changed, %u\n\r", event.slider_left);
 				break;
 			
+			case EmIrBeamBroken:
+				printf("em: ir beam broken\n\r");
+				break;
+				
 			default:
 				break;
 		}

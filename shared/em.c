@@ -82,8 +82,13 @@ void em_can_message_received (uint8_t id, uint8_t data[], uint8_t data_length) {
 			break;
 		}
 		
+		case EmIrBeamBroken: {
+			const EmEvent event = {EmIrBeamBroken};
+			append(event);
+			break;
+		}
+		
 		default:
-			panic();
 			break;
 	}
 }
@@ -134,4 +139,10 @@ void em_slider_right_changed(uint8_t value) {
 	append(event);
 	uint8_t data[1] = {value};
 	can_send(event.type, data, 1);
+}
+
+void em_ir_beam_broken() {
+	const EmEvent event = {EmIrBeamBroken};
+	append(event);
+	can_send_empty(event.type);	
 }

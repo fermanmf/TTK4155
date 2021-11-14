@@ -9,7 +9,8 @@ typedef enum {
 	EmJoystickXChanged,
 	EmJoystickYChanged,
 	EmSliderLeftChanged,
-	EmSliderRightChanged
+	EmSliderRightChanged,
+	EmIrBeamBroken
 } EmEventType;
 
 typedef enum {
@@ -43,3 +44,4 @@ void em_joystick_x_changed(int8_t value);
 void em_joystick_y_changed(int8_t value);
 void em_slider_left_changed(uint8_t value);
 void em_slider_right_changed(uint8_t value);
+void em_ir_beam_broken();
