@@ -21,6 +21,7 @@ void _main(){
 		switch(event.type) {
 			case EmJoystickPressed:
 				printf("em: joystick pressed\n\r");
+				solenoid_on();
 				break;
 			
 			case EmJoystickXDirectionChanged:
