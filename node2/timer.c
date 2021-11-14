@@ -23,7 +23,6 @@ void timer_init(){
     TC0->TC_CHANNEL[0].TC_IER = TC_IER_CPCS;
     TC0->TC_CHANNEL[0].TC_RC = REGISTER_C; 
     TC0->TC_CHANNEL[0].TC_CMR = TC_CMR_TCCLKS_TIMER_CLOCK4 | TC_CMR_WAVE | TC_CMR_WAVSEL_UP_RC;
-	TC0->TC_CHANNEL[0].TC_CCR = TC_CCR_CLKEN | TC_CCR_SWTRG;
 	
 	//TC1 Game clock
 	TC0->TC_CHANNEL[1].TC_RC = TC1_REGISTER_C;
@@ -89,6 +88,9 @@ void timer_delay(uint32_t time){
     while(!(SysTick->CTRL & (1<<16)));
 }
 
+void timer_pid_clock_start(){
+	TC0->TC_CHANNEL[0].TC_CCR = TC_CCR_CLKEN | TC_CCR_SWTRG;
+}
 void timer_game_clock_start(){
 	TC0->TC_CHANNEL[1].TC_CCR = TC_CCR_CLKEN | TC_CCR_SWTRG;
 }
