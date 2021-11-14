@@ -91,6 +91,9 @@ void timer_delay(uint32_t time){
 void timer_pid_clock_start(){
 	TC0->TC_CHANNEL[0].TC_CCR = TC_CCR_CLKEN | TC_CCR_SWTRG;
 }
+void timer_pid_clock_disable(){
+	TC0->TC_CHANNEL[0].TC_CCR = 0;
+}
 void timer_game_clock_start(){
 	TC0->TC_CHANNEL[1].TC_CCR = TC_CCR_CLKEN | TC_CCR_SWTRG;
 }

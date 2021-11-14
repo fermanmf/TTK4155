@@ -1,6 +1,7 @@
 #include "replay.h"
 #include "em.h"
 #include <stdbool.h>
+#include <stdint.h>
 #include "motor.h"
 
 #define QUEUE_MAX_LENGTH 3000
@@ -11,15 +12,16 @@ typedef struct {
     EmEvent event;
 }Incident;
 
-static int8_t end_index = -1;
+static int32_t end_index = -1;
 static Incident log[QUEUE_MAX_LENGTH] = {};
 
 static void append(Incident incident) {
 	if (end_index < QUEUE_MAX_LENGTH-1) {
 		log[++end_index] = incident;		
-	} else {
-		panic();		
-	}	
+	}
+	else{
+		printf("replay error: log append error\n\r");
+	}
 }
 
 void replay_reset_log(){
