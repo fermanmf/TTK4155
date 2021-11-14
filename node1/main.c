@@ -44,12 +44,18 @@ int main(){
 				switch(event.type) {
 					case EmReplayStart:
 						state = inReplay;
+						break;
 					case EmGameStart:
 						state = inGame;
+						break;
 					case EmJoystickPressed:
 						menu_handle_select();
+						break;
 					case EmJoystickXDirectionChanged:
-						menu_handle_scroll(event.joystick_x_direction);
+						if (event.joystick_x_direction<2){
+							menu_handle_scroll(event.joystick_x_direction);	
+						}
+						break;
 					default:
 						break;
 				}
