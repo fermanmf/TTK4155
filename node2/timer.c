@@ -48,15 +48,6 @@ void timer_init(){
 }
 int test = 1;
 void TC0_Handler(){
-	/*
-	if (test){
-		dac_write(0.2);
-		test = 0;	
-	}
-	else{
-		dac_write(0.7);
-		test = 1;
-	}*/
 	motor_control_pos(INT_PERIOD);	
     TC0->TC_CHANNEL[0].TC_SR;	//Clear interrupt flag
 	
@@ -99,5 +90,5 @@ void timer_game_clock_start(){
 	TC0->TC_CHANNEL[1].TC_CCR = TC_CCR_CLKEN | TC_CCR_SWTRG;
 }
 uint32_t timer_get_game_clock(){
-	return round(TC0->TC_CHANNEL[1].TC_CV/3276.8);
+	return TC0->TC_CHANNEL[1].TC_CV/3277;
 }
