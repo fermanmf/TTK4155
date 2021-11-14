@@ -11,7 +11,6 @@
 #include "consts.h"
 #include "panic.h"
 
-
 #define SS 4
 
 static void slave_select(){
@@ -26,6 +25,7 @@ static void slave_deselect(){
 #define RXM1 6
 #define SJW0 6
 #define PHSEG10 3
+#define TXREQ 3
 
 void mcp2515_init(bool loopback_mode) {
 	DDRB |= 1 << SS; // enable slave select as output
@@ -133,14 +133,14 @@ void mcp2515_bit_modify(uint8_t address, uint8_t mask, uint8_t data) {
 
 
 void mcp2515_rts(){
-    slave_select();
+	while (MCP_TXB0CTRL & (1 << TXREQ)); // wait for buffer to not have pending transmission
+    slave_select();	
 	spi_transmit(MCP_RTS_TX0);
 	slave_deselect();
 }
 
 
 ISR(INT0_vect) {
-	printf("Hello form ISR INT0\n");
 	const uint8_t canintf = mcp2515_read(MCP_CANINTF);
 	switch(canintf) {
 		case MCP_ERRIF:

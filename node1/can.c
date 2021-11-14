@@ -8,6 +8,7 @@
 #include "mcp2515.h"
 
 static void message_received_cb() {
+	printf("Hello from can cb\n");
 	uint8_t id;
 	uint8_t data[8];
 	uint8_t data_length;
