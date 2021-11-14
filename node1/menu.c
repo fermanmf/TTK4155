@@ -154,6 +154,6 @@ void menu_handle_select() {
 	}
 }
 
-void menu_handle_scroll(bool up) {
-	scroll(up);
+void menu_handle_scroll(bool down) {
+	scroll(down);
 }
