@@ -16,8 +16,8 @@ void solenoid_init() {
     // ======== idk ========
     TC2->TC_CHANNEL[0].TC_CMR |= TC_CMR_ACPA_SET | TC_CMR_ACPC_CLEAR;
     // =====================
-    TC2->TC_CHANNEL[0].TC_RC = 656250;
-    TC2->TC_CHANNEL[0].TC_RA = 623437;
+    TC2->TC_CHANNEL[0].TC_RC = 1000;
+    TC2->TC_CHANNEL[0].TC_RA = 0;
 
 }
 

@@ -6,11 +6,13 @@
 #include "em.h"
 #include "servo.h"
 #include "ir.h"
+#include "solenoid.h"
 
 void setup(){
 	em_init();	
 	servo_init();
 	ir_init(&em_ir_beam_broken);
+	solenoid_init();
 }
 
 void _main(){
