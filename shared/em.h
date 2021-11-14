@@ -12,6 +12,7 @@ typedef enum {
 	EmSliderRightChanged,
 	EmReplayStart,
 	EmGameStart
+	EmIrBeamBroken
 } EmEventType;
 
 typedef enum {
@@ -47,3 +48,4 @@ void em_slider_left_changed(uint8_t value);
 void em_slider_right_changed(uint8_t value);
 void em_replay_start();
 void em_game_start();
+void em_ir_beam_broken();

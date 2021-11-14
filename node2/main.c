@@ -1,53 +1,72 @@
 #include "sam.h"
 #include "uart.h"
 #include "printf-stdarg.h"
+
+// include other files under this
 #include "em.h"
-#include "timer.h"
-#include "dac.h"
-#include "motor.h"
-#include "panic.h"
-#include "em.h"
+#include "servo.h"
 #include "ir.h"
-#include "pwm.h"
+#include "solenoid.h"
 
-
-void ir_print() {
-	printf("Hello from IR callback\n\r");
+void setup(){
+	em_init();	
+	servo_init();
+	ir_init(&em_ir_beam_broken);
+	solenoid_init();
 }
 
-
-
-int main(void)
-{
-    /* Initialize the SAM system */
-    SystemInit();
-	WDT->WDT_MR = WDT_MR_WDDIS; //disable watchdog
-    configure_uart();
-	
-	dac_init();
-	motor_init();
-	em_init();
-	printf("Start\n\r");
-	ir_beam_broken_cb = &ir_print;
-	ir_init();
-	printf("Nor crashed\n\r");
-	timer_init();
-	pwm_init();
-    
+void _main(){
 	while(1) {
 		EmEvent event = em_get_event();
 		switch(event.type) {
-			case EmJoystickXChanged:
-				printf("HEllo from event\n\r");
-				pwm_set(event.joystick_x / 100); 
+			case EmJoystickPressed:
+				printf("em: joystick pressed\n\r");
 				break;
 			
+			case EmJoystickXDirectionChanged:
+				printf("em: joystick x direction changed, %u\n\r", event.joystick_x_direction);
+				break;
+				
+			case EmJoystickYDirectionChanged:
+				printf("em: joystick y direction changed, %u\n\r", event.joystick_y_direction);
+				break;
+				
+			case EmJoystickXChanged:
+				printf("em: joystick x changed, %d\n\r", event.joystick_x);
+				break;
+				
+			case EmJoystickYChanged:
+				printf("em: joystick y changed, %d\n\r", event.joystick_y);
+				servo_set(event.joystick_y / 100.0);
+				break;
+				
+			case EmSliderLeftChanged:
+				printf("em: slider left changed, %u\n\r", event.slider_left);
+				break;
+				
+			case EmSliderRightChanged:
+				printf("em: slider right changed, %u\n\r", event.slider_left);
+				break;
+			
+			case EmIrBeamBroken:
+				printf("em: ir beam broken\n\r");
+				break;
+				
 			default:
 				break;
-	}
+		}
+	}	
+}
 
-	}
-
-    printf("Terminated\n\r");
-
+int main(){
+	SystemInit();
+	WDT->WDT_MR = WDT_MR_WDDIS; //disable watchdog
+	configure_uart();
+	
+	printf("Setting up\n\r");
+	setup();
+	printf("Done setting up. Starting main\n\r");
+	_main();
+	printf("Main is done\n\r");
+	
 }
