@@ -55,7 +55,7 @@ int main(){
 						printf("em: joystick pressed\n\r");
 						break;
 					case EmJoystickYDirectionChanged:
-						printf("em: joystick y direction changed, %u\n\r", event.joystick_x_direction);
+						printf("em: joystick y direction changed, %u\n\r", event.joystick_y_direction);
 						if (event.joystick_y_direction == emJoystickDown){
 							menu_handle_scroll(true);	
 						}
@@ -64,7 +64,7 @@ int main(){
 						}
 						break;
 					case EmJoystickXDirectionChanged:
-						printf("em: joystick x direction changed, %u\n\r", event.joystick_y_direction);
+						printf("em: joystick x direction changed, %u\n\r", event.joystick_x_direction);
 						break;
 					
 					case EmJoystickXChanged:
