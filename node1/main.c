@@ -100,6 +100,7 @@ int main(){
 				default:
 					break;
 				}
+				break;
 
 			case(inReplay):
 				switch (event.type){
@@ -107,11 +108,10 @@ int main(){
 						state = inMenu;
 						break;
 				
-				default:
-					break;
-					
+					default:
+						break;
 				}
-				
+				break;
 			default:
 				break;
 		}
