@@ -9,6 +9,7 @@
 #include "solenoid.h"
 #include "timer.h"
 #include "motor.h"
+#include "replay.h"
 
 typedef enum {
 	idle,
@@ -81,6 +82,14 @@ void _main(){
 				switch(event.type) {
 					case EmJoystickPressed:
 						//solenoid
+						replay_log_event(event);
+						break;
+					case EmSliderLeftChanged:
+						pid.ref = event.slider_left;
+						replay_log_event(event);
+						break;
+					case EmJoystickYChanged:
+						replay_log_event(event);
 						break;
 					default:
 						break;
