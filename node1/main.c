@@ -92,8 +92,6 @@ int main(){
 				break;
 
 			case(inGame):
-				//enable pid-interrupt
-				//enable motor
 				switch (event.type){
 					case EmGameEnd:
 						state = inMenu;
@@ -104,8 +102,6 @@ int main(){
 				}
 
 			case(inReplay):
-				//enable pid-interrupt
-				//enable motor
 				switch (event.type){
 					case EmReplayEnd:
 						state = inMenu;
