@@ -137,7 +137,7 @@ void menu_handle_select() {
 		
 		case play_id:
 			//printf("started game from menu\n");
-			em_game_start();			
+			em_game_started();			
 			display_character();
 			menu = &end_menu;
 			break;
@@ -148,7 +148,7 @@ void menu_handle_select() {
 			break;
 		
 		case replay_id:
-			em_replay_start();
+			em_replay_started();
 			//printf("re play started from menu\n");
 			display_character();
 			menu = &main_menu;
