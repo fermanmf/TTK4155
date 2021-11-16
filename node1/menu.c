@@ -112,8 +112,6 @@ static void display_character(){
 		if (i != 0 && i != 5){
 			display_write_line("",i);
 		}
-		
-		
 	}
 }
 
@@ -135,8 +133,7 @@ void menu_handle_select() {
 			break;
 		
 		case play_id:
-			//printf("started game from menu\n");
-			em_game_started();			
+			em_event_empty(EmGameStarted);			
 			display_character();
 			menu = &end_menu;
 			break;
@@ -147,8 +144,7 @@ void menu_handle_select() {
 			break;
 		
 		case replay_id:
-			em_replay_started();
-			//printf("re play started from menu\n");
+			em_event_empty(EmReplayStarted);
 			display_character();
 			menu = &main_menu;
 			break;
@@ -159,7 +155,6 @@ void menu_handle_select() {
 			break;
 			
 		default:
-			//printf_P("menu error: invalid choice in menu_handle_select\n");
 			break;
 	}
 	
@@ -169,6 +164,4 @@ void menu_handle_select() {
 void menu_handle_scroll(bool down) {
 	scroll(down);
 	menu_update();
-	//printf("handle scroll\n\r");
-
 }
