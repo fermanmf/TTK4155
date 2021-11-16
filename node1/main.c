@@ -21,101 +21,104 @@ void setup(){
 	sei();
 }
 
-
 typedef enum {
 	inMenu,
 	inReplay,
-	inGame	
+	inGame
 } State;
 
-int main(){
-	MCUCR |= 1 << SRE; // enable external memory
-	SFIOR |= 1 << XMM2; // release JTAG pins from external memory address pins
-	uart_init(9600);
+void _main() {
 	State state = inMenu;
-	printf("Setting up\n\r");
-	setup();
-	printf("Done setting up. Starting main\n\r");
-	printf("Main is done\n\r");
 	while(1){
 		EmEvent event = em_get_event();
 		
 		switch (state){
 
 			case(inMenu):
-				switch(event.type) {
-					case EmReplayStart:
-						state = inReplay;
-						break;
-					case EmGameStart:
-						printf("started game from menu\n");
-						state = inGame;
-						break;
-					case EmJoystickPressed:
-						menu_handle_select();
-						printf("em: joystick pressed\n\r");
-						break;
-					case EmJoystickYDirectionChanged:
-						printf("em: joystick y direction changed, %u\n\r", event.joystick_y_direction);
-						if (event.joystick_y_direction == emJoystickDown){
-							menu_handle_scroll(true);	
-						}
-						else if (event.joystick_y_direction == emJoystickUp) {
-							menu_handle_scroll(false);
-						}
-						break;
-					case EmJoystickXDirectionChanged:
-						printf("em: joystick x direction changed, %u\n\r", event.joystick_x_direction);
-						break;
-					
-					case EmJoystickXChanged:
-						printf("em: joystick x changed, %d\n\r", event.joystick_x);
-						break;
-					
-					case EmJoystickYChanged:
-						printf("em: joystick y changed, %d\n\r", event.joystick_y);
-						break;
-					
-					case EmSliderLeftChanged:
-						printf("em: slider left changed, %u\n\r", event.slider_left);
-						break;
-					
-					case EmSliderRightChanged:
-						printf("em: slider right changed, %u\n\r", event.slider_left);
-						break;
-					
-					case EmIrBeamBroken:
-						printf("em: ir beam broken\n\r");
-						break;
-					default:
-						break;
+			switch(event.type) {
+				case EmReplayStart:
+				state = inReplay;
+				break;
+				case EmGameStart:
+				printf("started game from menu\n");
+				state = inGame;
+				break;
+				case EmJoystickPressed:
+				menu_handle_select();
+				printf("em: joystick pressed\n\r");
+				break;
+				case EmJoystickYDirectionChanged:
+				printf("em: joystick y direction changed, %u\n\r", event.joystick_y_direction);
+				if (event.joystick_y_direction == emJoystickDown){
+					menu_handle_scroll(true);
+				}
+				else if (event.joystick_y_direction == emJoystickUp) {
+					menu_handle_scroll(false);
 				}
 				break;
+				case EmJoystickXDirectionChanged:
+				printf("em: joystick x direction changed, %u\n\r", event.joystick_x_direction);
+				break;
+				
+				case EmJoystickXChanged:
+				printf("em: joystick x changed, %d\n\r", event.joystick_x);
+				break;
+				
+				case EmJoystickYChanged:
+				printf("em: joystick y changed, %d\n\r", event.joystick_y);
+				break;
+				
+				case EmSliderLeftChanged:
+				printf("em: slider left changed, %u\n\r", event.slider_left);
+				break;
+				
+				case EmSliderRightChanged:
+				printf("em: slider right changed, %u\n\r", event.slider_left);
+				break;
+				
+				case EmIrBeamBroken:
+				printf("em: ir beam broken\n\r");
+				break;
+				default:
+				break;
+			}
+			break;
 
 			case(inGame):
-				switch (event.type){
-					case EmGameEnd:
-						state = inMenu;
-						break;
+			switch (event.type){
+				case EmGameEnd:
+				state = inMenu;
+				break;
 				
 				default:
-					break;
-				}
 				break;
+			}
+			break;
 
 			case(inReplay):
-				switch (event.type){
-					case EmReplayEnd:
-						state = inMenu;
-						break;
+			switch (event.type){
+				case EmReplayEnd:
+				state = inMenu;
+				break;
 				
-					default:
-						break;
-				}
+				default:
 				break;
+			}
+			break;
 			default:
-				break;
+			break;
 		}
 	}
+}
+
+int main(){
+	MCUCR |= 1 << SRE; // enable external memory
+	SFIOR |= 1 << XMM2; // release JTAG pins from external memory address pins
+	uart_init(9600);
+	printf("Setting up\n\r");
+	setup();
+	printf("Done setting up. Starting main\n\r");
+	_main();
+	printf("Main is done\n\r");
 }
 

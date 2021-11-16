@@ -63,6 +63,7 @@ static char* get_item_text(uint8_t item_number){
 }
 
 static void write_menu(){
+	printf("Hello from write_menu\n");
 	uint8_t item_offset = 1;
 	display_write_line(menu->header,0);
 	for (int i = 0;i<7 ;i++){
