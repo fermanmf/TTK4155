@@ -26,8 +26,7 @@ static EmEvent pop(uint8_t index){
 }
 
 void em_init() {
-	can_message_received_cb = &em_can_message_received;
-	can_init();	
+	can_init(&em_can_message_received);	
 }
 
 EmEvent em_get_event() {
