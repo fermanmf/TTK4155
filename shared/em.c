@@ -88,11 +88,29 @@ void em_can_message_received (uint8_t id, uint8_t data[], uint8_t data_length) {
 			break;
 		}
 		
-		case EmGameStart: {
-			const EmEvent event = {EmGameStart};
+		case EmGameStarted: {
+			const EmEvent event = {EmGameStarted};
 			append(event);
 			break;
 		}		
+		
+		case EmGameEnded: {
+			const EmEvent event = {EmGameEnded};
+			append(event);
+			break;
+		}
+		
+		case EmReplayStarted: {
+			const EmEvent event = {EmReplayStarted};
+			append(event);
+			break;
+		}
+		
+		case EmReplayEnded: {
+			const EmEvent event = {EmReplayEnded};
+			append(event);
+			break;
+		}
 		
 		default:
 			break;
@@ -153,25 +171,26 @@ void em_ir_beam_broken() {
 	can_send_empty(event.type);
 }
 
-void em_game_start() {
-	const EmEvent event = {EmGameStart};
+void em_game_started() {
+	const EmEvent event = {EmGameStarted};
 	append(event);
 	can_send_empty(event.type);
 }
 
-void em_game_end() {
-	const EmEvent event = {EmGameEnd};
+void em_game_ended() {
+	const EmEvent event = {EmGameEnded};
 	append(event);
 	can_send_empty(event.type);	
 }
 
-void em_replay_start() {
-	const EmEvent event = {EmReplayStart};
+void em_replay_started() {
+	const EmEvent event = {EmReplayStarted};
 	append(event);
 	can_send_empty(event.type);
 }
-void em_replay_end() {
-	const EmEvent event = {EmReplayEnd};
+
+void em_replay_ended() {
+	const EmEvent event = {EmReplayEnded};
 	append(event);
 	can_send_empty(event.type);
 }
