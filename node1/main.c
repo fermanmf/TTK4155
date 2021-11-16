@@ -34,6 +34,7 @@ void _main() {
 		EmEvent event = em_get_event();
 		
 		switch(event.type) {
+			/*
 			case EmReplayStarted:
 			printf("em: replay started\n");
 			break;
@@ -73,7 +74,7 @@ void _main() {
 			case EmIrBeamBroken:
 			printf("em: ir beam broken\n");
 			break;
-			
+			*/
 			case EmGameEnded:
 			printf("em: game ended\n");
 			break;
@@ -91,10 +92,12 @@ void _main() {
 			case(inMenu):
 				switch(event.type) {
 					case EmReplayStarted:
+						printf("From inMenu to inReplay\n");
 						state = inReplay;
 						break;
 
 					case EmGameStarted:
+						printf("From inMenu to inGame\n");
 						state = inGame;
 						break;
 
@@ -103,11 +106,9 @@ void _main() {
 						break;
 
 					case EmJoystickYDirectionChanged:
-
 						if (event.joystick_y_direction == emJoystickDown){
 							menu_handle_scroll(true);
-						}
-						else if (event.joystick_y_direction == emJoystickUp) {
+						} else if (event.joystick_y_direction == emJoystickUp) {
 							menu_handle_scroll(false);
 						}
 						break;
@@ -121,6 +122,7 @@ void _main() {
 			case(inGame):
 				switch (event.type){
 					case EmGameEnded:
+						printf("From inGame to inMenu\n");
 						state = inMenu;
 						menu_update();
 						break;
@@ -133,6 +135,7 @@ void _main() {
 			case(inReplay):
 				switch (event.type){
 					case EmReplayEnded:
+						printf("From inReplay to inMenu\n");
 						state = inMenu;
 						menu_update();
 						break;

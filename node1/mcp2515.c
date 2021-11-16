@@ -71,8 +71,9 @@ void mcp2515_read_rx_buffer(uint8_t *id, uint8_t data[8], uint8_t *data_length) 
 	slave_select();
 	spi_transmit(MCP_READ_RX0);
 	spi_transmit(0); // receive buffer 0 standard identifier high
+	const uint8_t id_high = SPDR;
 	spi_transmit(0); // receive buffer 0 standard identifier low
-	*id = SPDR;
+	*id = (id_high << 3) | (SPDR >> 5);
 	spi_transmit(0); // receive buffer 0 extended identifier high
 	spi_transmit(0); // receive buffer 0 extended identifier low
 	spi_transmit(0); // receive buffer 0 data length code
