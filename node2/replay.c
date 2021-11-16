@@ -5,7 +5,7 @@
 #include "motor.h"
 #include "printf-stdarg.h"
 #include "timer.h"
-
+#include "solenoid.h"
 #define QUEUE_MAX_LENGTH 500
 
 
@@ -45,9 +45,9 @@ void replay_run(){
 					pid.ref = log[index].event.slider_left;
 					break;
 				case emJoystickDown:
-					//solenoide go
+					//solenoid_on();
 				case EmJoystickYChanged:
-					//servo move
+					//servo_set(event.joystick_y/100.0);
 				default:
 					break;
 			}

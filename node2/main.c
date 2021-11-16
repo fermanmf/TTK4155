@@ -81,7 +81,7 @@ void _main(){
 				timer_game_clock_start();
 				switch(event.type) {
 					case EmJoystickPressed:
-						//solenoid
+						//solenoid_on();
 						replay_log_event(event);
 						break;
 					case EmSliderLeftChanged:
@@ -96,6 +96,7 @@ void _main(){
 				}
 				if (timer_get_game_clock() >= 200){
 					em_game_end();
+					timer_pid_clock_disable();
 					state = idle;
 				}
 				break;
@@ -104,6 +105,7 @@ void _main(){
 				timer_game_clock_start();
 				if (timer_get_game_clock() >= 200){
 					em_replay_end();
+					timer_pid_clock_disable();
 					state = idle;
 				}
 				break;

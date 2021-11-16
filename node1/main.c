@@ -48,6 +48,7 @@ int main(){
 						state = inReplay;
 						break;
 					case EmGameStart:
+						printf("started game from menu\n");
 						state = inGame;
 						break;
 					case EmJoystickPressed:
