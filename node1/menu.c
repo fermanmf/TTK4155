@@ -1,6 +1,7 @@
 #include "menu.h"
 #include "display.h"
 #include "em.h"
+#include "buzzer.h"
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -57,9 +58,11 @@ Menu *menu = &main_menu;
 static MenuItem *get_choice(Menu *menu) {
 	return menu->items[menu->choice];
 }
+
 static Id get_choice_id(Menu *menu){
 	return menu->items[(menu->choice)]->action_id;
 }
+
 static char* get_item_text(uint8_t item_number){
 	return menu->items[item_number]->text;
 }
@@ -90,15 +93,19 @@ void menu_init() {
 static void scroll(bool down) {
 	if (down){
 		if (menu->choice == menu->n_items - 1){
+			buzzer_short_buzz();
 			return;
 		}
 		menu->choice++;
+		menu_update();
 	}
 	else {
 		if (menu->choice == menu->default_choice){
+			buzzer_short_buzz();
 			return;
 		}
 		menu->choice--;
+		menu_update();
 	}
 	if (menu->choice < menu->default_choice || menu->choice >= menu->n_items){
 		printf("menu error: choice out of range");
@@ -112,8 +119,6 @@ static void display_character(){
 		if (i != 0 && i != 5){
 			display_write_line("",i);
 		}
-		
-		
 	}
 }
 
@@ -135,9 +140,9 @@ void menu_handle_select() {
 			break;
 		
 		case play_id:
-			//printf("started game from menu\n");
-			em_game_started();			
 			display_character();
+			buzzer_start_game_buzz(); //this buzz takes 1300 ms, but should be fine since still in menu
+			em_game_started();			
 			menu = &end_menu;
 			break;
 			
@@ -168,7 +173,4 @@ void menu_handle_select() {
 
 void menu_handle_scroll(bool down) {
 	scroll(down);
-	menu_update();
-	//printf("handle scroll\n\r");
-
 }
