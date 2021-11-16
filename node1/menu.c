@@ -137,7 +137,7 @@ void menu_handle_select() {
 		
 		case play_id:
 			em_game_start();
-			printf("started game from menu\n");
+			//printf("started game from menu\n");
 			display_character();
 			menu = &end_menu;
 			break;

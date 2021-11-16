@@ -40,7 +40,7 @@ void _main() {
 						state = inReplay;
 						break;
 					case EmGameStart:
-						printf("started game from menu\n");
+						printf("em: game started\n");
 						state = inGame;
 						break;
 					case EmJoystickPressed:
