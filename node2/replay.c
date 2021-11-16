@@ -54,4 +54,5 @@ void replay_run(){
 		}
 		index++;
 	}
+	em_replay_end();
 }

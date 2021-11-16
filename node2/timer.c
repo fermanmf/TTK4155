@@ -10,7 +10,7 @@
 #define REGISTER_C 6563 
 #define TC4_REGISTER_C 656250
 #define TC5_REGISTER_C 65625
-#define TC1_REGISTER_C 65625
+#define TC1_REGISTER_C 13125000 //200s
 #define INT_PERIOD REGISTER_C*128/84000000
 
 //waveform mode clock is MCK/128 period is therefore about 10 ms when Register_C = 6563
@@ -25,14 +25,15 @@ void timer_init(){
     TC0->TC_CHANNEL[0].TC_CMR = TC_CMR_TCCLKS_TIMER_CLOCK4 | TC_CMR_WAVE | TC_CMR_WAVSEL_UP_RC;
 	
 	//TC1 Game clock
+	TC0->TC_CHANNEL[1].TC_IER = TC_IER_CPCS;
 	TC0->TC_CHANNEL[1].TC_RC = TC1_REGISTER_C;
-	TC0->TC_CHANNEL[1].TC_CMR = TC_CMR_TCCLKS_TIMER_CLOCK5 | TC_CMR_WAVE | TC_CMR_WAVSEL_UP;
+	TC0->TC_CHANNEL[1].TC_CMR = TC_CMR_TCCLKS_TIMER_CLOCK4 | TC_CMR_WAVE | TC_CMR_WAVSEL_UP_RC;
 
 	// TC4 test
-	TC1->TC_CHANNEL[1].TC_IER = TC_IER_CPCS;
-	TC1->TC_CHANNEL[1].TC_RC = TC4_REGISTER_C;
-	TC1->TC_CHANNEL[1].TC_CMR = TC_CMR_TCCLKS_TIMER_CLOCK4 | TC_CMR_WAVE | TC_CMR_WAVSEL_UP_RC;
-	TC1->TC_CHANNEL[1].TC_CCR = TC_CCR_CLKEN | TC_CCR_SWTRG;
+	//TC1->TC_CHANNEL[1].TC_IER = TC_IER_CPCS;
+	//TC1->TC_CHANNEL[1].TC_RC = TC4_REGISTER_C;
+	//TC1->TC_CHANNEL[1].TC_CMR = TC_CMR_TCCLKS_TIMER_CLOCK4 | TC_CMR_WAVE | TC_CMR_WAVSEL_UP_RC;
+	//TC1->TC_CHANNEL[1].TC_CCR = TC_CCR_CLKEN | TC_CCR_SWTRG;
 	
 	//TC5 Timer IR
 	TC1->TC_CHANNEL[2].TC_IER = TC_IER_CPCS;
@@ -43,7 +44,7 @@ void timer_init(){
 
     NVIC_EnableIRQ(TC0_IRQn);
 
-	//NVIC_EnableIRQ(TC4_IRQn);
+	
 	
 }
 int test = 1;
@@ -53,16 +54,9 @@ void TC0_Handler(){
 	
 }
 
-void TC4_Handler(){
-	if (test){
-		pid.ref = 10;
-		test = 0;
-	}
-	else{
-		pid.ref = 90;
-		test = 1;
-	}
-    TC1->TC_CHANNEL[1].TC_SR;	//Clear interrupt flag
+void TC1_Handler(){
+	em_game_end();
+    TC0->TC_CHANNEL[1].TC_SR;	//Clear interrupt flag
 }
 
 
@@ -86,9 +80,16 @@ void timer_pid_clock_start(){
 void timer_pid_clock_disable(){
 	TC0->TC_CHANNEL[0].TC_CCR = 0;
 }
-void timer_game_clock_start(){
+void timer_game_clock_start(bool replay){
 	TC0->TC_CHANNEL[1].TC_CCR = TC_CCR_CLKEN | TC_CCR_SWTRG;
+	if (!replay){
+		NVIC_EnableIRQ(TC1_IRQn);
+	}
 }
 uint32_t timer_get_game_clock(){
-	return TC0->TC_CHANNEL[1].TC_CV/3277;
+	return TC0->TC_CHANNEL[1].TC_CV/65625;
+}
+void timer_game_clock_disable(){
+	TC0->TC_CHANNEL[0].TC_CCR = 0;
+	NVIC_DisableIRQ(TC1_IRQn);
 }
