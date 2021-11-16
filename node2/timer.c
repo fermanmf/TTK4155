@@ -10,7 +10,7 @@
 #define REGISTER_C 6563 
 #define TC4_REGISTER_C 656250
 #define TC5_REGISTER_C 65625
-#define TC1_REGISTER_C 13125000 //200s
+#define TC1_REGISTER_C 13125000 //20s
 #define INT_PERIOD REGISTER_C*128/84000000
 
 //waveform mode clock is MCK/128 period is therefore about 10 ms when Register_C = 6563
