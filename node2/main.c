@@ -11,6 +11,7 @@
 #include "timer.h"
 #include "motor.h"
 #include "replay.h"
+#include "dac.h"
 
 typedef enum {
 	idle,
@@ -26,6 +27,7 @@ void setup(){
 	solenoid_init();
 	timer_init();
 	motor_init();
+	dac_init();
 }
 
 void _main(){
@@ -80,6 +82,7 @@ void _main(){
 				}
 				break;
 			case(inGame):
+				printf("ingame\n\r");
 				timer_pid_clock_start();
 				timer_game_clock_start();
 				switch(event.type) {

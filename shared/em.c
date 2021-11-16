@@ -102,7 +102,7 @@ void em_can_message_received (uint8_t id, uint8_t data[], uint8_t data_length) {
 void em_joystick_button_pressed() {
 	const EmEvent event = {EmJoystickPressed};
 	append(event);
-	//can_send_empty(event.type);
+	can_send_empty(event.type);
 }
 
 void em_joystick_x_direction_changed(EmJoystickDirection direction) {
