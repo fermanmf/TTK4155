@@ -92,56 +92,22 @@ void _main(){
 			case(idle):
 				switch(event.type) {
 					case EmReplayStarted:
-						printf("em: replay started\n\r");
 						state = inReplay;
 						timer_pid_clock_start();
 						timer_game_clock_start(state == inReplay);
 						break;
+
 					case EmGameStarted:
-						printf("em: game started\n\r");
 						state = inGame;
 						timer_pid_clock_start();
 						timer_game_clock_start(state == inReplay);
 						break;
-					case EmJoystickPressed:
-						printf("em: joystick pressed\n\r");
-						break;
-					
-					case EmJoystickXDirectionChanged:
-						printf("em: joystick x direction changed, %u\n\r", event.joystick_x_direction);
-						break;
-						
-					case EmJoystickYDirectionChanged:
-						printf("em: joystick y direction changed, %u\n\r", event.joystick_y_direction);
-						break;
-						
-					case EmJoystickXChanged:
-						printf("em: joystick x changed, %d\n\r", event.joystick_x);
-						break;
-						
-					case EmJoystickYChanged:
-						printf("em: joystick y changed, %d\n\r", event.joystick_y);
-						//servo_set(event.joystick_y / 100.0);
-						break;
-						
-					case EmSliderLeftChanged:
-						printf("em: slider left changed, %u\n\r", event.slider_left);
-						break;
-						
-					case EmSliderRightChanged:
-						printf("em: slider right changed, %u\n\r", event.slider_left);
-						break;
-					
-					case EmIrBeamBroken:
-						printf("em: ir beam broken\n\r");
-						break;
-						
+
 					default:
 						break;
 				}
 				break;
 			case(inGame):
-				printf("ingame\n\r");
 				
 				switch(event.type) {
 					case EmJoystickPressed:
@@ -153,6 +119,7 @@ void _main(){
 						replay_log_event(event);
 						break;
 					case EmJoystickYChanged:
+						//servo
 						replay_log_event(event);
 						break;
 					case EmGameEnded:
@@ -165,8 +132,8 @@ void _main(){
 				}
 				break;
 			case(inReplay):
-				
 				replay_run();
+
 				switch(event.type) {
 
 					case EmReplayEnded:
@@ -174,10 +141,12 @@ void _main(){
 						timer_pid_clock_disable();
 						state = idle;
 						break;
+
 					default:
 						break;
 				}
 				break;
+
 			default:
 				break;
 		}
