@@ -3,6 +3,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "motor.h"
+#include "printf-stdarg.h"
+#include "timer.h"
 
 #define QUEUE_MAX_LENGTH 500
 
@@ -35,7 +37,6 @@ void replay_log_event(EmEvent event){
 
 void replay_run(){
 	timer_game_clock_start();
-	bool exit_replay = false;
 	uint8_t index = 0;
 	while(index <= end_index){
 		if (timer_get_game_clock() == log[index].time){
