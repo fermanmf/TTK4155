@@ -92,15 +92,17 @@ void _main(){
 			case(idle):
 				switch(event.type) {
 					case EmReplayStarted:
+						printf("From idle to inReplay\n\r");
 						state = inReplay;
 						timer_pid_clock_start();
-						timer_game_clock_start(state == inReplay);
+						timer_game_clock_start(true);
 						break;
 
 					case EmGameStarted:
+						printf("From idle to inGame\n\r");
 						state = inGame;
 						timer_pid_clock_start();
-						timer_game_clock_start(state == inReplay);
+						timer_game_clock_start(false);
 						break;
 
 					default:
@@ -123,6 +125,7 @@ void _main(){
 						replay_log_event(event);
 						break;
 					case EmGameEnded:
+						printf("From inGame to idle\n\r");
 						timer_game_clock_disable();
 						timer_pid_clock_disable();
 						state = idle;
@@ -137,6 +140,7 @@ void _main(){
 				switch(event.type) {
 
 					case EmReplayEnded:
+						printf("From inReplay to idle\n\r");
 						timer_game_clock_disable();
 						timer_pid_clock_disable();
 						state = idle;
