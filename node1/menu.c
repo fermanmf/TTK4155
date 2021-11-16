@@ -65,7 +65,6 @@ static char* get_item_text(uint8_t item_number){
 }
 
 static void write_menu(){
-	printf("Hello from write_menu\n");
 	uint8_t item_offset = 1;
 	display_write_line(menu->header,0);
 	for (int i = 0;i<7 ;i++){
@@ -119,7 +118,7 @@ static void display_character(){
 }
 
 
-static void update_menu(){
+void menu_update(){
 	write_menu();
 }
 
@@ -127,12 +126,12 @@ void menu_handle_select() {
 	switch(get_choice_id(menu)){
 		case character_menu_id:
 			menu = &character_menu;
-			update_menu();
+			menu_update();
 			break;
 		
 		case highscore_menu_id:
 			menu = &highscore_menu;
-			update_menu();
+			menu_update();
 			break;
 		
 		case play_id:
@@ -144,7 +143,7 @@ void menu_handle_select() {
 			
 		case end_menu_id:
 			menu = &highscore_menu;
-			update_menu();
+			menu_update();
 			break;
 		
 		case replay_id:
@@ -156,7 +155,7 @@ void menu_handle_select() {
 		
 		case main_menu_id:
 			menu = &main_menu;
-			update_menu();
+			menu_update();
 			break;
 			
 		default:
@@ -169,6 +168,7 @@ void menu_handle_select() {
 
 void menu_handle_scroll(bool down) {
 	scroll(down);
-	update_menu();
-	printf("handle scroll\n\r");
+	menu_update();
+	//printf("handle scroll\n\r");
+
 }

@@ -27,7 +27,11 @@ static void slave_deselect(){
 #define PHSEG10 3
 #define TXREQ 3
 
-void mcp2515_init(bool loopback_mode) {
+static void (*message_received_cb)();
+
+void mcp2515_init(void (*callback)()) {
+	message_received_cb = callback;
+	
 	DDRB |= 1 << SS; // enable slave select as output
 	spi_init();
 	
@@ -36,19 +40,12 @@ void mcp2515_init(bool loopback_mode) {
 	MCUCR |= 1 << ISC01; // Interrupt on falling edge
 	GICR |= 1 << INT0; // Enable INT0 (interrupt on pin 0)
 	
-	
 	mcp2515_reset();
 	mcp2515_write(MCP_RXB0CTRL, (1 << RXM0) | (1 << RXM1)); // disable filter
 	mcp2515_write(MCP_CNF1, ((CAN_SJW - 1) << SJW0) | (CAN_NODE1_BRP - 1));
 	mcp2515_write(MCP_CNF2, BTLMODE | SAMPLE_3X | ((CAN_PS1 - 1) << PHSEG10) | (CAN_PROPSEG - 1));
 	mcp2515_write(MCP_CNF3, CAN_PS2 - 1);
-	
-	if (loopback_mode) {
-		mcp2515_write(MCP_CANCTRL, MODE_LOOPBACK);		
-	} else {
-		mcp2515_write(MCP_CANCTRL, MODE_NORMAL);
-	}
-	
+	mcp2515_write(MCP_CANCTRL, MODE_NORMAL);	
 	mcp2515_write(MCP_CANINTE, MCP_ERRIF | MCP_RX0IF); // enable receive buffer 0 full and error interrupt
 }
 
@@ -71,8 +68,9 @@ void mcp2515_read_rx_buffer(uint8_t *id, uint8_t data[8], uint8_t *data_length) 
 	slave_select();
 	spi_transmit(MCP_READ_RX0);
 	spi_transmit(0); // receive buffer 0 standard identifier high
+	const uint8_t id_high = SPDR;
 	spi_transmit(0); // receive buffer 0 standard identifier low
-	*id = SPDR;
+	*id = (id_high << 3) | (SPDR >> 5);
 	spi_transmit(0); // receive buffer 0 extended identifier high
 	spi_transmit(0); // receive buffer 0 extended identifier low
 	spi_transmit(0); // receive buffer 0 data length code
@@ -95,7 +93,7 @@ void mcp2515_write(uint8_t address, uint8_t data){
 
 void mcp2515_load_tx_buffer(uint8_t id, uint8_t data[8], uint8_t data_length){
 	if (data_length > 8) {
-		panic();
+		printf("mcp2515 error: data length can not be greater than 8\n");
 	}
 	slave_select();
 	spi_transmit(MCP_LOAD_TX0);
@@ -150,7 +148,7 @@ ISR(INT0_vect) {
 			break;
 		
 		case MCP_RX0IF:
-			(*mcp2515_message_received_cb)();
+			(*message_received_cb)();
 			mcp2515_bit_modify(MCP_CANINTF, MCP_RX0IF, 0);
 			break;
 		

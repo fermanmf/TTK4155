@@ -3,7 +3,6 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#include "panic.h"
 #include "can.h"
 
 #define QUEUE_MAX_LENGTH 10
@@ -14,9 +13,7 @@ static volatile EmEvent queue[QUEUE_MAX_LENGTH] = {};
 static void append(EmEvent event) {
 	if (end_index < QUEUE_MAX_LENGTH-1) {
 		queue[++end_index] = event;		
-	} else {
-		panic();		
-	}	
+	}
 }
 
 static EmEvent pop(uint8_t index){
@@ -29,8 +26,7 @@ static EmEvent pop(uint8_t index){
 }
 
 void em_init() {
-	can_message_received_cb = &em_can_message_received;
-	can_init();	
+	can_init(&em_can_message_received);	
 }
 
 EmEvent em_get_event() {
@@ -39,7 +35,7 @@ EmEvent em_get_event() {
 }
 
 void em_can_message_received (uint8_t id, uint8_t data[], uint8_t data_length) {
-	switch(id) {
+	switch(id) {		
 		case EmJoystickPressed: {
 			const EmEvent event = {EmJoystickPressed};
 			append(event);

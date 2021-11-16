@@ -6,7 +6,10 @@
 
 #define ADC ((volatile uint8_t*)0x1400)
 
-void adc_init() {
+static void (*reading_received_cb)(uint8_t , uint8_t, uint8_t, uint8_t);
+
+void adc_init(void (*callback)(uint8_t, uint8_t, uint8_t, uint8_t)) {
+	reading_received_cb = callback;
 	// ADC clock
 	DDRB = 1 << PINB0; // PB0/OC0 as output 
 	OCR0 = 0; // Output compare register at 0, i.e. ck = MCK/2
@@ -15,15 +18,15 @@ void adc_init() {
 	// Timer interrupt
 	OCR1A = 480; // Output compare register at 480, i.e. 10 Hz interrupt frequency with prescalar 1024
 	TCCR1B = (1 << WGM12) | (1 << CS12) | (1 << CS10); // CTC, 1024 prescaling
-	TIMSK |= 1 << OCIE1A; //output compare interrupt enable
+	TIMSK |= 1 << OCIE1A; // Output compare interrupt enable
 }
 
 ISR(TIMER1_COMPA_vect) {
 	*ADC = 0;	
-	while (!(PINE & (1 << PINE0)));
+	while (!(PINE & (1 << PINE0))); // While busy
 	const uint8_t v1 = *ADC;
 	const uint8_t v2 = *ADC;
 	const uint8_t v3 = *ADC;
 	const uint8_t v4 = *ADC;
-	(*adc_reading_received_cb)(v1, v2, v3, v4);
+	(*reading_received_cb)(v1, v2, v3, v4);
 }
