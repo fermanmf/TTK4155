@@ -1,7 +1,8 @@
 #include "menu.h"
 #include "display.h"
-#include <stdbool.h>
+#include "em.h"
 
+#include <stdbool.h>
 #include <stdio.h>
 
 #define HIGHSCOREMENU		{{"HighScore","1.","2.","3.","4.","5.","6.","<--Back"}, 8, 7, 7}
@@ -17,6 +18,7 @@ typedef enum {
 	play_id,
 	replay_id
 }Id;
+
 typedef struct {
 	char text[16];
 	Id action_id;
@@ -120,18 +122,19 @@ static void display_character(){
 static void update_menu(){
 	write_menu();
 }
+
 void menu_handle_select() {
 	switch(get_choice_id(menu)){
 		case character_menu_id:
 			menu = &character_menu;
 			update_menu();
 			break;
-			
+		
 		case highscore_menu_id:
 			menu = &highscore_menu;
 			update_menu();
 			break;
-			
+		
 		case play_id:
 			em_game_start();
 			printf("started game from menu\n");
@@ -143,23 +146,25 @@ void menu_handle_select() {
 			menu = &highscore_menu;
 			update_menu();
 			break;
-			
+		
 		case replay_id:
 			em_replay_start();
-			printf("started replay from menu\n");
+			printf("re play started from menu\n");
 			display_character();
 			menu = &main_menu;
 			break;
-			
+		
 		case main_menu_id:
 			menu = &main_menu;
 			update_menu();
 			break;
 			
 		default:
-			printf("menu error: invalid main menu choice: %u\n", get_choice_id(menu));
+			//printf_P("menu error: invalid choice in menu_handle_select\n");
 			break;
 	}
+	
+	
 }
 
 void menu_handle_scroll(bool down) {

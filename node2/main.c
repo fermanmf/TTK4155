@@ -3,6 +3,7 @@
 #include "printf-stdarg.h"
 
 // include other files under this
+/*
 #include "em.h"
 #include "servo.h"
 #include "ir.h"
@@ -23,7 +24,7 @@ void setup(){
 	servo_init();
 	ir_init(&em_ir_beam_broken);
 	solenoid_init();
-	timer_init();
+	//timer_init();
 	motor_init();
 }
 
@@ -114,16 +115,16 @@ void _main(){
 		}
 	}	
 }
-
+*/
 int main(){
 	SystemInit();
 	WDT->WDT_MR = WDT_MR_WDDIS; //disable watchdog
 	configure_uart();
 	
 	printf("Setting up\n\r");
-	setup();
+	//setup();
 	printf("Done setting up. Starting main\n\r");
-	_main();
+	//_main();
 	printf("Main is done\n\r");
 	
 }
