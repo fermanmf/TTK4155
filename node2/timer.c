@@ -1,7 +1,7 @@
 
 
 #include "timer.h"
-
+#include "em.h"
 #include "sam.h"
 #include "dac.h"
 #include "motor.h"
@@ -55,7 +55,7 @@ void TC0_Handler(){
 }
 
 void TC1_Handler(){
-	em_game_end();
+	em_game_ended();
     TC0->TC_CHANNEL[1].TC_SR;	//Clear interrupt flag
 }
 
