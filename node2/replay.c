@@ -14,7 +14,7 @@ typedef struct {
     EmEvent event;
 }Incident;
 
-static int32_t end_index = -1;
+static int end_index = -1;
 static Incident log[QUEUE_MAX_LENGTH] = {};
 
 static void append(Incident incident) {
@@ -50,8 +50,9 @@ void replay_run(){
 				default:
 					break;
 			}
+			index++;
 		}
-		index++;
+		
 	}
 	em_replay_ended();
 }
