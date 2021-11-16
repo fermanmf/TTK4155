@@ -152,9 +152,9 @@ void menu_handle_select() {
 			break;
 		
 		case replay_id:
-			em_replay_started();
-			//printf("re play started from menu\n");
 			display_character();
+			buzzer_start_game_buzz(); //this buzz takes 1300 ms, but should be fine since still in menu
+			em_replay_started();
 			menu = &main_menu;
 			break;
 		
