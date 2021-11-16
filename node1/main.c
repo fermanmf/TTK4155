@@ -36,68 +36,66 @@ void _main() {
 		switch(event.type) {
 			/*
 			case EmReplayStarted:
-			printf("em: replay started\n");
-			break;
+				printf("em: replay started\n");
+				break;
 			
 			case EmGameStarted:
-			printf("em: game started\n");
-			break;
+				printf("em: game started\n");
+				break;
 			
 			case EmJoystickPressed:
-			printf("em: joystick pressed\n");
-			break;
+				printf("em: joystick pressed\n");
+				break;
 			
 			case EmJoystickXDirectionChanged:
-			printf("em: joystick x direction changed, %u\n", event.joystick_x_direction);
-			break;
+				printf("em: joystick x direction changed, %u\n", event.joystick_x_direction);
+				break;
 			
 			case EmJoystickYDirectionChanged:
-			printf("em: joystick y direction changed, %u\n", event.joystick_y_direction);
-			break;
+				printf("em: joystick y direction changed, %u\n", event.joystick_y_direction);
+				break;
 			
 			case EmJoystickXChanged:
-			printf("em: joystick x changed, %d\n", event.joystick_x);
-			break;
+				printf("em: joystick x changed, %d\n", event.joystick_x);
+				break;
 			
 			case EmJoystickYChanged:
-			printf("em: joystick y changed, %d\n", event.joystick_y);
-			break;
+				printf("em: joystick y changed, %d\n", event.joystick_y);
+				break;
 			
 			case EmSliderLeftChanged:
-			printf("em: slider left changed, %u\n", event.slider_left);
-			break;
+				printf("em: slider left changed, %u\n", event.slider_left);
+				break;
 			
 			case EmSliderRightChanged:
-			printf("em: slider right changed, %u\n", event.slider_left);
-			break;
+				printf("em: slider right changed, %u\n", event.slider_left);
+				break;
 			
 			case EmIrBeamBroken:
-			printf("em: ir beam broken\n");
-			break;
-			*/
+				printf("em: ir beam broken\n");
+				break;
+			
 			case EmGameEnded:
-			printf("em: game ended\n");
-			break;
+				printf("em: game ended\n");
+				break;
 			
 			case EmReplayEnded:
-			printf("em: replay ended\n");
-			break;
-			
+				printf("em: replay ended\n");
+				break;
+			*/
 			default:
-			printf("em: unknown event %d\n", event.type);
-			break;
+				printf("em: unknown event %d\n", event.type);
+				break;
 		}
 		
 		switch (state){
 			case(inMenu):
 				switch(event.type) {
 					case EmReplayStarted:
-						printf("From inMenu to inReplay\n");
 						state = inReplay;
 						break;
 
 					case EmGameStarted:
-						printf("From inMenu to inGame\n");
 						state = inGame;
 						break;
 
@@ -122,7 +120,6 @@ void _main() {
 			case(inGame):
 				switch (event.type){
 					case EmGameEnded:
-						printf("From inGame to inMenu\n");
 						state = inMenu;
 						menu_update();
 						break;
@@ -135,7 +132,6 @@ void _main() {
 			case(inReplay):
 				switch (event.type){
 					case EmReplayEnded:
-						printf("From inReplay to inMenu\n");
 						state = inMenu;
 						menu_update();
 						break;

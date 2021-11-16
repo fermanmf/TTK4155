@@ -35,7 +35,7 @@ static void reading_received_cb(uint8_t joystick_x_raw, uint8_t joystick_y_raw, 
 	
 	if (abs(joystick_x_raw_last - joystick_x_raw) > JOYSTICK_CHANGE_THRESHOLD) {
 		const int8_t joystick_x = joystick_raw_convert(joystick_x_raw);
-		em_joystick_x_changed(joystick_x);
+		em_event(EmJoystickXChanged, joystick_x_raw);
 		
 		static EmJoystickDirection last_x_direction = emJoystickNeutral;
 		EmJoystickDirection x_direction;
@@ -47,7 +47,7 @@ static void reading_received_cb(uint8_t joystick_x_raw, uint8_t joystick_y_raw, 
 			x_direction = emJoystickNeutral;
 		}
 		if (last_x_direction != x_direction) {
-			em_joystick_x_direction_changed(x_direction);
+			em_event(EmJoystickXDirectionChanged, x_direction);
 			last_x_direction = x_direction;
 		}	
 		joystick_x_raw_last = joystick_x_raw;
@@ -55,7 +55,7 @@ static void reading_received_cb(uint8_t joystick_x_raw, uint8_t joystick_y_raw, 
 	
 	if (abs(joystick_y_raw_last - joystick_y_raw) > JOYSTICK_CHANGE_THRESHOLD) {
 		const int8_t joystick_y = joystick_raw_convert(joystick_y_raw);
-		em_joystick_y_changed(joystick_y);
+		em_event(EmJoystickYChanged, joystick_y);
 		
 		static EmJoystickDirection last_y_direction = emJoystickNeutral;
 		EmJoystickDirection y_direction;
@@ -67,7 +67,7 @@ static void reading_received_cb(uint8_t joystick_x_raw, uint8_t joystick_y_raw, 
 			y_direction = emJoystickNeutral;
 		}
 		if (last_y_direction != y_direction) {
-			em_joystick_y_direction_changed(y_direction);
+			em_event(EmJoystickYDirectionChanged, y_direction);
 			last_y_direction = y_direction;
 		}
 		joystick_y_raw_last = joystick_y_raw;
@@ -75,12 +75,12 @@ static void reading_received_cb(uint8_t joystick_x_raw, uint8_t joystick_y_raw, 
 	
 	
 	if (abs(slider_left_raw_last - slider_left_raw) > SLIDER_CHANGE_THRESHOLD) {
-		em_slider_left_changed(slider_left_raw / 2.55);
+		em_event(EmSliderLeftChanged, slider_left_raw / 2.55);
 		slider_left_raw_last = slider_left_raw;
 	}
 	
 	if (abs(slider_right_raw_last - slider_right_raw) > SLIDER_CHANGE_THRESHOLD) {
-		em_slider_right_changed(slider_right_raw / 2.55);
+		em_event(EmSliderRightChanged, slider_right_raw / 2.55);
 		slider_right_raw_last = slider_right_raw;
 	}
 }
@@ -94,5 +94,5 @@ void controller_init() {
 }
 
 ISR(INT1_vect) {
-	em_joystick_button_pressed();
+	em_event_empty(EmJoystickPressed);
 }
