@@ -118,7 +118,7 @@ static void display_character(){
 }
 
 
-static void update_menu(){
+void menu_update(){
 	write_menu();
 }
 
@@ -126,12 +126,12 @@ void menu_handle_select() {
 	switch(get_choice_id(menu)){
 		case character_menu_id:
 			menu = &character_menu;
-			update_menu();
+			menu_update();
 			break;
 		
 		case highscore_menu_id:
 			menu = &highscore_menu;
-			update_menu();
+			menu_update();
 			break;
 		
 		case play_id:
@@ -143,7 +143,7 @@ void menu_handle_select() {
 			
 		case end_menu_id:
 			menu = &highscore_menu;
-			update_menu();
+			menu_update();
 			break;
 		
 		case replay_id:
@@ -155,7 +155,7 @@ void menu_handle_select() {
 		
 		case main_menu_id:
 			menu = &main_menu;
-			update_menu();
+			menu_update();
 			break;
 			
 		default:
@@ -168,6 +168,7 @@ void menu_handle_select() {
 
 void menu_handle_scroll(bool down) {
 	scroll(down);
-	update_menu();
+	menu_update();
 	//printf("handle scroll\n\r");
+
 }

@@ -124,6 +124,7 @@ void _main() {
 					case EmGameEnded:
 						printf("From inGame to inMenu\n");
 						state = inMenu;
+						menu_update();
 						break;
 					
 					default:
@@ -136,6 +137,7 @@ void _main() {
 					case EmReplayEnded:
 						printf("From inReplay to inMenu\n");
 						state = inMenu;
+						menu_update();
 						break;
 					
 					default:
