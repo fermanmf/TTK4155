@@ -88,6 +88,12 @@ void em_can_message_received (uint8_t id, uint8_t data[], uint8_t data_length) {
 			break;
 		}
 		
+		case EmGameStart: {
+			const EmEvent event = {EmGameStart};
+			append(event);
+			break;
+		}		
+		
 		default:
 			break;
 	}
@@ -144,5 +150,28 @@ void em_slider_right_changed(uint8_t value) {
 void em_ir_beam_broken() {
 	const EmEvent event = {EmIrBeamBroken};
 	append(event);
+	can_send_empty(event.type);
+}
+
+void em_game_start() {
+	const EmEvent event = {EmGameStart};
+	append(event);
+	can_send_empty(event.type);
+}
+
+void em_game_end() {
+	const EmEvent event = {EmGameEnd};
+	append(event);
 	can_send_empty(event.type);	
+}
+
+void em_replay_start() {
+	const EmEvent event = {EmReplayStart};
+	append(event);
+	can_send_empty(event.type);
+}
+void em_replay_end() {
+	const EmEvent event = {EmReplayEnd};
+	append(event);
+	can_send_empty(event.type);
 }

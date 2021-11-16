@@ -132,11 +132,13 @@ void mcp2515_bit_modify(uint8_t address, uint8_t mask, uint8_t data) {
 }
 
 
-void mcp2515_rts(){
-	while (MCP_TXB0CTRL & (1 << TXREQ)); // wait for buffer to not have pending transmission
-    slave_select();	
+void mcp2515_rts(){	
+	
+    slave_select();
 	spi_transmit(MCP_RTS_TX0);
 	slave_deselect();
+	while (mcp2515_read(MCP_TXB0CTRL) & (1 << TXREQ)); // wait for buffer to not have pending transmission
+	
 }
 
 
