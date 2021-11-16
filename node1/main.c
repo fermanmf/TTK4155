@@ -122,6 +122,7 @@ void _main() {
 				switch (event.type){
 					case EmGameEnded:
 						state = inMenu;
+						menu_update();
 						break;
 					
 					default:
@@ -133,6 +134,7 @@ void _main() {
 				switch (event.type){
 					case EmReplayEnded:
 						state = inMenu;
+						menu_update();
 						break;
 					
 					default:
