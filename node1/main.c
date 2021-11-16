@@ -54,17 +54,17 @@ int main(){
 						menu_handle_select();
 						printf("em: joystick pressed\n\r");
 						break;
-					case EmJoystickXDirectionChanged:
-						printf("em: joystick x direction changed, %u\n\r", event.joystick_x_direction);
-						if (event.joystick_x_direction == emJoystickDown){
+					case EmJoystickYDirectionChanged:
+						printf("em: joystick y direction changed, %u\n\r", event.joystick_y_direction);
+						if (event.joystick_y_direction == emJoystickDown){
 							menu_handle_scroll(true);	
 						}
-						else if (event.joystick_x_direction == emJoystickUp) { //hvorfor skjer aldri menu_handle_scroll!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+						else if (event.joystick_y_direction == emJoystickUp) {
 							menu_handle_scroll(false);
 						}
 						break;
-					case EmJoystickYDirectionChanged:
-						printf("em: joystick y direction changed, %u\n\r", event.joystick_y_direction);
+					case EmJoystickXDirectionChanged:
+						printf("em: joystick x direction changed, %u\n\r", event.joystick_x_direction);
 						break;
 					
 					case EmJoystickXChanged:
@@ -100,6 +100,7 @@ int main(){
 				default:
 					break;
 				}
+				break;
 
 			case(inReplay):
 				switch (event.type){
@@ -107,11 +108,10 @@ int main(){
 						state = inMenu;
 						break;
 				
-				default:
-					break;
-					
+					default:
+						break;
 				}
-				
+				break;
 			default:
 				break;
 		}
