@@ -96,6 +96,7 @@ void _main(){
 						state = inReplay;
 						timer_pid_clock_start();
 						timer_game_clock_start(true);
+						replay_run();
 						break;
 
 					case EmGameStarted:
@@ -110,7 +111,7 @@ void _main(){
 				}
 				break;
 			case(inGame):
-				
+
 				switch(event.type) {
 					case EmJoystickPressed:
 						//solenoid_on();
@@ -135,7 +136,6 @@ void _main(){
 				}
 				break;
 			case(inReplay):
-				replay_run();
 
 				switch(event.type) {
 

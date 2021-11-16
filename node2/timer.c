@@ -41,7 +41,7 @@ void timer_init(){
 	TC1->TC_CHANNEL[2].TC_CMR = TC_CMR_TCCLKS_TIMER_CLOCK4 | TC_CMR_WAVE | TC_CMR_WAVSEL_UP_RC;
 	TC1->TC_CHANNEL[2].TC_CCR = TC_CCR_CLKEN | TC_CCR_SWTRG;
 	
-
+	//pid interrupt
     NVIC_EnableIRQ(TC0_IRQn);
 
 	

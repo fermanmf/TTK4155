@@ -14,7 +14,7 @@ typedef struct {
     EmEvent event;
 }Incident;
 
-static int32_t end_index = -1;
+static int end_index = -1;
 static Incident log[QUEUE_MAX_LENGTH] = {};
 
 static void append(Incident incident) {
@@ -39,6 +39,7 @@ void replay_run(){
 	uint8_t index = 0;
 	while(index <= end_index){
 		if (timer_get_game_clock() >= log[index].time){
+			printf("replay \n\r");
 			switch (log[index].event.type){
 				case EmSliderLeftChanged:
 					pid.ref = log[index].event.slider_left;
@@ -50,8 +51,9 @@ void replay_run(){
 				default:
 					break;
 			}
+			index++;
 		}
-		index++;
+		
 	}
 	em_replay_ended();
 }
