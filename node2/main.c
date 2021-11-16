@@ -111,7 +111,7 @@ void _main(){
 				}
 				break;
 			case(inGame):
-
+				printf("time: %d\n\r",timer_get_game_clock());
 				switch(event.type) {
 					case EmJoystickPressed:
 						//solenoid_on();
