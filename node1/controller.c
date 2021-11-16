@@ -13,6 +13,20 @@
 #define JOYSTICK_CHANGE_THRESHOLD 3
 #define SLIDER_CHANGE_THRESHOLD 10
 
+#define JOYSTICK_MIN 1
+#define JOYSTICK_MID 145
+#define JOYSTICK_MAX 255
+
+static int8_t joystick_raw_convert(uint8_t value) {
+	if (value < JOYSTICK_MID) {
+		return round(0.694 * value - 100.694);
+	} else if (value > JOYSTICK_MID){
+		return round(0.91 * value - 131.8);
+	} else {
+		return 0;
+	}
+}
+
 static void reading_received_cb(uint8_t joystick_x_raw, uint8_t joystick_y_raw, uint8_t slider_left_raw, uint8_t slider_right_raw) {
 	static uint8_t joystick_x_raw_last = 127;
 	static uint8_t joystick_y_raw_last = 127;
@@ -20,7 +34,7 @@ static void reading_received_cb(uint8_t joystick_x_raw, uint8_t joystick_y_raw, 
 	static uint8_t slider_right_raw_last = 0;	
 	
 	if (abs(joystick_x_raw_last - joystick_x_raw) > JOYSTICK_CHANGE_THRESHOLD) {
-		const int8_t joystick_x = round(0.0007774 * pow(joystick_x_raw, 2) + 0.5907 * joystick_x_raw - 101.18);
+		const int8_t joystick_x = joystick_raw_convert(joystick_x_raw);
 		em_joystick_x_changed(joystick_x);
 		
 		static EmJoystickDirection last_x_direction = emJoystickNeutral;
@@ -40,7 +54,7 @@ static void reading_received_cb(uint8_t joystick_x_raw, uint8_t joystick_y_raw, 
 	}
 	
 	if (abs(joystick_y_raw_last - joystick_y_raw) > JOYSTICK_CHANGE_THRESHOLD) {
-		const int8_t joystick_y = round(0.0007774 * pow(joystick_y_raw, 2) + 0.5907 * joystick_y_raw - 101.18);
+		const int8_t joystick_y = joystick_raw_convert(joystick_y_raw);
 		em_joystick_y_changed(joystick_y);
 		
 		static EmJoystickDirection last_y_direction = emJoystickNeutral;
@@ -72,8 +86,7 @@ static void reading_received_cb(uint8_t joystick_x_raw, uint8_t joystick_y_raw, 
 }
 
 void controller_init() {
-	adc_reading_received_cb = &reading_received_cb;
-	adc_init();
+	adc_init(&reading_received_cb);
 	
 	PORTD |= 1 << PIND3; // With pull-up resistor
 	MCUCR |= 1 << ISC11; // Interrupt on falling edge
