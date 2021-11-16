@@ -13,7 +13,10 @@
 	MB0 only receives messages with id 0xFF and MB1 takes all other messages
 */
 
-void can_init() {
+static void (*message_received_cb)(uint8_t, uint8_t[], uint8_t);
+
+void can_init(void (*callback)(uint8_t, uint8_t[], uint8_t)) {
+	message_received_cb = callback;
 	PIOA->PIO_PDR = PIO_PA1A_CANRX0 | PIO_PA0A_CANTX0; // PIO Disable Register
 	PIOA->PIO_PUER = PIO_PA1A_CANRX0 | PIO_PA0A_CANTX0; // Pull-up Enable Register
 	
@@ -76,7 +79,7 @@ void CAN0_Handler() {
 			data_high >>= 8;
 		}
 	}
-	(*can_message_received_cb)(id, data, data_length);
+	(*message_received_cb)(id, data, data_length);
 
 	CAN0->CAN_MB[0].CAN_MCR = CAN_MCR_MTCR; // MB ready for new message
 }

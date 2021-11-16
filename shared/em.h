@@ -9,7 +9,12 @@ typedef enum {
 	EmJoystickXChanged,
 	EmJoystickYChanged,
 	EmSliderLeftChanged,
-	EmSliderRightChanged
+	EmSliderRightChanged,
+	EmReplayStarted,
+	EmGameStarted,
+	EmIrBeamBroken,
+	EmGameEnded,
+	EmReplayEnded
 } EmEventType;
 
 typedef enum {
@@ -23,6 +28,7 @@ typedef enum {
 typedef struct {
 	EmEventType type;
 	union {
+		uint8_t value;
 		EmJoystickDirection joystick_x_direction;
 		EmJoystickDirection joystick_y_direction;
 		int8_t joystick_x;
@@ -34,12 +40,5 @@ typedef struct {
 
 void em_init();
 EmEvent em_get_event();
-void em_can_message_received (uint8_t id, uint8_t data[], uint8_t data_length);
-
-void em_joystick_button_pressed();
-void em_joystick_x_direction_changed(EmJoystickDirection direction);
-void em_joystick_y_direction_changed(EmJoystickDirection direction);
-void em_joystick_x_changed(int8_t value);
-void em_joystick_y_changed(int8_t value);
-void em_slider_left_changed(uint8_t value);
-void em_slider_right_changed(uint8_t value);
+void em_event(EmEventType type, uint8_t value);
+void em_event_empty(EmEventType type);
