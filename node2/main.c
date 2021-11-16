@@ -84,7 +84,7 @@ void _main(){
 			case(inGame):
 				printf("ingame\n\r");
 				timer_pid_clock_start();
-				timer_game_clock_start();
+				timer_game_clock_start(state == inReplay);
 				switch(event.type) {
 					case EmJoystickPressed:
 						//solenoid_on();
@@ -108,7 +108,7 @@ void _main(){
 				break;
 			case(inReplay):
 				timer_pid_clock_start();
-				timer_game_clock_start();
+				timer_game_clock_start(state == inReplay);
 				replay_run();
 				switch(event.type) {
 

@@ -36,7 +36,6 @@ void replay_log_event(EmEvent event){
 }
 
 void replay_run(){
-	timer_game_clock_start();
 	uint8_t index = 0;
 	while(index <= end_index){
 		if (timer_get_game_clock() == log[index].time){

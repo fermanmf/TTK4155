@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <stdbool.h>
 
 void timer_init();
 void timer_delay_u(uint32_t time_u);
