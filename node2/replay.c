@@ -36,10 +36,9 @@ void replay_log_event(EmEvent event){
 }
 
 void replay_run(){
-	uint8_t index = 0;
+	uint32_t index = 0;
 	while(index <= end_index){
 		if (timer_get_game_clock() >= log[index].time){
-			printf("replay \n\r");
 			switch (log[index].event.type){
 				case EmSliderLeftChanged:
 					pid.ref = log[index].event.slider_left;
