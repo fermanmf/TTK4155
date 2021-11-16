@@ -97,22 +97,28 @@ void _main(){
 					case EmJoystickYChanged:
 						replay_log_event(event);
 						break;
+					case EmGameEnd:
+						timer_game_clock_disable();
+						timer_pid_clock_disable();
+						state = idle;
+						break;
 					default:
 						break;
-				}
-				if (timer_get_game_clock() >= 200){
-					em_game_end();
-					timer_pid_clock_disable();
-					state = idle;
 				}
 				break;
 			case(inReplay):
 				timer_pid_clock_start();
 				timer_game_clock_start();
-				if (timer_get_game_clock() >= 200){
-					em_replay_end();
-					timer_pid_clock_disable();
-					state = idle;
+				replay_run();
+				switch(event.type) {
+
+					case EmReplayEnd:
+						timer_game_clock_disable();
+						timer_pid_clock_disable();
+						state = idle;
+						break;
+					default:
+						break;
 				}
 				break;
 			default:
