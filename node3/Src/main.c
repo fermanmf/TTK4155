@@ -2,7 +2,6 @@
 #include "gpio.h"
 #include "led.h"
 #include "snake.h"
-#include "gpiote.h"
 #include <stdlib.h>
 #include "stdio.h"
 #include "stdint.h"
@@ -35,27 +34,115 @@ int main(void) {
   Col = 0;
   enum dir run;
   run = right;
-  
-  // Food array
- 
 
-  int foodX = 3;
-  int foodY = 4;
-  int victoryCounter = 0;
-  do {
+  // Length
+  int globalCounter = 0;
+  bool first = true;
+  int length = 0;
+  int lastPositionX[200];
+  int lastPositionY[200];
+
+  // Food
+  int food[4][2] = {  
+   {0, 1},
+   {4, 3},  
+   {2, 4},
+   {2, 2},
+};
+  int foodX = 0;
+  int foodY = 1;
+  int counter = 0;
+  int maxFood = 4;
+
+  uint8_t emptyImage[5] = {
+    0b00000,
+    0b00001,
+    0b00010,
+    0b10100,
+    0b01000
+  };
+
+  void updateImage(uint8_t image[5]) {
+    for (int i = 0; i < 5; i++) {
+      uint8_t n = image[i];
+      for (int j = 4; j >= 0; j--) {
+      if(1&(n>>j)) {
+          _SetLED(i, 4-j);
+        }
+      }
+    }
+  }
+
+
+void buildSnakeImage(int foodX, int foodY, int snakeX, int snakeY, int length) {
+    uint8_t image[5] = {
+      0b00000,
+      0b00000,
+      0b00000,
+      0b00000,
+      0b00000
+    };
+    // Set food in image
+    image[foodY] = (image[foodY]|(0b1<<(4-foodX)));
+    image[snakeY] = (image[snakeY]|(0b1<<(4-snakeX)));
+    for (int i = 0; i < length; i++) {
+      image[(lastPositionY[globalCounter-2-i])] = image[lastPositionY[globalCounter-2-i]]|(0b1<<(4-lastPositionX[globalCounter-2-i]));
+    };
+
+    updateImage(image);
+  }
   
+
+  // ============= START OF GAME =============
+  
+  i = 10000;
+  while(--i > 0) {
+    updateImage(imageOf3);
+    }
+  i = 10000;
+  while(--i > 0) {
+    updateImage(imageOf2);
+    }
+  i = 10000;
+  while(--i > 0) {
+    updateImage(imageOf1);
+  }
+  
+  do {
+
   switch (run)
   {
       case right:
         for (int ColCounter = Col; ColCounter < 5; ColCounter++) {
-          if ((ColCounter==foodX)&(Row==foodY)) {
-            foodX = 1;
-            foodY = 2;
+
+        /*
+        for (int i = 0; i < length; i++) {
+          if ((lastPositionY[globalCounter-2-i]==Row)|(lastPositionX[globalCounter-2-i]==ColCounter)) {
+          run = 5;
+          break;
           }
-          i = 60000;
+        }
+        */
+
+        // Shit code
+          lastPositionX[globalCounter] = ColCounter;
+          lastPositionY[globalCounter] = Row;
+          globalCounter++;
+
+          if ((ColCounter==foodX)&(Row==foodY)) {
+          // Update food
+          length++;
+          counter++;
+          if (counter==maxFood) {
+             run = 4;
+             break;
+          }
+          foodX = food[counter][0];
+          foodY = food[counter][1];
+          }
+          i = 10000;
           while(--i > 0) {
-            _SetLED(Row, ColCounter);
-            _SetLED(foodY,foodX);
+            buildSnakeImage(foodX,foodY,ColCounter, Row, length);
             if (aPushed()) {
               run = up;
               Col = ColCounter;
@@ -72,10 +159,26 @@ int main(void) {
       
       case down:
         for (int RowCounter = Row; RowCounter < 5; RowCounter++) {
-          i = 60000;
+
+                // Shit code
+          lastPositionX[globalCounter] = Col;
+          lastPositionY[globalCounter] = RowCounter;
+          globalCounter++;
+
+          if ((Col==foodX)&(RowCounter==foodY)) {
+          // Update food
+          length++;
+          counter++;
+          if (counter==maxFood) {
+          run = 4;
+          break;
+          }
+            foodX = food[counter][0];
+            foodY = food[counter][1];
+          }
+          i = 10000;
           while(--i > 0) {
-            _SetLED(RowCounter, Col);
-            _SetLED(foodY,foodX);
+            buildSnakeImage(foodX,foodY,Col, RowCounter, length);
             if (bPushed()) {
               run=right;
               Row = RowCounter;
@@ -92,10 +195,26 @@ int main(void) {
 
       case left:
         for(int ColCounter = Col; ColCounter >= 0; ColCounter--) {
-          i = 60000;
+
+        // Shit code
+          lastPositionX[globalCounter] = ColCounter;
+          lastPositionY[globalCounter] = Row;
+          globalCounter++;
+
+          if ((ColCounter==foodX)&(Row==foodY)) {
+          // Update food
+          length++;
+          counter++;
+          if (counter==maxFood) {
+          run = 4;
+          break;
+          }
+            foodX = food[counter][0];
+            foodY = food[counter][1];
+          }
+          i = 10000;
           while(--i > 0) {
-            _SetLED(Row, ColCounter);
-            _SetLED(foodY,foodX);
+            buildSnakeImage(foodX,foodY,ColCounter, Row, length);
             if (aPushed()) {
               run = down;
               Col = ColCounter;
@@ -112,10 +231,26 @@ int main(void) {
         
         case up:
           for(int RowCounter = Row; RowCounter >= 0; RowCounter--){
-            i = 60000;
+
+        // Shit code
+          lastPositionX[globalCounter] = Col;
+          lastPositionY[globalCounter] = RowCounter;
+          globalCounter++;
+
+          if ((Col==foodX)&(RowCounter==foodY)) {
+          // Update food
+          length++;
+          counter++;
+          if (counter==maxFood) {
+          run = 4;
+          break;
+          }
+            foodX = food[counter][0];
+            foodY = food[counter][1];
+          }
+            i = 10000;
             while(--i > 0) {
-              _SetLED(RowCounter, Col);
-              _SetLED(foodY,foodX);
+              buildSnakeImage(foodX,foodY,Col, RowCounter, length);
               if (aPushed()) {
                 run = left;
                 Row = RowCounter;
@@ -128,17 +263,72 @@ int main(void) {
             if(run!=up) break;
           }
           if(run==up) Row = 4;
+
           break;
 
         case 4:
           while(1) {
-          _SetLED(3, 0);
-          _SetLED(4, 1);
-          _SetLED(3, 2);
-          _SetLED(2, 3);
-          _SetLED(1, 4);
-
+            i = 5000;
+            while(--i > 0) {
+              updateImage(imageOfO);
+              }
+            i = 5000;
+            while(--i > 0) {
+              updateImage(imageOfM);
+              }
+            i = 5000;
+            while(--i > 0) {
+              updateImage(imageOfG);
+            }
+            i = 20000;
+            while(--i > 0) {
+              updateImage(emptyImage);
+            }
           }
+
+          case 5:
+            while(1) {
+              i = 5000;
+              while(--i > 0) {
+                updateImage(imageOfG);
+                }
+              i = 5000;
+              while(--i > 0) {
+                updateImage(imageOfA);
+                }
+              i = 5000;
+              while(--i > 0) {
+                updateImage(imageOfM);
+              }
+              i = 5000;
+              while(--i > 0) {
+                updateImage(imageOfE);
+              }
+              i = 5000;
+              while(--i > 0) {
+                updateImage(imageOfCross);
+              }
+              i = 5000;
+              while(--i > 0){
+              updateImage(imageOfO);
+              }
+              i = 5000;
+              while(--i > 0) {
+                updateImage(imageOfV);
+                }
+              i = 5000;
+              while(--i > 0) {
+                updateImage(imageOfE);
+              }
+              i = 5000;
+              while(--i > 0) {
+                updateImage(imageOfR);
+              }
+              i = 20000;
+              while(--i > 0) {
+                updateImage(imageOfCross);
+              }
+            }
 
         default:
           break;
@@ -146,6 +336,7 @@ int main(void) {
   }
 
   } while(1);
+  
   
   return 0;
 }
