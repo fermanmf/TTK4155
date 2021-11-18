@@ -8,11 +8,11 @@
 #include <math.h>
 
 
-#define NOT_OE PIO_PD0 //TODO mer av dette
-#define NOT_RST 0b10
-#define SEL 0b100
-#define EN  1<<9
-#define DIR 1<<10
+#define NOT_OE PIO_PD0 
+#define NOT_RST PIO_PD1
+#define SEL PIO_PD2
+#define EN  PIO_PD9
+#define DIR PIO_PD10
 #define MOTOR_OUTPUT_MASK 0x1fe
 
 
@@ -40,8 +40,8 @@ void motor_init(){
     PMC->PMC_PCER0 |= PMC_PCER0_PID13;
 
     // enable I/O D controller and set as output
-    PIOD->PIO_PER |= 0b111 | 0b11<<9;
-    PIOD->PIO_OER |= 0b111 | 0b11<<9;
+    PIOD->PIO_PER |= NOT_OE | NOT_RST | SEL | EN |DIR;
+    PIOD->PIO_OER |= NOT_OE | NOT_RST | SEL | EN |DIR;
 
     // enable PIOD controller and set as input
     PIOD->PIO_PER |= MOTOR_OUTPUT_MASK;
@@ -69,11 +69,9 @@ struct controlVariables pid = {
 };
 void motor_control_pos(int interrupt_period){
 	
-    //pid.period = interrupt_period;
+    pid.period = interrupt_period;
     pid.pos = 100*motor_read_encoder()/8820;
-	//pid.pos = motor_read_encoder();
-	
-	//printf("%d %d\n\r", (int)round(pid.pos), (int)round(pid.ref));
+
     pid.deviation = pid.ref - pid.pos;
     pid.p_actuation = pid.k_p * pid.deviation;
     pid.i_actuation = pid.k_i * pid.period * pid.deviation_sum;

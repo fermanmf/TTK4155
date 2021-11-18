@@ -92,9 +92,6 @@ void mcp2515_write(uint8_t address, uint8_t data){
 }
 
 void mcp2515_load_tx_buffer(uint8_t id, uint8_t data[8], uint8_t data_length){
-	if (data_length > 8) {
-		printf("mcp2515 error: data length can not be greater than 8\n");
-	}
 	slave_select();
 	spi_transmit(MCP_LOAD_TX0);
 	spi_transmit(id >> 3); // transmit buffer 0 standard identifier high
@@ -143,7 +140,7 @@ ISR(INT0_vect) {
 	const uint8_t canintf = mcp2515_read(MCP_CANINTF) & ~(MCP_TX0IF | MCP_MERRF);
 	switch(canintf) {
 		case MCP_ERRIF:
-			printf("mcp2515 error: error flag set. EFLG: 0x%x\n", mcp2515_read(MCP_EFLG));
+			printf("mcp err: error flag set. EFLG: 0x%x\n", mcp2515_read(MCP_EFLG));
 			mcp2515_bit_modify(MCP_CANINTF, MCP_ERRIF, 0);
 			break;
 		
@@ -153,7 +150,7 @@ ISR(INT0_vect) {
 			break;
 		
 		default:
-			printf("mcp2515 error: unsupported interrupt flag. CANINTF: 0x%x\n", canintf);
+			printf("mcp err: unsupported interrupt flags. CANINTF: 0x%x\n", canintf);
 			mcp2515_write(MCP_CANINTF, 0);
 			break;
 	}

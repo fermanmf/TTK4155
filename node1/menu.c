@@ -1,15 +1,13 @@
 #include "menu.h"
 #include "display.h"
 #include "em.h"
-#include "buzzer.h"
+
+#include "player.h"
 
 #include <stdbool.h>
 #include <stdio.h>
+#include <string.h>
 
-#define HIGHSCOREMENU		{{"HighScore","1.","2.","3.","4.","5.","6.","<--Back"}, 8, 7, 7}
-#define MAIN_MENU			{{"Main menu","Play","HighScore"}, 3, 1, 1};
-#define CHARACTERMENU		{{"Pick character","<3",":)",":(","-_-",":S",":,("}, 7, 1, 1};
-#define ENDMENU				{{"End of Game", "Play again", "Replay", "Highscore"}, 4, 1, 1};
 
 typedef enum {
 	main_menu_id,
@@ -17,7 +15,8 @@ typedef enum {
 	character_menu_id,
 	end_menu_id,
 	play_id,
-	replay_id
+	replay_id,
+	do_not_care_id
 }Id;
 
 typedef struct {
@@ -34,30 +33,28 @@ typedef struct {
 	Id	id; 
 } Menu;
 
-
-
 MenuItem play_item = {"Play",character_menu_id};
 MenuItem highscore_item = {"Highscore",highscore_menu_id};
-MenuItem player1 = {"<3", play_id};
-MenuItem player2 = {":)", play_id};
-MenuItem player3 = {":(", play_id};
-MenuItem player4 = {"--__--", play_id};
-MenuItem player5 = {":S", play_id};
-MenuItem player6 = {":,(", play_id};
+MenuItem player1_character_item = {"", play_id};
+MenuItem player2_character_item = {"", play_id};
+MenuItem player3_character_item = {"", play_id};
+MenuItem player4_character_item = {"", play_id};
+MenuItem player5_character_item = {"", play_id};
+MenuItem player6_character_item = {"", play_id};
+MenuItem first_highscore_item = {"", main_menu_id};
 MenuItem back_item = {"<-- back",main_menu_id};
 MenuItem replay_item = {"Replay", replay_id};
 MenuItem main_menu_item = {"Main menu",main_menu_id};
 
+
+
 Menu main_menu = {"Main menu", {&play_item, &highscore_item}, 2, 0, 0, main_menu_id};
-Menu character_menu = {"Character select", {&player1, &player2, &player3, &player4, &player5, &player6, &back_item}, 7, 0, 0, character_menu_id};
-//foreløpig en liten hack på highscore
-Menu highscore_menu = {"Highscore", {&back_item, &back_item, &back_item, &back_item, &back_item, &back_item, &back_item}, 7, 6, 6, highscore_menu_id};
-Menu end_menu= {"Well played!", {&main_menu_item, &replay_item}, 2, 0, 0, end_menu_id}; 
+Menu character_menu = {"Character select", {&player1_character_item, &player2_character_item, &player3_character_item, &player4_character_item,&player5_character_item, &player6_character_item, &back_item}, 7, 0, 0, character_menu_id};// 
+Menu highscore_menu = {"Highscore", {&first_highscore_item, &first_highscore_item, &first_highscore_item, &first_highscore_item, &first_highscore_item, &first_highscore_item, &back_item}, 7, 6, 6, highscore_menu_id};
+Menu end_menu= {"Well played!", {&main_menu_item, &replay_item}, 2, 0, 0, end_menu_id};
+
 Menu *menu = &main_menu;
 
-static MenuItem *get_choice(Menu *menu) {
-	return menu->items[menu->choice];
-}
 
 static Id get_choice_id(Menu *menu){
 	return menu->items[(menu->choice)]->action_id;
@@ -85,14 +82,12 @@ static void write_menu(){
 		}
 	}
 }
-void menu_init() {
-	menu = &main_menu;
-	write_menu();
-}
+
 
 static void scroll(bool down) {
-	if (down){
+	if (down ){
 		if (menu->choice == menu->n_items - 1){
+			em_event_empty(EmBeep);
 			return;
 		}
 		menu->choice++;
@@ -100,13 +95,14 @@ static void scroll(bool down) {
 	}
 	else {
 		if (menu->choice == menu->default_choice){
+			em_event_empty(EmBeep);
 			return;
 		}
 		menu->choice--;
 		menu_update();
 	}
 	if (menu->choice < menu->default_choice || menu->choice >= menu->n_items){
-		printf("menu error: choice out of range");
+		printf("menu err:OOrange");
 	}
 }
 
@@ -124,6 +120,15 @@ static void display_character(){
 void menu_update(){
 	write_menu();
 }
+void display_highscore(){
+	display_write_line("Highscores",0);
+	
+	for (int i = 0; i<6;i++){
+		display_write_line(player_get_highscore_str(i),i+1);
+	}
+	display_write_line("<--back",7);
+	display_invert_line(7);
+}
 
 void menu_handle_select() {
 	switch(get_choice_id(menu)){
@@ -134,24 +139,23 @@ void menu_handle_select() {
 		
 		case highscore_menu_id:
 			menu = &highscore_menu;
-			menu_update();
+			display_highscore();
 			break;
 		
 		case play_id:
+			player_select(menu->choice);
 			display_character();
-			//buzzer_start_game_buzz(); //this buzz takes 1300 ms, but should be fine since still in menu
 			em_event_empty(EmGameStarted);			
 			menu = &end_menu;
 			break;
 			
 		case end_menu_id:
-			menu = &highscore_menu;
+			menu = &end_menu;
 			menu_update();
 			break;
 		
 		case replay_id:
 			display_character();
-			//buzzer_start_game_buzz(); //this buzz takes 1300 ms, but should be fine since still in menu
 			em_event_empty(EmReplayStarted);
 			menu = &main_menu;
 			break;
@@ -164,10 +168,25 @@ void menu_handle_select() {
 		default:
 			break;
 	}
-	
-	
 }
 
 void menu_handle_scroll(bool down) {
-	scroll(down);
+	if (menu != &highscore_menu){
+		scroll(down);
+	}
+	else{
+		em_event_empty(EmBeep);
+	}
+}
+
+void menu_init() {
+	strcpy(player1_character_item.text, player_get_emoji(0));
+	strcpy(player2_character_item.text, player_get_emoji(1));
+	strcpy(player3_character_item.text, player_get_emoji(2));
+	strcpy(player4_character_item.text, player_get_emoji(3));
+	strcpy(player5_character_item.text, player_get_emoji(4));
+	strcpy(player6_character_item.text, player_get_emoji(5));
+	
+	menu = &main_menu;
+	write_menu();
 }

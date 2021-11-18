@@ -12,6 +12,8 @@
 #include "motor.h"
 #include "replay.h"
 #include "dac.h"
+#include "buzzer.h"
+#include "node3.h"
 
 typedef enum {
 	idle,
@@ -32,6 +34,11 @@ void setup(){
 	timer_init();
 	motor_init();
 	dac_init();
+	buzzer_init();
+	node3_init();
+	
+	node3_countdown();
+	
 }
 
 void _main(){
@@ -109,6 +116,9 @@ void _main(){
 						timer_pid_clock_start();
 						timer_game_clock_start(false);
 						break;
+					case EmBeep:
+						buzzer_play_note(buzzerA,2);
+						break;
 
 					default:
 						break;
@@ -128,6 +138,9 @@ void _main(){
 					case EmJoystickXChanged:
 						servo_set(event.joystick_x/100.0);
 						replay_log_event(event);
+						break;
+					case EmIrBeamBroken:
+						em_event(EmGameEnded,(200 - timer_get_game_clock()));
 						break;
 					case EmGameEnded:
 						printf("From inGame to idle\n\r");
