@@ -20,10 +20,14 @@ typedef enum {
 } State;
 State state = idle;
 
+void ir_beam_broken(){
+	em_event_empty(EmIrBeamBroken);
+}
+
 void setup(){
 	em_init();	
 	servo_init();
-	ir_init(&em_ir_beam_broken);
+	ir_init(&ir_beam_broken);
 	solenoid_init();
 	timer_init();
 	motor_init();

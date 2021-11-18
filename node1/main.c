@@ -12,8 +12,6 @@
 
 #include "display.h"
 #include "menu.h"
-#include "buzzer.h"
-
 void setup(){
 	controller_init();
 	em_init();
