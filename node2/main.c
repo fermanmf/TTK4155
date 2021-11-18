@@ -33,11 +33,7 @@ void setup(){
 	timer_init();
 	motor_init();
 	dac_init();
-	
 	buzzer_init();
-	buzzer_play_note(buzzerC, 4);
-	for (volatile int i = 0; i < 10000; i++);
-	buzzer_play_note(buzzerB, 4);
 	
 }
 
