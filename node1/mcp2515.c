@@ -92,9 +92,6 @@ void mcp2515_write(uint8_t address, uint8_t data){
 }
 
 void mcp2515_load_tx_buffer(uint8_t id, uint8_t data[8], uint8_t data_length){
-	if (data_length > 8) {
-		printf("mcp2515 error: data length can not be greater than 8\n");
-	}
 	slave_select();
 	spi_transmit(MCP_LOAD_TX0);
 	spi_transmit(id >> 3); // transmit buffer 0 standard identifier high

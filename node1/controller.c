@@ -35,7 +35,7 @@ static void reading_received_cb(uint8_t joystick_x_raw, uint8_t joystick_y_raw, 
 	
 	if (abs(joystick_x_raw_last - joystick_x_raw) > JOYSTICK_CHANGE_THRESHOLD) {
 		const int8_t joystick_x = joystick_raw_convert(joystick_x_raw);
-		em_event(EmJoystickXChanged, joystick_x_raw);
+		em_event(EmJoystickXChanged, joystick_x);
 		
 		static EmJoystickDirection last_x_direction = emJoystickNeutral;
 		EmJoystickDirection x_direction;

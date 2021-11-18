@@ -11,22 +11,22 @@ static void update_string(uint8_t rank, Player* player_to_update){
 	snprintf(&(player_to_update->highscore_str), 16, "%u. %s  %u",rank, player_to_update->emoji,player_to_update->highscore);
 }
 static void player_write_highscores_to_eeprom(){
-	for (int rank = 0;rank<sizeof(players)/sizeof(Player);rank+=2){
-		eeprom_write(rank,players[rank].id);
-		eeprom_write(rank+1,players[rank].highscore);
+	for (int rank = 0;rank<2*sizeof(players)/sizeof(Player);rank+=2){
+		eeprom_write(rank,players[rank/2].id);
+		eeprom_write(rank+1,players[rank/2].highscore);
 	}
 }
 static void read_highscores_from_eeprom(){
 	uint8_t eeprom_id = 0;
 	Player store_player;
-	for (int rank = 0;rank<sizeof(players)/sizeof(Player);rank+=2){
+	for (int rank = 0;rank<2*sizeof(players)/sizeof(Player);rank+=2){
 		eeprom_id = eeprom_read(rank);
 		for (int i = 0;i<sizeof(players)/sizeof(Player);i++){
 			if (players[i].id == eeprom_id){
-				store_player = players[rank];
-				players[rank] = players[i];
+				store_player = players[rank/2];
+				players[rank/2] = players[i];
 				players[i] = store_player;
-				players[rank].highscore = eeprom_read(rank+1);
+				players[rank/2].highscore = eeprom_read(rank+1);
 			}
 		}
 	}
@@ -45,11 +45,12 @@ static void update_highscore_table(){
 	}
 	for (int i = rank-1;i>=0;i--){
 		if (player->highscore < players[i].highscore){
+			//swap compared items
 			poor_player = players[i];
 			players[i] = players[i+1];
 			players[i+1] = poor_player;
 			player = &players[i];
-			printf("pi: %i",i);
+			//update changed items
 			update_string(i+2,&players[i+1]);
 			update_string(i+1,player);
 		}
@@ -80,7 +81,7 @@ char * player_get_emoji(uint8_t id){
 		}
 	}
 	
-	printf("player error: player_get_emoji out of range");
+	printf("player err:");
 }
 
 char* player_get_highscore_str(uint8_t rank){

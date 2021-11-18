@@ -27,7 +27,7 @@ void servo_set(float value) {
 	if (value < -1 || value > 1) {
 		printf("servo error: invalid value\n\r");
 	} else {
-		const float t_on = 1.5 + 0.6*value;
+		const float t_on = 1.5 - 0.6*value;
 		PWM->PWM_CH_NUM[5].PWM_CDTY = round(PWM->PWM_CH_NUM[5].PWM_CPRD * (1 - (t_on / T)));
 	}
 }

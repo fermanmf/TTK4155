@@ -19,8 +19,6 @@ typedef enum {
 	do_not_care_id
 }Id;
 
-
-
 typedef struct {
 	char text[16];
 	Id action_id;
@@ -44,11 +42,6 @@ MenuItem player4_character_item = {"", play_id};
 MenuItem player5_character_item = {"", play_id};
 MenuItem player6_character_item = {"", play_id};
 MenuItem first_highscore_item = {"", main_menu_id};
-//MenuItem second_highscore_item = {"2.", play_id};
-//MenuItem third_highscore_item = {"3.", play_id};
-//MenuItem fourth_highscore_item = {"4.", play_id};
-//MenuItem fifth_highscore_item = {"5.", play_id};
-//MenuItem sixth_highscore_item = {"6.", play_id};
 MenuItem back_item = {"<-- back",main_menu_id};
 MenuItem replay_item = {"Replay", replay_id};
 MenuItem main_menu_item = {"Main menu",main_menu_id};
@@ -58,7 +51,8 @@ MenuItem main_menu_item = {"Main menu",main_menu_id};
 Menu main_menu = {"Main menu", {&play_item, &highscore_item}, 2, 0, 0, main_menu_id};
 Menu character_menu = {"Character select", {&player1_character_item, &player2_character_item, &player3_character_item, &player4_character_item,&player5_character_item, &player6_character_item, &back_item}, 7, 0, 0, character_menu_id};// 
 Menu highscore_menu = {"Highscore", {&first_highscore_item, &first_highscore_item, &first_highscore_item, &first_highscore_item, &first_highscore_item, &first_highscore_item, &back_item}, 7, 6, 6, highscore_menu_id};
-Menu end_menu= {"Well played!", {&main_menu_item, &replay_item}, 2, 0, 0, end_menu_id}; 
+Menu end_menu= {"Well played!", {&main_menu_item, &replay_item}, 2, 0, 0, end_menu_id};
+
 Menu *menu = &main_menu;
 
 
@@ -106,7 +100,7 @@ static void scroll(bool down) {
 		menu_update();
 	}
 	if (menu->choice < menu->default_choice || menu->choice >= menu->n_items){
-		printf("menu error: choice out of range");
+		printf("menu err:OOrange");
 	}
 }
 
@@ -172,8 +166,6 @@ void menu_handle_select() {
 		default:
 			break;
 	}
-	
-	
 }
 
 void menu_handle_scroll(bool down) {
@@ -193,11 +185,3 @@ void menu_init() {
 	menu = &main_menu;
 	write_menu();
 }
-//void menu_update_highscores() {
-	//strcpy(first_highscore_item.text, player_get_highscore_str(0));
-	//strcpy(second_highscore_item.text, player_get_highscore_str(1));
-	//strcpy(third_highscore_item.text, player_get_highscore_str(2));
-	//strcpy(fourth_highscore_item.text, player_get_highscore_str(3));
-	//strcpy(fifth_highscore_item.text, player_get_highscore_str(4));
-	//strcpy(sixth_highscore_item.text, player_get_highscore_str(5));
-//}
