@@ -20,10 +20,14 @@ typedef enum {
 } State;
 State state = idle;
 
+void ir_beam_broken(){
+	em_event_empty(EmIrBeamBroken);
+}
+
 void setup(){
 	em_init();	
 	servo_init();
-	ir_init(&em_ir_beam_broken);
+	ir_init(&ir_beam_broken);
 	solenoid_init();
 	timer_init();
 	motor_init();
@@ -114,15 +118,15 @@ void _main(){
 				printf("time: %d\n\r",timer_get_game_clock());
 				switch(event.type) {
 					case EmJoystickPressed:
-						//solenoid_on();
+						solenoid_on();
 						replay_log_event(event);
 						break;
 					case EmSliderLeftChanged:
 						pid.ref = event.slider_left;
 						replay_log_event(event);
 						break;
-					case EmJoystickYChanged:
-						//servo
+					case EmJoystickXChanged:
+						servo_set(event.joystick_x/100.0);
 						replay_log_event(event);
 						break;
 					case EmGameEnded:
