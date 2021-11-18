@@ -79,7 +79,7 @@ void timer_pid_clock_start(){
 	TC0->TC_CHANNEL[0].TC_CCR = TC_CCR_CLKEN | TC_CCR_SWTRG;
 }
 void timer_pid_clock_disable(){
-	TC0->TC_CHANNEL[0].TC_CCR = 0b10 | TC_CCR_SWTRG;
+	TC0->TC_CHANNEL[0].TC_CCR = 0b10;
 }
 
 	//game clock functions
@@ -93,6 +93,6 @@ uint32_t timer_get_game_clock(){
 	return TC0->TC_CHANNEL[1].TC_CV/65625;
 }
 void timer_game_clock_disable(){
-	TC0->TC_CHANNEL[1].TC_CCR = TC_CCR_CLKDIS | TC_CCR_SWTRG;
+	TC0->TC_CHANNEL[1].TC_CCR = TC_CCR_CLKDIS;
 	TC0->TC_CHANNEL[1].TC_IDR = TC_IDR_CPCS;
 }
