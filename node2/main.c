@@ -18,7 +18,8 @@
 typedef enum {
 	idle,
 	inReplay,
-	inGame	
+	inGame,
+	inSnake
 } State;
 State state = idle;
 
@@ -36,9 +37,6 @@ void setup(){
 	dac_init();
 	buzzer_init();
 	node3_init();
-	
-	node3_countdown();
-	
 }
 
 void _main(){
@@ -119,6 +117,9 @@ void _main(){
 					case EmBeep:
 						buzzer_play_note(buzzerA,2);
 						break;
+					case EmSnakeStarted:
+						state = inSnake;
+						break;
 
 					default:
 						break;
@@ -167,6 +168,25 @@ void _main(){
 						break;
 				}
 				break;
+			case inSnake:
+				switch(event.type) {
+
+					case EmSnakeEnded:
+						timer_game_clock_disable();
+						timer_pid_clock_disable();
+						state = idle;
+						break;
+					case EmJoystickXChanged:
+						node3_snake(event.joystick_x_direction);
+						break;
+					case EmJoystickYChanged:
+						node3_snake(event.joystick_y_direction);
+						break;	
+					default:
+						break;
+				}
+				break;
+				
 
 			default:
 				break;
