@@ -31,8 +31,9 @@ void _main() {
 	while(1){
 		EmEvent event = em_get_event();
 		
+		/*
 		switch(event.type) {
-			/*
+			
 			case EmReplayStarted:
 				printf("em: replay started\n");
 				break;
@@ -80,11 +81,12 @@ void _main() {
 			case EmReplayEnded:
 				printf("em: replay ended\n");
 				break;
-			*/
+			
 			default:
 				printf("em: unknown event %d\n", event.type);
 				break;
 		}
+		*/
 		
 		switch (state){
 			case(inMenu):

@@ -1,7 +1,6 @@
 #include "menu.h"
 #include "display.h"
 #include "em.h"
-#include "buzzer.h"
 
 #include <stdbool.h>
 #include <stdio.h>
