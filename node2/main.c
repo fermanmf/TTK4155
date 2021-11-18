@@ -35,7 +35,10 @@ void setup(){
 	dac_init();
 	
 	buzzer_init();
-	buzzer_play_note(buzzerA, 0);
+	buzzer_play_note(buzzerC, 4);
+	for (volatile int i = 0; i < 10000; i++);
+	buzzer_play_note(buzzerB, 4);
+	
 }
 
 void _main(){
