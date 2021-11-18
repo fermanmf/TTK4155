@@ -45,6 +45,12 @@ MenuItem player3_character_item = {player3.emoji, play_id};
 MenuItem player4_character_item = {player4.emoji, play_id};
 MenuItem player5_character_item = {player5.emoji, play_id};
 MenuItem player6_character_item = {player6.emoji, play_id};
+MenuItem player1_highscore_item = {player1.emoji, play_id};
+MenuItem player2_highscore_item = {player2.emoji, play_id};
+MenuItem player3_highscore_item = {player3.emoji, play_id};
+MenuItem player4_highscore_item = {player4.emoji, play_id};
+MenuItem player5_highscore_item = {player5.emoji, play_id};
+MenuItem player6_highscore_item = {player6.emoji, play_id};
 MenuItem back_item = {"<-- back",main_menu_id};
 MenuItem replay_item = {"Replay", replay_id};
 MenuItem main_menu_item = {"Main menu",main_menu_id};
@@ -53,7 +59,7 @@ MenuItem main_menu_item = {"Main menu",main_menu_id};
 
 Menu main_menu = {"Main menu", {&play_item, &highscore_item}, 2, 0, 0, main_menu_id};
 Menu character_menu = {"Character select", {&player1_character_item, &player2_character_item, &player3_character_item, &player4_character_item, &player5_character_item, &player6_character_item, &back_item}, 7, 0, 0, character_menu_id};
-Menu highscore_menu = {"Highscore", {&back_item, &back_item, &back_item, &back_item, &back_item, &back_item, &back_item}, 7, 6, 6, highscore_menu_id};
+Menu highscore_menu = {"Highscore", {&player1_highscore_item, &player2_highscore_item, &player3_highscore_item, &player4_highscore_item, &player5_highscore_item, &player6_highscore_item, &back_item}, 7, 6, 6, highscore_menu_id};
 Menu end_menu= {"Well played!", {&main_menu_item, &replay_item}, 2, 0, 0, end_menu_id}; 
 Menu *menu = &main_menu;
 
