@@ -4,8 +4,7 @@
 #include <stdio.h>
 
 
-Player players[] = {{"<3", 0, 0,""}, {":)", 1, 0,""}, {":(", 2, 0,""}, {"--__--", 3, 0,""}, {":S", 4, 0,""}, {":,(", 5, 0,""}};
-
+Player players[] = {{"<3", 0, 200,""}, {":)", 1, 200,""}, {":(", 2, 200,""}, {"--__--", 3, 200,""}, {":S", 4, 200,""}, {":,(", 5, 200,""}}; //
 Player* player = &players[0];
 	
 static void update_string(uint8_t rank, Player* player_to_update){
@@ -14,32 +13,35 @@ static void update_string(uint8_t rank, Player* player_to_update){
 
 static void update_highscore_table(){
 	uint8_t rank = 0;
-	for (int i = 0;i<6;i++){
+	Player poor_player;
+	for (int i = 0;i<sizeof(players)/sizeof(Player);i++){
 		if (player->id == players[i].id){
 			rank = i;
 		}
 	}
 	for (int i = rank-1;i>=0;i--){
-		if (player->highscore > players[i].highscore){
-			players[i+1] = players[i];
-			update_string(i+1,&players[i+1]);
-			players[i] = *player;
-			update_string(i,player);
+		if (player->highscore < players[i].highscore){
+			poor_player = players[i];
+			players[i] = players[i+1];
+			players[i+1] = poor_player;
+			player = &players[i];
+			printf("pi: %i",i);
+			update_string(i+2,&players[i+1]);
+			update_string(i+1,player);
 		}
 	}
 }
 
 void player_highscore_update(uint8_t score){
-	if (score > player->highscore){
+	if (score < player->highscore){
 		player->highscore = score;
 		update_highscore_table();
 	}
-	menu_update_highscores();
 }
 
 
 void player_select(uint8_t player_id){
-	for (int i = 0;i<6;i++){
+	for (int i = 0;i<sizeof(players)/sizeof(Player);i++){
 		if (player_id == players[i].id){
 			player = &players[i];
 		}
