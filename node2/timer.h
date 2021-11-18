@@ -15,4 +15,6 @@ void timer_game_clock_start(bool replay);
 
 void timer_game_clock_disable();
 
-uint32_t timer_get_game_clock();
+uint32_t timer_get_game_clock_dseconds();
+
+uint32_t timer_get_game_clock_seconds();
