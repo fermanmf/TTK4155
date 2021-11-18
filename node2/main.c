@@ -37,6 +37,7 @@ void setup(){
 	dac_init();
 	buzzer_init();
 	node3_init();
+	node3_snake(emJoystickLeft);
 }
 
 void _main(){
@@ -126,7 +127,7 @@ void _main(){
 				}
 				break;
 			case(inGame):
-				printf("time: %d\n\r",timer_get_game_clock());
+				printf("time: %d\n\r",timer_get_game_clock_dseconds());
 				switch(event.type) {
 					case EmJoystickPressed:
 						solenoid_on();
@@ -141,7 +142,7 @@ void _main(){
 						replay_log_event(event);
 						break;
 					case EmIrBeamBroken:
-						em_event(EmGameEnded,(200 - timer_get_game_clock()));
+						em_event(EmGameEnded,(200 - timer_get_game_clock_seconds()));
 						break;
 					case EmGameEnded:
 						printf("From inGame to idle\n\r");
@@ -176,10 +177,12 @@ void _main(){
 						timer_pid_clock_disable();
 						state = idle;
 						break;
-					case EmJoystickXChanged:
+					case EmJoystickXDirectionChanged:
+						printf("run snake x\n\r");
 						node3_snake(event.joystick_x_direction);
 						break;
-					case EmJoystickYChanged:
+					case EmJoystickYDirectionChanged:
+						printf("run snake y\n\r");
 						node3_snake(event.joystick_y_direction);
 						break;	
 					default:
