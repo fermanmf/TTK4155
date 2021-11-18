@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 
-Player players[] = {{"<3", 0, 200,""}, {":)", 1, 200,""}, {":(", 2, 200,""}, {"--__--", 3, 200,""}, {":S", 4, 200,""}, {":,(", 5, 200,""}}; //
+Player players[] = {{"<3    ", 0, 200,""}, {":)    ", 1, 200,""}, {":(    ", 2, 200,""}, {"--__--", 3, 200,""}, {":S    ", 4, 200,""}, {":,(   ", 5, 200,""}}; //
 Player* player = &players[0];
 	
 static void update_string(uint8_t rank, Player* player_to_update){
