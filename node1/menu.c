@@ -192,7 +192,4 @@ void menu_update_highscores() {
 	strcpy(fourth_highscore_item.text, player_get_highscore_str(3));
 	strcpy(fifth_highscore_item.text, player_get_highscore_str(4));
 	strcpy(sixth_highscore_item.text, player_get_highscore_str(5));
-	
-	menu = &main_menu;
-	write_menu();
 }

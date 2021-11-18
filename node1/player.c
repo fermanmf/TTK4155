@@ -1,5 +1,6 @@
 #include "player.h"
 #include "eeprom.h"
+#include "menu.h"
 #include <stdio.h>
 
 
@@ -33,6 +34,7 @@ void player_highscore_update(uint8_t score){
 		player->highscore = score;
 		update_highscore_table();
 	}
+	menu_update_highscores();
 }
 
 
