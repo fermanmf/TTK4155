@@ -8,7 +8,7 @@
 #include <math.h>
 
 
-#define NOT_OE PIO_PD0 //TODO mer av dette
+#define NOT_OE PIO_PD0 
 #define NOT_RST PIO_PD1
 #define SEL PIO_PD2
 #define EN  PIO_PD9
@@ -71,8 +71,7 @@ void motor_control_pos(int interrupt_period){
 	
     pid.period = interrupt_period;
     pid.pos = 100*motor_read_encoder()/8820;
-	
-	//printf("%d %d\n\r", (int)round(pid.pos), (int)round(pid.ref));
+
     pid.deviation = pid.ref - pid.pos;
     pid.p_actuation = pid.k_p * pid.deviation;
     pid.i_actuation = pid.k_i * pid.period * pid.deviation_sum;

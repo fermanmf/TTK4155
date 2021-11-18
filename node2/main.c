@@ -13,6 +13,7 @@
 #include "replay.h"
 #include "dac.h"
 #include "buzzer.h"
+#include "node3.h"
 
 typedef enum {
 	idle,
@@ -34,6 +35,9 @@ void setup(){
 	motor_init();
 	dac_init();
 	buzzer_init();
+	node3_init();
+	
+	node3_countdown();
 	
 }
 
@@ -111,6 +115,9 @@ void _main(){
 						state = inGame;
 						timer_pid_clock_start();
 						timer_game_clock_start(false);
+						break;
+					case EmBeep:
+						buzzer_play_note(buzzerA,2);
 						break;
 
 					default:
