@@ -140,7 +140,7 @@ ISR(INT0_vect) {
 	const uint8_t canintf = mcp2515_read(MCP_CANINTF) & ~(MCP_TX0IF | MCP_MERRF);
 	switch(canintf) {
 		case MCP_ERRIF:
-			printf("mcp2515 error: error flag set. EFLG: 0x%x\n", mcp2515_read(MCP_EFLG));
+			printf("mcp err: error flag set. EFLG: 0x%x\n", mcp2515_read(MCP_EFLG));
 			mcp2515_bit_modify(MCP_CANINTF, MCP_ERRIF, 0);
 			break;
 		
@@ -150,7 +150,7 @@ ISR(INT0_vect) {
 			break;
 		
 		default:
-			printf("mcp2515 error: unsupported interrupt flag. CANINTF: 0x%x\n", canintf);
+			printf("mcp err: unsupported interrupt flags. CANINTF: 0x%x\n", canintf);
 			mcp2515_write(MCP_CANINTF, 0);
 			break;
 	}
