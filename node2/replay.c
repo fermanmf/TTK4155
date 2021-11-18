@@ -6,6 +6,7 @@
 #include "printf-stdarg.h"
 #include "timer.h"
 #include "solenoid.h"
+#include "servo.h"
 #define QUEUE_MAX_LENGTH 500
 
 
@@ -26,7 +27,7 @@ static void append(Incident incident) {
 	}
 }
 
-void replay_reset_log(){
+static void reset_log(){
 	end_index = -1;
 }
 
@@ -43,10 +44,10 @@ void replay_run(){
 				case EmSliderLeftChanged:
 					pid.ref = log[index].event.slider_left;
 					break;
-				case emJoystickDown:
-					//solenoid_on();
-				case EmJoystickYChanged:
-					//servo_set(event.joystick_y/100.0);
+				case EmJoystickPressed:
+					solenoid_on();
+				case EmJoystickXChanged:
+					servo_set(log[index].event.joystick_x/100.0);
 				default:
 					break;
 			}
@@ -54,5 +55,6 @@ void replay_run(){
 		}
 		
 	}
-	em_replay_ended();
+	em_event_empty(EmReplayEnded);
+	reset_log();
 }
