@@ -117,9 +117,9 @@ void _main() {
 
 			case(inGame):
 				switch (event.type){
-					case EmIrBeamBroken:
-						player_highscore_update(event.score);
+
 					case EmGameEnded:
+						player_highscore_update(event.score);
 						state = inMenu;
 						menu_update();
 						break;
@@ -130,6 +130,7 @@ void _main() {
 				break;
 
 			case(inReplay):
+
 				switch (event.type){
 					case EmReplayEnded:
 						state = inMenu;

@@ -129,6 +129,9 @@ void _main(){
 						servo_set(event.joystick_x/100.0);
 						replay_log_event(event);
 						break;
+					case EmIrBeamBroken:
+						em_event(EmGameEnded, timer_get_game_clock());
+						break;
 					case EmGameEnded:
 						printf("From inGame to idle\n\r");
 						timer_game_clock_disable();

@@ -7,10 +7,6 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-#define HIGHSCOREMENU		{{"HighScore","1.","2.","3.","4.","5.","6.","<--Back"}, 8, 7, 7}
-#define MAIN_MENU			{{"Main menu","Play","HighScore"}, 3, 1, 1};
-#define CHARACTERMENU		{{"Pick character","<3",":)",":(","-_-",":S",":,("}, 7, 1, 1};
-#define ENDMENU				{{"End of Game", "Play again", "Replay", "Highscore"}, 4, 1, 1};
 
 typedef enum {
 	main_menu_id,
@@ -38,21 +34,20 @@ typedef struct {
 	Id	id; 
 } Menu;
 
-
 MenuItem play_item = {"Play",character_menu_id};
 MenuItem highscore_item = {"Highscore",highscore_menu_id};
-MenuItem player1_character_item = {player1.emoji, play_id};
-MenuItem player2_character_item = {player2.emoji, play_id};
-MenuItem player3_character_item = {player3.emoji, play_id};
-MenuItem player4_character_item = {player4.emoji, play_id};
-MenuItem player5_character_item = {player5.emoji, play_id};
-MenuItem player6_character_item = {player6.emoji, play_id};
-MenuItem player1_highscore_item = {player1.emoji, play_id};
-MenuItem player2_highscore_item = {player2.emoji, play_id};
-MenuItem player3_highscore_item = {player3.emoji, play_id};
-MenuItem player4_highscore_item = {player4.emoji, play_id};
-MenuItem player5_highscore_item = {player5.emoji, play_id};
-MenuItem player6_highscore_item = {player6.emoji, play_id};
+MenuItem player1_character_item = {"", play_id};
+MenuItem player2_character_item = {"", play_id};
+MenuItem player3_character_item = {"", play_id};
+MenuItem player4_character_item = {"", play_id};
+MenuItem player5_character_item = {"", play_id};
+MenuItem player6_character_item = {"", play_id};
+MenuItem first_highscore_item = {"1.", play_id};
+MenuItem second_highscore_item = {"2.", play_id};
+MenuItem third_highscore_item = {"3.", play_id};
+MenuItem fourth_highscore_item = {"4.", play_id};
+MenuItem fifth_highscore_item = {"5.", play_id};
+MenuItem sixth_highscore_item = {"6.", play_id};
 MenuItem back_item = {"<-- back",main_menu_id};
 MenuItem replay_item = {"Replay", replay_id};
 MenuItem main_menu_item = {"Main menu",main_menu_id};
@@ -61,7 +56,7 @@ MenuItem main_menu_item = {"Main menu",main_menu_id};
 
 Menu main_menu = {"Main menu", {&play_item, &highscore_item}, 2, 0, 0, main_menu_id};
 Menu character_menu = {"Character select", {&player1_character_item, &player2_character_item, &player3_character_item, &player4_character_item, &player5_character_item, &player6_character_item, &back_item}, 7, 0, 0, character_menu_id};
-Menu highscore_menu = {"Highscore", {&player1_highscore_item, &player2_highscore_item, &player3_highscore_item, &player4_highscore_item, &player5_highscore_item, &player6_highscore_item, &back_item}, 7, 6, 6, highscore_menu_id};
+Menu highscore_menu = {"Highscore", {&first_highscore_item, &second_highscore_item, &third_highscore_item, &fourth_highscore_item, &fifth_highscore_item, &sixth_highscore_item, &back_item}, 7, 6, 6, highscore_menu_id};
 Menu end_menu= {"Well played!", {&main_menu_item, &replay_item}, 2, 0, 0, end_menu_id}; 
 Menu *menu = &main_menu;
 
@@ -95,10 +90,7 @@ static void write_menu(){
 		}
 	}
 }
-void menu_init() {
-	menu = &main_menu;
-	write_menu();
-}
+
 
 static void scroll(bool down) {
 	if (down){
@@ -162,7 +154,6 @@ void menu_handle_select() {
 		
 		case replay_id:
 			display_character();
-			//buzzer_start_game_buzz(); //this buzz takes 1300 ms, but should be fine since still in menu
 			em_event_empty(EmReplayStarted);
 			menu = &main_menu;
 			break;
@@ -181,4 +172,27 @@ void menu_handle_select() {
 
 void menu_handle_scroll(bool down) {
 	scroll(down);
+}
+
+void menu_init() {
+	strcpy(player1_character_item.text, player_get_emoji(0));
+	strcpy(player1_character_item.text, player_get_emoji(1));
+	strcpy(player1_character_item.text, player_get_emoji(2));
+	strcpy(player1_character_item.text, player_get_emoji(3));
+	strcpy(player1_character_item.text, player_get_emoji(4));
+	strcpy(player1_character_item.text, player_get_emoji(5));
+	
+	menu = &main_menu;
+	write_menu();
+}
+void menu_update_highscores() {
+	strcpy(first_highscore_item.text, player_get_highscore_str(0));
+	strcpy(second_highscore_item.text, player_get_highscore_str(1));
+	strcpy(third_highscore_item.text, player_get_highscore_str(2));
+	strcpy(fourth_highscore_item.text, player_get_highscore_str(3));
+	strcpy(fifth_highscore_item.text, player_get_highscore_str(4));
+	strcpy(sixth_highscore_item.text, player_get_highscore_str(5));
+	
+	menu = &main_menu;
+	write_menu();
 }
