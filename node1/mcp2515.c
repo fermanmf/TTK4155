@@ -140,7 +140,7 @@ void mcp2515_rts(){
 
 
 ISR(INT0_vect) {
-	const uint8_t canintf = mcp2515_read(MCP_CANINTF) & ~MCP_TX0IF;
+	const uint8_t canintf = mcp2515_read(MCP_CANINTF) & ~(MCP_TX0IF | MCP_MERRF);
 	switch(canintf) {
 		case MCP_ERRIF:
 			printf("mcp2515 error: error flag set. EFLG: 0x%x\n", mcp2515_read(MCP_EFLG));
