@@ -15,3 +15,5 @@ void player_highscore_update(uint8_t score);
 char* player_get_emoji(uint8_t id);
 
 char* player_get_highscore_str(uint8_t rank);
+
+void player_init();

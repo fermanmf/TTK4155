@@ -17,6 +17,7 @@ void setup(){
 	em_init();
 	display_init();
 	menu_init();
+	player_init();
 	sei();
 }
 

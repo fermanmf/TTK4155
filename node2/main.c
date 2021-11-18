@@ -130,7 +130,7 @@ void _main(){
 						replay_log_event(event);
 						break;
 					case EmIrBeamBroken:
-						em_event(EmGameEnded, timer_get_game_clock());
+						em_event(EmGameEnded,(200 - timer_get_game_clock()));
 						break;
 					case EmGameEnded:
 						printf("From inGame to idle\n\r");
