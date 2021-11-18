@@ -93,7 +93,6 @@ void menu_init() {
 static void scroll(bool down) {
 	if (down){
 		if (menu->choice == menu->n_items - 1){
-			buzzer_short_buzz();
 			return;
 		}
 		menu->choice++;
@@ -101,7 +100,6 @@ static void scroll(bool down) {
 	}
 	else {
 		if (menu->choice == menu->default_choice){
-			buzzer_short_buzz();
 			return;
 		}
 		menu->choice--;
@@ -141,7 +139,7 @@ void menu_handle_select() {
 		
 		case play_id:
 			display_character();
-			buzzer_start_game_buzz(); //this buzz takes 1300 ms, but should be fine since still in menu
+			//buzzer_start_game_buzz(); //this buzz takes 1300 ms, but should be fine since still in menu
 			em_event_empty(EmGameStarted);			
 			menu = &end_menu;
 			break;
@@ -153,7 +151,7 @@ void menu_handle_select() {
 		
 		case replay_id:
 			display_character();
-			buzzer_start_game_buzz(); //this buzz takes 1300 ms, but should be fine since still in menu
+			//buzzer_start_game_buzz(); //this buzz takes 1300 ms, but should be fine since still in menu
 			em_event_empty(EmReplayStarted);
 			menu = &main_menu;
 			break;
