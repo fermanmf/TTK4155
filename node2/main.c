@@ -118,15 +118,15 @@ void _main(){
 				printf("time: %d\n\r",timer_get_game_clock());
 				switch(event.type) {
 					case EmJoystickPressed:
-						//solenoid_on();
+						solenoid_on();
 						replay_log_event(event);
 						break;
 					case EmSliderLeftChanged:
 						pid.ref = event.slider_left;
 						replay_log_event(event);
 						break;
-					case EmJoystickYChanged:
-						//servo
+					case EmJoystickXChanged:
+						servo_set(event.joystick_x/100.0);
 						replay_log_event(event);
 						break;
 					case EmGameEnded:
