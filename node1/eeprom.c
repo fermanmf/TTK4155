@@ -1,5 +1,6 @@
 
 #include "eeprom.h"
+#include "player.h"
 
 void eeprom_write(uint16_t adress, uint8_t data){
 
@@ -15,6 +16,6 @@ void eeprom_write(uint16_t adress, uint8_t data){
 
 Score Highscores [6];
 
-void add_score(Score score, ){
-	
-}
+
+
+

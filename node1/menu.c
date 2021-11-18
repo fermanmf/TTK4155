@@ -39,11 +39,12 @@ typedef struct {
 
 MenuItem play_item = {"Play",character_menu_id};
 MenuItem highscore_item = {"Highscore",highscore_menu_id};
-MenuItem player2_item = {player2_object.emoji, play_id};
-MenuItem player3 = {":(", play_id};
-MenuItem player4 = {"--__--", play_id};
-MenuItem player5 = {":S", play_id};
-MenuItem player6 = {":,(", play_id};
+MenuItem player1_character_item = {player1.emoji, play_id};
+MenuItem player2_character_item = {player2.emoji, play_id};
+MenuItem player3_character_item = {player3.emoji, play_id};
+MenuItem player4_character_item = {player4.emoji, play_id};
+MenuItem player5_character_item = {player5.emoji, play_id};
+MenuItem player6_character_item = {player6.emoji, play_id};
 MenuItem back_item = {"<-- back",main_menu_id};
 MenuItem replay_item = {"Replay", replay_id};
 MenuItem main_menu_item = {"Main menu",main_menu_id};
@@ -51,7 +52,7 @@ MenuItem main_menu_item = {"Main menu",main_menu_id};
 
 
 Menu main_menu = {"Main menu", {&play_item, &highscore_item}, 2, 0, 0, main_menu_id};
-Menu character_menu = {"Character select", {&player1, &player2, &player3, &player4, &player5, &player6, &back_item}, 7, 0, 0, character_menu_id};
+Menu character_menu = {"Character select", {&player1_character_item, &player2_character_item, &player3_character_item, &player4_character_item, &player5_character_item, &player6_character_item, &back_item}, 7, 0, 0, character_menu_id};
 Menu highscore_menu = {"Highscore", {&back_item, &back_item, &back_item, &back_item, &back_item, &back_item, &back_item}, 7, 6, 6, highscore_menu_id};
 Menu end_menu= {"Well played!", {&main_menu_item, &replay_item}, 2, 0, 0, end_menu_id}; 
 Menu *menu = &main_menu;
@@ -137,7 +138,7 @@ void menu_handle_select() {
 			break;
 		
 		case play_id:
-			//printf("started game from menu\n");
+			player_select(menu->choice);
 			em_game_started();			
 			display_character();
 			menu = &end_menu;

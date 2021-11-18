@@ -121,6 +121,8 @@ void _main() {
 
 			case(inGame):
 				switch (event.type){
+					case EmIrBeamBroken:
+						player_highscore_update(event.score);
 					case EmGameEnded:
 						printf("From inGame to inMenu\n");
 						state = inMenu;
