@@ -15,5 +15,5 @@
 #define buzzerASharp	466.16
 #define buzzerB			493.88
 
-buzzer_init();
-buzzer_play_note(float tone, invdur uint8_t);
+void buzzer_init();
+void buzzer_play_note(float tone, uint8_t invdur);
