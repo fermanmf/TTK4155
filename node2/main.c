@@ -12,6 +12,7 @@
 #include "motor.h"
 #include "replay.h"
 #include "dac.h"
+#include "buzzer.h"
 
 typedef enum {
 	idle,
@@ -32,6 +33,8 @@ void setup(){
 	timer_init();
 	motor_init();
 	dac_init();
+	buzzer_init();
+	
 }
 
 void _main(){

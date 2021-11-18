@@ -10,19 +10,19 @@
 
 // VALID - COM1 - COM2 - COM3
 
-node3_init() {
+void node3_init() {
 	PIOC->PIO_PER = VALID | COM1 | COM2 | COM3;
 	PIOC->PIO_OER = VALID | COM1 | COM2 | COM3;
 }
-node3_countdown() {
+
+void node3_countdown() {
 	PIOC->PIO_CODR = VALID;
 	PIOC->PIO_CODR = COM1 | COM2;
 	PIOC->PIO_SODR = COM3;
 	PIOC->PIO_SODR = VALID;
 }
 
-
-node3_snake(EmJoystickDirection direction) {
+void node3_snake(EmJoystickDirection direction) {
 	PIOC->PIO_CODR = VALID;
 	switch(direction) {
 		case emJoystickUp: // 0b00
