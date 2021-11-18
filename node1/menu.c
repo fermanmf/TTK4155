@@ -87,6 +87,7 @@ static void write_menu(){
 static void scroll(bool down) {
 	if (down ){
 		if (menu->choice == menu->n_items - 1){
+			em_event_empty(EmBeep);
 			return;
 		}
 		menu->choice++;
@@ -94,6 +95,7 @@ static void scroll(bool down) {
 	}
 	else {
 		if (menu->choice == menu->default_choice){
+			em_event_empty(EmBeep);
 			return;
 		}
 		menu->choice--;
@@ -171,6 +173,9 @@ void menu_handle_select() {
 void menu_handle_scroll(bool down) {
 	if (menu != &highscore_menu){
 		scroll(down);
+	}
+	else{
+		em_event_empty(EmBeep);
 	}
 }
 

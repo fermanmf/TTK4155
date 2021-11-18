@@ -14,7 +14,8 @@ typedef enum {
 	EmGameStarted,
 	EmIrBeamBroken,
 	EmGameEnded,
-	EmReplayEnded
+	EmReplayEnded,
+	EmBeep
 } EmEventType;
 
 typedef enum {
