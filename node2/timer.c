@@ -25,7 +25,7 @@ void timer_init(){
     TC0->TC_CHANNEL[0].TC_CMR = TC_CMR_TCCLKS_TIMER_CLOCK4 | TC_CMR_WAVE | TC_CMR_WAVSEL_UP_RC;
 	
 	//TC1 Game clock
-	TC0->TC_CHANNEL[1].TC_IER = TC_IER_CPCS;
+	//TC0->TC_CHANNEL[1].TC_IER = TC_IER_CPCS;
 	TC0->TC_CHANNEL[1].TC_RC = TC1_REGISTER_C;
 	TC0->TC_CHANNEL[1].TC_CMR = TC_CMR_TCCLKS_TIMER_CLOCK4 | TC_CMR_WAVE | TC_CMR_WAVSEL_UP_RC;
 
@@ -41,10 +41,10 @@ void timer_init(){
 	TC1->TC_CHANNEL[2].TC_CMR = TC_CMR_TCCLKS_TIMER_CLOCK4 | TC_CMR_WAVE | TC_CMR_WAVSEL_UP_RC;
 	TC1->TC_CHANNEL[2].TC_CCR = TC_CCR_CLKEN | TC_CCR_SWTRG;
 	
-	//pid interrupt
+	//pid interrupt controller enabled
     NVIC_EnableIRQ(TC0_IRQn);
-
-	
+	//game clock interrupt controller enabled
+	NVIC_EnableIRQ(TC1_IRQn);
 	
 }
 int test = 1;
@@ -55,7 +55,7 @@ void TC0_Handler(){
 }
 
 void TC1_Handler(){
-	em_game_ended();
+	em_event_empty(EmGameEnded);
     TC0->TC_CHANNEL[1].TC_SR;	//Clear interrupt flag
 }
 
@@ -74,22 +74,25 @@ void timer_delay(uint32_t time){
     while(!(SysTick->CTRL & (1<<16)));
 }
 
+	//pid clock functions
 void timer_pid_clock_start(){
 	TC0->TC_CHANNEL[0].TC_CCR = TC_CCR_CLKEN | TC_CCR_SWTRG;
 }
 void timer_pid_clock_disable(){
 	TC0->TC_CHANNEL[0].TC_CCR = 0b10 | TC_CCR_SWTRG;
 }
+
+	//game clock functions
 void timer_game_clock_start(bool replay){
 	TC0->TC_CHANNEL[1].TC_CCR = TC_CCR_CLKEN | TC_CCR_SWTRG;
 	if (!replay){
-		NVIC_EnableIRQ(TC1_IRQn);
+		TC0->TC_CHANNEL[1].TC_IER = TC_IER_CPCS;
 	}
 }
 uint32_t timer_get_game_clock(){
 	return TC0->TC_CHANNEL[1].TC_CV/65625;
 }
 void timer_game_clock_disable(){
-	TC0->TC_CHANNEL[0].TC_CCR = TC_CCR_CLKDIS | TC_CCR_SWTRG;
-	NVIC_DisableIRQ(TC1_IRQn);
+	TC0->TC_CHANNEL[1].TC_CCR = TC_CCR_CLKDIS | TC_CCR_SWTRG;
+	TC0->TC_CHANNEL[1].TC_IDR = TC_IDR_CPCS;
 }
