@@ -32,5 +32,6 @@ void buzzer_play_note(float tone, uint8_t invdur) {
 }
 
 void TC7_Handler(){
-	PWM->PWM_DIS = PWM_DIS_CHID3; // disable pwm			
+	PWM->PWM_DIS = PWM_DIS_CHID3; // disable pwm
+	TC2->TC_CHANNEL[1].TC_SR;			
 }
