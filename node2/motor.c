@@ -69,9 +69,8 @@ struct controlVariables pid = {
 };
 void motor_control_pos(int interrupt_period){
 	
-    //pid.period = interrupt_period;
+    pid.period = interrupt_period;
     pid.pos = 100*motor_read_encoder()/8820;
-	//pid.pos = motor_read_encoder();
 	
 	//printf("%d %d\n\r", (int)round(pid.pos), (int)round(pid.ref));
     pid.deviation = pid.ref - pid.pos;
