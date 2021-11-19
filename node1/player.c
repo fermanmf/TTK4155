@@ -10,7 +10,7 @@ typedef struct {
 	uint8_t highscore;
 	char highscore_str[16];
 } Player;
-
+// players is sorted by score based rank
 Player players[] = {{"<3    ", 0, 200,""}, {":)    ", 1, 200,""}, {":(    ", 2, 200,""}, {"--__--", 3, 200,""}, {":S    ", 4, 200,""}, {":,(   ", 5, 200,""}}; //
 Player* player = &players[0];
 
@@ -26,11 +26,12 @@ static void player_write_highscores_to_eeprom(){
 static void read_highscores_from_eeprom(){
 	uint8_t eeprom_id = 0;
 	Player store_player;
-	for (int rank = 0;rank<2*sizeof(players)/sizeof(Player);rank+=2){
+	
+	for (int rank = 0;rank<2*sizeof(players)/sizeof(Player);rank+=2){		//Store highscore and id in two consecutive mem locations
 		eeprom_id = eeprom_read(rank);
 		for (int i = 0;i<sizeof(players)/sizeof(Player);i++){
 			if (players[i].id == eeprom_id){
-				store_player = players[rank/2];
+				store_player = players[rank/2];			
 				players[rank/2] = players[i];
 				players[i] = store_player;
 				players[rank/2].highscore = eeprom_read(rank+1);
