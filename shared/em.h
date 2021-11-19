@@ -1,7 +1,16 @@
+/**
+ * @file em.h
+ * @brief Event manager (em) module for syncronizing and exchangig events interally and externally. 
+ * External events are exchanged with CAN
+ */
 #pragma once
 
 #include <stdint.h>
 
+/**
+ * @brief Event type
+ * 
+ */
 typedef enum {
 	EmJoystickPressed,
 	EmJoystickXDirectionChanged,
@@ -20,6 +29,10 @@ typedef enum {
 	EmSnakeEnded
 } EmEventType;
 
+/**
+ * @brief Joystick direction
+ * 
+ */
 typedef enum {
 	emJoystickUp,
 	emJoystickDown,
@@ -28,6 +41,10 @@ typedef enum {
 	emJoystickNeutral
 } EmJoystickDirection;
 
+/**
+ * @brief Event struct. Union can be undefined.
+ * 
+ */
 typedef struct {
 	EmEventType type;
 	union {
@@ -42,7 +59,31 @@ typedef struct {
 	};
 } EmEvent;
 
+/**
+ * @brief Initializes em and CAN
+ */
 void em_init();
+
+/**
+ * @brief Get next event in event queue
+ * 
+ * @return EmEvent 
+ * 
+ * @warning Blocks until message is received
+ */
 EmEvent em_get_event();
+
+/**
+ * @brief Emit event (add to internal event queues both internally and externally)
+ * 
+ * @param type[in] 
+ * @param value[in] 
+ */
 void em_event(EmEventType type, uint8_t value);
+
+/**
+ * @brief Emit empty event (add to internal event queues both internally and externally)
+ * 
+ * @param type[in] 
+ */
 void em_event_empty(EmEventType type);

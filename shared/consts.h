@@ -1,3 +1,7 @@
+/**
+ * @file
+ * @brief Common constants in the project
+ */
 #pragma once
 
 #define MCK_NODE1 4915200
