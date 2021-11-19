@@ -4,7 +4,7 @@
 #include "printf-stdarg.h"
 
 void solenoid_init() {
-    //TODO: Enable timer counter, set values for R_B and R_C
+    //Enable timer counter, set values for R_B and R_C
 
     // PMC TC6
     PMC->PMC_PCER1 |= PMC_PCER1_PID33;
