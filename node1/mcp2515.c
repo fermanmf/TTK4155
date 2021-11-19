@@ -132,7 +132,6 @@ void mcp2515_rts(){
 	spi_transmit(MCP_RTS_TX0);
 	slave_deselect();
 	while (mcp2515_read(MCP_TXB0CTRL) & (1 << TXREQ)); // wait for buffer to not have pending transmission
-	
 }
 
 

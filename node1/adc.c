@@ -13,7 +13,7 @@ void adc_init(void (*callback)(uint8_t, uint8_t, uint8_t, uint8_t)) {
 	// ADC clock
 	DDRB = 1 << PINB0; // PB0/OC0 as output 
 	OCR0 = 0; // Output compare register at 0, i.e. ck = MCK/2
-	TCCR0 = (1 << WGM00) | (1 << COM01) | (1 << WGM01) | (1 << CS00); // fast PWM mode, toggle on compare match, no prescaling
+	TCCR0 = (1 << WGM00) | (1 << COM01) | (1 << WGM01) | (1 << CS00); // Fast PWM mode, toggle on compare match, no prescaling
 	
 	// Timer interrupt
 	OCR1A = 480; // Output compare register at 480, i.e. 10 Hz interrupt frequency with prescalar 1024
@@ -22,7 +22,7 @@ void adc_init(void (*callback)(uint8_t, uint8_t, uint8_t, uint8_t)) {
 }
 
 ISR(TIMER1_COMPA_vect) {
-	*ADC = 0;	
+	*ADC = 0; // Start conversion
 	while (!(PINE & (1 << PINE0))); // While busy
 	const uint8_t v1 = *ADC;
 	const uint8_t v2 = *ADC;
