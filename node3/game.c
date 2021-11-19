@@ -35,72 +35,90 @@ enum dir{up, down, left, right, won, lost};
 
 void game(uint8_t image[], uint8_t direction) {
 
-
+  // Sets the run direction for the snake
   run = direction;
 
+  // Sets a counter so that the snake holds itself in one position in x seconds
   if (tick==0) {
   tick = 10000;
-
+  
+  // If time is up, send the user to game over
   if (globalCounter==200) { run = 5; }
 
   switch (run)
   {
       case right:
+        // Store last position
         lastPositionX[globalCounter] = Col;
         lastPositionY[globalCounter] = Row;
         globalCounter++;
+        // If snake hits food, extend length and spawns new food
         if ((Col==foodX)&(Row==foodY)) {
           length++;
           counter++;
           if (counter==maxFood) { run = 4; break;}
           else { foodX = food[counter][0]; foodY = food[counter][1]; }
           }
+        // Update the screen
         buildSnakeImage(image, foodX, foodY, Col, Row, length, globalCounter, lastPositionX, lastPositionY);
+        // Update next position
         if (Col==4) { Col = 0; }
         else {Col++;}
         break;
 
       case left:
+        // Store last position
         lastPositionX[globalCounter] = Col;
         lastPositionY[globalCounter] = Row;
         globalCounter++;
+        // If snake hits food, extend length and spawns new food
         if ((Col==foodX)&(Row==foodY)) {
           length++;
           counter++;
           if (counter==maxFood) { run = 4; break;}
           else { foodX = food[counter][0]; foodY = food[counter][1]; }
           }
+        // Update the screen
         buildSnakeImage(image, foodX, foodY, Col, Row, length, globalCounter, lastPositionX, lastPositionY);
+        // Update next position
         if (Col==0) { Col = 4; }
         else {Col--;}
         break;
 
       case up:
+        // Store last position
         lastPositionX[globalCounter] = Col;
         lastPositionY[globalCounter] = Row;
         globalCounter++;
+        // If snake hits food, extend length and spawns new food
         if ((Col==foodX)&(Row==foodY)) {
           length++;
           counter++;
           if (counter==maxFood) { run = 4; break;}
           else { foodX = food[counter][0]; foodY = food[counter][1]; }
           }
+        // Update the screen
         buildSnakeImage(image, foodX, foodY, Col, Row, length, globalCounter, lastPositionX, lastPositionY);
+        // Update next position
         if (Row==0) { Row = 4; }
         else {Row--;}
         break;
 
       case down:
+        // Store last position
         lastPositionX[globalCounter] = Col;
         lastPositionY[globalCounter] = Row;
         globalCounter++;
+        // If snake hits food, extend length and spawns new food
         if ((Col==foodX)&(Row==foodY)) {
           length++;
           counter++;
           if (counter==maxFood) { run = 4; break;}
           else { foodX = food[counter][0]; foodY = food[counter][1]; }
           }
+        // Update the screen
         buildSnakeImage(image, foodX, foodY, Col, Row, length, globalCounter, lastPositionX, lastPositionY);
+        // Update next position
         if (Row==4) { Row = 0; }
         else {Row++;}
         break;

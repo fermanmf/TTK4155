@@ -30,6 +30,7 @@ int main(void) {
   GPIO->PIN_CNF[23] = 0;
 
 
+  // Default display
   uint8_t image[5] = {
     0b00000,
     0b00000,
@@ -37,7 +38,8 @@ int main(void) {
     0b00000,
     0b00000
   };
-
+  
+  // Empty display
   uint8_t emptyImage[5] = {
     0b10000,
     0b10000,
