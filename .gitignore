@@ -6,3 +6,5 @@ Device_Startup
 *.cproj
 .vscode
 node2/node2
+latex/
+html/
