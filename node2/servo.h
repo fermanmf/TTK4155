@@ -13,6 +13,6 @@ void servo_init();
 /**
  * @brief Sets servo value
  * 
- * @param value Servo value between -1 and 1. -1 is full left and 1 is full right
+ * @param value[in] Servo value between -1 and 1. -1 is full left and 1 is full right
  */
 void servo_set(float value);

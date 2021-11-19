@@ -21,6 +21,6 @@ void node3_countdown();
 /**
  * @brief Plays snake on node3 display
  * 
- * @param direction Direction of joystick
+ * @param direction[in] Direction of joystick
  */
 void node3_snake(EmJoystickDirection direction);
