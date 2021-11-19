@@ -1,3 +1,10 @@
+/**
+ * @file dac.h
+ * @date 2021-11-19
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
 #pragma once
 #include <stdint.h>
 /**

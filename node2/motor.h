@@ -1,4 +1,13 @@
 /**
+ * @file motor.h
+ * @brief controls the motor
+ * @date 2021-11-19
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
+
+/**
  * @brief This function contains the pid regulator. It regulates the position of
  * the motor based on the reference.
  * 

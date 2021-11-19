@@ -1,4 +1,11 @@
-
+/**
+ * @file eeprom.h
+ * @brief Communicates with eeprom  
+ * @date 2021-11-19
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
 #include <stdint.h>
 /**
  * @brief This funtion disables interrupts temporarily and writes to the eeprom memory.
