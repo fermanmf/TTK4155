@@ -9,8 +9,8 @@
 
 /*
 	Dual mailbox setup.
-	MB0 for controller and MB1 for em
-	MB0 only receives messages with id 0xFF and MB1 takes all other messages
+	MB0 rx
+	MB1 tx
 */
 
 static void (*message_received_cb)(uint8_t, uint8_t[], uint8_t);
