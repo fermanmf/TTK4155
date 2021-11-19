@@ -21,11 +21,9 @@
 
 
 int main(void) {
-  // Init clocks + pins
+  // Init clocks and leds
   initLEDs();
-  // Configure buttons
-  GPIO->PIN_CNF[17] = 0; // A
-  GPIO->PIN_CNF[26] = 0; // B
+  // Configure inputs
   GPIO->PIN_CNF[16] = 0;
   GPIO->PIN_CNF[21] = 0;
   GPIO->PIN_CNF[22] = 0;
@@ -53,13 +51,6 @@ int main(void) {
   while(1) {
     if (valid) {
       com = com_pins;
-    }
-
-    if(aPushed()) {
-      com = 0b100;
-    }
-    if(bPushed()) {
-      com = 0b110;
     }
 
     if (com & 0b100) {
