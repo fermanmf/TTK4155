@@ -28,7 +28,7 @@ void buzzer_init();
 /**
  * @brief Plays note
  * 
- * @param tone Frequency of tone. Recomended to be used with macros defined in this module
- * @param invdur Inverse duration of note. I.e. 1 is whole note, 8 is eigth note and so on
+ * @param tone[in] Frequency of tone. Recomended to be used with macros defined in this module
+ * @param invdur[in] Inverse duration of note. I.e. 1 is whole note, 8 is eigth note and so on
  */
 void buzzer_play_note(float tone, uint8_t invdur);
