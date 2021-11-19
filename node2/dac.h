@@ -1,7 +1,13 @@
 #pragma once
 #include <stdint.h>
-
-void dac_test(float value);
-void dac_write(float value);
+/**
+ * @brief initiates the DAC by providing PMC and setting mode registers.
+ * 
+ */
 void dac_init();
+/**
+ * @brief Writes a value to the dac determining the magnitude of the output voltage.
+ * 
+ * @param value A value in the range 0 - 0xfff.
+ */
 void dac_write_uint(uint32_t value);
