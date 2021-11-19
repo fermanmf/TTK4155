@@ -18,7 +18,8 @@
 typedef enum {
 	idle,
 	inReplay,
-	inGame	
+	inGame,
+	inSnake
 } State;
 State state = idle;
 
@@ -36,9 +37,7 @@ void setup(){
 	dac_init();
 	buzzer_init();
 	node3_init();
-	
-	node3_countdown();
-	
+	node3_snake(emJoystickLeft);
 }
 
 void _main(){
@@ -119,13 +118,16 @@ void _main(){
 					case EmBeep:
 						buzzer_play_note(buzzerA,2);
 						break;
+					case EmSnakeStarted:
+						state = inSnake;
+						break;
 
 					default:
 						break;
 				}
 				break;
 			case(inGame):
-				printf("time: %d\n\r",timer_get_game_clock());
+				printf("time: %d\n\r",timer_get_game_clock_dseconds());
 				switch(event.type) {
 					case EmJoystickPressed:
 						solenoid_on();
@@ -140,7 +142,7 @@ void _main(){
 						replay_log_event(event);
 						break;
 					case EmIrBeamBroken:
-						em_event(EmGameEnded,(200 - timer_get_game_clock()));
+						em_event(EmGameEnded,(200 - timer_get_game_clock_seconds()));
 						break;
 					case EmGameEnded:
 						printf("From inGame to idle\n\r");
@@ -167,6 +169,27 @@ void _main(){
 						break;
 				}
 				break;
+			case inSnake:
+				switch(event.type) {
+
+					case EmSnakeEnded:
+						timer_game_clock_disable();
+						timer_pid_clock_disable();
+						state = idle;
+						break;
+					case EmJoystickXDirectionChanged:
+						printf("run snake x\n\r");
+						node3_snake(event.joystick_x_direction);
+						break;
+					case EmJoystickYDirectionChanged:
+						printf("run snake y\n\r");
+						node3_snake(event.joystick_y_direction);
+						break;	
+					default:
+						break;
+				}
+				break;
+				
 
 			default:
 				break;

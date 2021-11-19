@@ -32,14 +32,14 @@ static void reset_log(){
 }
 
 void replay_log_event(EmEvent event){
-    Incident incident = {timer_get_game_clock(),event};
+    Incident incident = {timer_get_game_clock_dseconds(),event};
     append(incident);
 }
 
 void replay_run(){
 	uint32_t index = 0;
 	while(index <= end_index){
-		if (timer_get_game_clock() >= log[index].time){
+		if (timer_get_game_clock_dseconds() >= log[index].time){
 			switch (log[index].event.type){
 				case EmSliderLeftChanged:
 					pid.ref = log[index].event.slider_left;

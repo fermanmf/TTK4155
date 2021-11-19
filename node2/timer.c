@@ -10,7 +10,7 @@
 #define REGISTER_C 6563 
 #define TC4_REGISTER_C 656250
 #define TC5_REGISTER_C 65625
-#define TC1_REGISTER_C 13125000 //20s
+#define TC1_REGISTER_C 131250000 //200s
 #define INT_PERIOD REGISTER_C*128/84000000
 
 //waveform mode clock is MCK/128 period is therefore about 10 ms when Register_C = 6563
@@ -55,7 +55,7 @@ void TC0_Handler(){
 }
 
 void TC1_Handler(){
-	em_event_empty(EmGameEnded);
+	em_event(EmGameEnded, 200);
     TC0->TC_CHANNEL[1].TC_SR;	//Clear interrupt flag
 }
 
@@ -89,9 +89,14 @@ void timer_game_clock_start(bool replay){
 		TC0->TC_CHANNEL[1].TC_IER = TC_IER_CPCS;
 	}
 }
-uint32_t timer_get_game_clock(){
+uint32_t timer_get_game_clock_dseconds(){
 	return TC0->TC_CHANNEL[1].TC_CV/65625;
 }
+
+uint32_t timer_get_game_clock_seconds(){
+	return TC0->TC_CHANNEL[1].TC_CV/656250;
+}
+
 void timer_game_clock_disable(){
 	TC0->TC_CHANNEL[1].TC_CCR = TC_CCR_CLKDIS;
 	TC0->TC_CHANNEL[1].TC_IDR = TC_IDR_CPCS;

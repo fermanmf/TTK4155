@@ -12,6 +12,7 @@
 
 #include "display.h"
 #include "menu.h"
+#include "player.h"
 void setup(){
 	controller_init();
 	em_init();
@@ -24,7 +25,8 @@ void setup(){
 typedef enum {
 	inMenu,
 	inReplay,
-	inGame
+	inGame,
+	inSnake
 } State;
 
 void _main() {
@@ -32,9 +34,8 @@ void _main() {
 	while(1){
 		EmEvent event = em_get_event();
 		
-		/*
 		switch(event.type) {
-			
+			/*
 			case EmReplayStarted:
 				printf("em: replay started\n");
 				break;
@@ -82,12 +83,11 @@ void _main() {
 			case EmReplayEnded:
 				printf("em: replay ended\n");
 				break;
-			
+			*/
 			default:
 				printf("em: unknown event %d\n", event.type);
 				break;
 		}
-		*/
 		
 		switch (state){
 			case(inMenu):
@@ -95,7 +95,11 @@ void _main() {
 					case EmReplayStarted:
 						state = inReplay;
 						break;
-
+					
+					case EmSnakeStarted:
+						state = inSnake;
+						break;
+					
 					case EmGameStarted:
 						state = inGame;
 						break;
@@ -144,13 +148,23 @@ void _main() {
 						break;
 				}
 				break;
+
+			case inSnake:
+				switch (event.type){
+					case EmJoystickPressed:
+						em_event_empty(EmSnakeEnded);
+						state = inMenu;
+						menu_update();
+						break;
+					
+					default:
+						break;
+				}
+				break;
 			default:
-			break;
+				break;
 		}
-		
-		
 	}
-	
 }
 
 int main(){
