@@ -1,5 +1,6 @@
 /**
  * @file menu.h
+ * @brief controls menu
  * @date 2021-11-19
  * 
  * @copyright Copyright (c) 2021

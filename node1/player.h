@@ -1,5 +1,6 @@
 /**
  * @file player.h
+ * @brief Keeps track of player attributes.
  * @date 2021-11-19
  * 
  * @copyright Copyright (c) 2021

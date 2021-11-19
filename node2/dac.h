@@ -1,5 +1,6 @@
 /**
  * @file dac.h
+ * @brief Digital to analog converter
  * @date 2021-11-19
  * 
  * @copyright Copyright (c) 2021
