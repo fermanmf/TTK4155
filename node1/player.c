@@ -4,6 +4,13 @@
 #include <stdio.h>
 
 
+typedef struct {
+	char emoji[8];
+	uint8_t id;
+	uint8_t highscore;
+	char highscore_str[16];
+} Player;
+
 Player players[] = {{"<3    ", 0, 200,""}, {":)    ", 1, 200,""}, {":(    ", 2, 200,""}, {"--__--", 3, 200,""}, {":S    ", 4, 200,""}, {":,(   ", 5, 200,""}}; //
 Player* player = &players[0];
 
