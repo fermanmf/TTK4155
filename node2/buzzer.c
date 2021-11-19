@@ -28,10 +28,10 @@ void buzzer_play_note(float tone, uint8_t invdur) {
 	PWM->PWM_ENA = PWM_DIS_CHID3; // enable pwm
 	
 	TC2->TC_CHANNEL[1].TC_RC = MCK_NODE2 / (2 * 128 * invdur);
-	TC2->TC_CHANNEL[1].TC_CCR = TC_CCR_SWTRG;
+	TC2->TC_CHANNEL[1].TC_CCR = TC_CCR_SWTRG; // start tc
 }
 
 void TC7_Handler(){
 	PWM->PWM_DIS = PWM_DIS_CHID3; // disable pwm
-	TC2->TC_CHANNEL[1].TC_SR;			
+	TC2->TC_CHANNEL[1].TC_SR; // clear tc interrupt			
 }
