@@ -40,7 +40,7 @@ void initLEDs() {
   unsigned int v;
 
   CLOCK->HFCLKSTARTED = 0;
-  CLOCK->HFCLKSTART    = 1;
+  CLOCK->HFCLKSTART = 1;
   while (CLOCK->HFCLKSTARTED == 0);
   CLOCK->HFCLKSTARTED = 0;
   GPIO->OUTCLR = MASK_ALL_LED_ROW;
