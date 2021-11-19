@@ -1,8 +1,15 @@
-// ===== CLOCK registers =====
+/**
+ * @file led.h
+ * @date 19 Nov 2021
+ * @brief File containing funcitons for initalizing the leds on the microbit and set them specifically
+ */
 #include <stdint.h>
 
 #define CLOCK ((CLOCK_REGS*)0x40000000)
 
+/**
+ * @brief Struct for CLOCL register
+ */
 typedef struct {
   volatile unsigned int HFCLKSTART;      // 0x000 Start HFCLK crystal oscillator
   volatile unsigned int HFCLKSTOP;       // Stop HFCLK crystal oscillator
@@ -19,11 +26,23 @@ typedef struct {
   volatile unsigned int CTTO;            // Calibration timer timeout
 } CLOCK_REGS;
 
+/**
+ * @brief Struct for the led_map
+ */
 typedef struct {
-  int RowUnmapped;
-  int ColUnmapped;
+  int RowUnmapped;  /**< Number of row in the led_mapt#a. */
+  int ColUnmapped;  /**< Number of column in the led_map#a. */
 } led_map;
 
+/**
+ * @brief Initialize the LEDs on the micro bit
+ */
 void initLEDs();
 
+/**
+ * @brief Sets the light on a spesific led from the led_map
+ * 
+ * @param Row  The selected row for the led in the led matrix
+ * @param Col  The selected column for the led in the led matrix
+ */
 void setSelectedLED(int Row, int Col);

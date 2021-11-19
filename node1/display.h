@@ -1,20 +1,25 @@
-#pragma once
 /**
- * @brief This function runs oled_init()
- * 
+ * @file
+ * @brief Display driver
+ */
+#pragma once
+
+/**
+ * @brief Initializes driver
  */
 void display_init();
+
 /**
- * @brief This function writes the input string to the oled 
- * display at the line chosen by the input line 
+ * @brief Writes string to specified line on display
  * 
- * @param string determines the string to be wirtten on the oled
- * @param line determines the line it will be written at
+ * @param string[in] String to be written to display. Max 16 chars 
+ * @param line[in] Line to write to. 0-7
  */
 void display_write_line(char string[], int line);
+
 /**
- * @brief This function inverts the oled colors at the line chosen by the input line 
+ * @brief Inverts specified line
  * 
- * @param line determines the line at which to invert
+ * @param line Line to invert
  */
 void display_invert_line(int line);

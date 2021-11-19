@@ -2,16 +2,16 @@
 
 #include <avr/io.h>
 #include <stdio.h>
+#include <stdint.h>
 
-// copy from datasheet
-void uart_transmit(unsigned char c) {
+#include "consts.h"
+
+void uart_transmit(uint8_t data) {
 	while (!(UCSR0A & (1 << UDRE0)));
-	
-	UDR0 = c;
+	UDR0 = data;
 }
 
-// copy from datasheet
-unsigned char uart_recieve() {
+uint8_t uart_recieve() {
 	while (!(UCSR0A & (1<<RXC0)));
 	return UDR0;
 }
@@ -25,16 +25,13 @@ static int get(FILE * file) {
 	return 0;
 }
 
-// copy from datasheet
 void uart_init(unsigned int baud_rate) {
-	// set baud rate
-	unsigned long clock_speed = 4915200;
-	unsigned char ubrr = clock_speed / 16 / baud_rate - 1;
+	unsigned char ubrr = MCK_NODE1 / 16 / baud_rate - 1;
 	UBRR0H = ubrr >> 8;
 	UBRR0L = ubrr;
 	
 	UCSR0B = (1 << RXEN0) | (1 << TXEN0); // enable transmit and receive
 	UCSR0C = (1 << URSEL0) | (1 << USBS0) | (3 << UCSZ00); // set frame format: 8 bit data, 2 bit stop
 	
-	fdevopen(put, get); // sets up printf
+	fdevopen(put, get);
 }
