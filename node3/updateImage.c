@@ -7,7 +7,7 @@
      uint8_t n = image[i];
      for (int j = 4; j >= 0; j--) {
      if(1&(n>>j)) {
-         _SetLED(i, 4-j);
+         setSelectedLED(i, 4-j);
         }
       }
     }
@@ -15,13 +15,13 @@
 
   void buildSnakeImage(uint8_t image[], int foodX, int foodY, int snakeX, int snakeY, int length, int globalCounter, int lastPositionX[200], int lastPositionY[200]) {
     // Set food in image
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 5; i++) {
     image[i] = 0b00000;
     }
     image[foodY] = (image[foodY]|(0b1<<(4-foodX)));
     image[snakeY] = (image[snakeY]|(0b1<<(4-snakeX)));
     
-    for (int i = 0; i < length; i++) {
+    for (int i = 0; i < (length+1); i++) {
       image[(lastPositionY[globalCounter-1-i])] = image[lastPositionY[globalCounter-1-i]]|(0b1<<(4-lastPositionX[globalCounter-1-i]));
     };
     

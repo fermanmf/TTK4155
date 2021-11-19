@@ -40,10 +40,4 @@
             while(--i > 0) {
               updateImage(imageOfG_won);
             }
-            /*
-            i = 20000;
-            while(--i > 0) {
-              updateImage(emptyImage);
-            }
-            */
     }

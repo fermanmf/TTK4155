@@ -4,7 +4,7 @@
 #include "gameWon.h"
 #include "snake.h"
 
-enum dir{up, down, left, right};
+enum dir{up, down, left, right, won, lost};
 
   // Init game
   volatile int i;
@@ -23,7 +23,7 @@ enum dir{up, down, left, right};
    {0, 1},
    {4, 3},  
    {2, 4},
-   {2, 2},
+   {2, 2}
    };
   int foodX = 0;
   int foodY = 1;
@@ -49,60 +49,60 @@ void game(uint8_t image[], uint8_t direction) {
         lastPositionX[globalCounter] = Col;
         lastPositionY[globalCounter] = Row;
         globalCounter++;
-        if (Col==4) { Col = 0; }
-        else {Col++;}
         if ((Col==foodX)&(Row==foodY)) {
           length++;
           counter++;
-          if (counter==maxFood) { run = 4;}
+          if (counter==maxFood) { run = 4; break;}
           else { foodX = food[counter][0]; foodY = food[counter][1]; }
           }
         buildSnakeImage(image, foodX, foodY, Col, Row, length, globalCounter, lastPositionX, lastPositionY);
+        if (Col==4) { Col = 0; }
+        else {Col++;}
         break;
 
       case left:
         lastPositionX[globalCounter] = Col;
         lastPositionY[globalCounter] = Row;
-        globalCounter--;
-        if (Col==0) { Col = 4; }
-        else {Col--;}
+        globalCounter++;
         if ((Col==foodX)&(Row==foodY)) {
           length++;
           counter++;
-          if (counter==maxFood) { run = 4;}
+          if (counter==maxFood) { run = 4; break;}
           else { foodX = food[counter][0]; foodY = food[counter][1]; }
           }
         buildSnakeImage(image, foodX, foodY, Col, Row, length, globalCounter, lastPositionX, lastPositionY);
+        if (Col==0) { Col = 4; }
+        else {Col--;}
         break;
 
       case up:
         lastPositionX[globalCounter] = Col;
         lastPositionY[globalCounter] = Row;
         globalCounter++;
-        if (Row==0) { Row = 4; }
-        else {Row--;}
         if ((Col==foodX)&(Row==foodY)) {
           length++;
           counter++;
-          if (counter==maxFood) { run = 4;}
+          if (counter==maxFood) { run = 4; break;}
           else { foodX = food[counter][0]; foodY = food[counter][1]; }
           }
         buildSnakeImage(image, foodX, foodY, Col, Row, length, globalCounter, lastPositionX, lastPositionY);
+        if (Row==0) { Row = 4; }
+        else {Row--;}
         break;
 
       case down:
         lastPositionX[globalCounter] = Col;
         lastPositionY[globalCounter] = Row;
         globalCounter++;
-        if (Row==4) { Row = 0; }
-        else {Row++;}
         if ((Col==foodX)&(Row==foodY)) {
           length++;
           counter++;
-          if (counter==maxFood) { run = 4;}
+          if (counter==maxFood) { run = 4; break;}
           else { foodX = food[counter][0]; foodY = food[counter][1]; }
           }
         buildSnakeImage(image, foodX, foodY, Col, Row, length, globalCounter, lastPositionX, lastPositionY);
+        if (Row==4) { Row = 0; }
+        else {Row++;}
         break;
 
       case 4:

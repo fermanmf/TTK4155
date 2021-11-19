@@ -1,5 +1,6 @@
 #include "gpio.h"
 #include "led.h"
+#include "snake.h"
 #include "countdown.h"
 #include "game.h"
 #include "updateImage.h"
@@ -21,7 +22,7 @@
 
 int main(void) {
   // Init clocks + pins
-  _InitLEDs();
+  initLEDs();
   // Configure buttons
   GPIO->PIN_CNF[17] = 0; // A
   GPIO->PIN_CNF[26] = 0; // B
@@ -40,11 +41,11 @@ int main(void) {
   };
 
   uint8_t emptyImage[5] = {
-    0b00000,
-    0b00000,
-    0b00000,
-    0b00000,
-    0b00000
+    0b10000,
+    0b10000,
+    0b10000,
+    0b10000,
+    0b10000
   };
 
   // ============= START OF GAME =============
@@ -52,6 +53,13 @@ int main(void) {
   while(1) {
     if (valid) {
       com = com_pins;
+    }
+
+    if(aPushed()) {
+      com = 0b100;
+    }
+    if(bPushed()) {
+      com = 0b110;
     }
 
     if (com & 0b100) {
