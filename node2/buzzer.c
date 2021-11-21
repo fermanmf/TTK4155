@@ -29,7 +29,7 @@ void buzzer_play_note(float tone, float duration) {
 	PWM->PWM_CH_NUM[3].PWM_CDTY = PWM->PWM_CH_NUM[3].PWM_CPRD / 2; // 50 % duty cycle
 	PWM->PWM_ENA = PWM_DIS_CHID3; // enable pwm
 	
-	TC2->TC_CHANNEL[1].TC_RC = round(duration * MCK_NODE2 / (2 * 128));
+	TC2->TC_CHANNEL[1].TC_RC = round(2 * duration * MCK_NODE2 / 128);
 	TC2->TC_CHANNEL[1].TC_CCR = TC_CCR_SWTRG; // start tc
 }
 
@@ -39,22 +39,22 @@ typedef struct {
 } Note;
 
 Note NOTES[] = {
-	{buzzerE, 3/8},
-	{buzzerE, 1/8},
-	{buzzerG, 3/8},
-	{buzzerE, 3/8},
-	{buzzerD, 1/4},
-	{buzzerC, 1/2},
-	{buzzerB, 1/2},
-	{buzzerE, 3/8},
-	{buzzerE, 1/8},
-	{buzzerG, 3/8},
-	{buzzerE, 3/8},
-	{buzzerD, 1/4},
-	{buzzerC, 1/2},
-	{buzzerD, 1/4},
-	{buzzerC, 1/2},
-	{buzzerB, 1/2},
+	{buzzerE, 3.0/8},
+	{buzzerE, 1.0/8},
+	{buzzerG, 3.0/8},
+	{buzzerE, 3.0/8},
+	{buzzerD, 1.0/4},
+	{buzzerC, 1.0/2},
+	{buzzerB, 1.0/2},
+	{buzzerE, 3.0/8},
+	{buzzerE, 1.0/8},
+	{buzzerG, 3.0/8},
+	{buzzerE, 3.0/8},
+	{buzzerD, 1.0/4},
+	{buzzerC, 1.0/2},
+	{buzzerD, 1.0/4},
+	{buzzerC, 1.0/2},
+	{buzzerB, 1.0/2},
 };
 
 #define NOTES_LEN 16
@@ -63,7 +63,6 @@ static bool playing = false;
 static int i = -1;
 
 static void play_next_note() {
-	printf("%d\n", i);
 	if (i == (NOTES_LEN - 1)) {
 		i = -1;
 		playing = false;
