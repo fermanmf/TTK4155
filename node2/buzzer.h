@@ -32,7 +32,7 @@ void buzzer_init();
  * @param tone[in] Frequency of tone. Recomended to be used with macros defined in this module
  * @param duration[in] Duration of the note
  */
-void buzzer_play_note(unsigned float tone, unsigned float duration);
+void buzzer_play_note(float tone, float duration);
 
 /**
  * @brief Plays Seven nation army riff
