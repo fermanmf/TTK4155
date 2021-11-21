@@ -6,6 +6,7 @@
 
 #include "sam.h"
 #include "consts.h"
+#include "printf-stdarg.h"
 
 void buzzer_init() {
 	PIOC->PIO_PDR |= PIO_PC9; // pwm 41
@@ -62,6 +63,7 @@ static bool playing = false;
 static int i = -1;
 
 static void play_next_note() {
+	printf("%d\n", i);
 	if (i == (NOTES_LEN - 1)) {
 		i = -1;
 		playing = false;
