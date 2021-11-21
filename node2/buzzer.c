@@ -23,21 +23,21 @@ void buzzer_init() {
 	NVIC_EnableIRQ(TC7_IRQn);
 }
 	
-void buzzer_play_note(unsigned float tone, unsigned float duration) {
+void buzzer_play_note(float tone, float duration) {
 	PWM->PWM_CH_NUM[3].PWM_CPRD = round(MCK_NODE2/(1024 * tone));
 	PWM->PWM_CH_NUM[3].PWM_CDTY = PWM->PWM_CH_NUM[3].PWM_CPRD / 2; // 50 % duty cycle
 	PWM->PWM_ENA = PWM_DIS_CHID3; // enable pwm
 	
-	TC2->TC_CHANNEL[1].TC_RC = round(duration * MCK_NODE2 / (2 * 128);
+	TC2->TC_CHANNEL[1].TC_RC = round(duration * MCK_NODE2 / (2 * 128));
 	TC2->TC_CHANNEL[1].TC_CCR = TC_CCR_SWTRG; // start tc
 }
 
 typedef struct {
-	unsigned float tone;
-	unsigned float duration;
+	float tone;
+	float duration;
 } Note;
 
-Note[] NOTES = {
+Note NOTES[] = {
 	{buzzerE, 3/8},
 	{buzzerE, 1/8},
 	{buzzerG, 3/8},
@@ -54,7 +54,7 @@ Note[] NOTES = {
 	{buzzerD, 1/4},
 	{buzzerC, 1/2},
 	{buzzerB, 1/2},
-}
+};
 
 #define NOTES_LEN 16
 
