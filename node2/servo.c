@@ -3,9 +3,8 @@
 #include <math.h>
 
 #include "sam.h"
-#include "config.h"
 #include "printf-stdarg.h"
-#include "panic.h"
+#include "consts.h"
 
 #define T 20 // 20 ms
 
@@ -16,7 +15,7 @@ void servo_init() {
 	PMC->PMC_PCER1 |= PMC_PCER1_PID36;
 	
 	PWM->PWM_CH_NUM[5].PWM_CMR |= PWM_CMR_CPRE_MCK_DIV_32;
-	PWM->PWM_CH_NUM[5].PWM_CPRD = round(T*MCK/32000); // Channel PeRioD register
+	PWM->PWM_CH_NUM[5].PWM_CPRD = round(T*MCK_NODE2/32000); // Channel PeRioD register
 	PWM->PWM_ENA |= PWM_DIS_CHID5;
 	
 	servo_set(0);

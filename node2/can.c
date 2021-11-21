@@ -5,7 +5,6 @@
 #include "sam.h"
 #include "consts.h"
 #include "printf-stdarg.h"
-#include "panic.h"
 
 /*
 	Dual mailbox setup.
@@ -62,7 +61,6 @@ void can_send_empty(uint8_t id) {
 void CAN0_Handler() {
 	if (CAN0->CAN_MB[0].CAN_MSR & CAN_MSR_MMI) {
 		printf("can error: mailbox message ignored flag set for MB0\n\r");
-		panic();
 	}
 	uint32_t data_low = CAN0->CAN_MB[0].CAN_MDL;
 	uint32_t data_high = CAN0->CAN_MB[0].CAN_MDL;
