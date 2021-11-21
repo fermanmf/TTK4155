@@ -58,6 +58,35 @@ Note NOTES[] = {
 	{buzzerD, 1.0/6},
 	{buzzerC, 1.0/6},
 	{buzzerB, 1.0/2},
+		
+	{buzzerE, 3.0/8},
+	{buzzerE, 1.0/8},
+	{buzzerG, 1.0/6},
+	{buzzerE, 1.0/6},
+	{buzzerD, 1.0/6},
+	
+	{buzzerC, 1.0/2},
+	{buzzerB, 1.0/2},
+	
+	{buzzerE, 3.0/8},
+	{buzzerE, 1.0/8},
+	{buzzerG, 1.0/6},
+	{buzzerE, 1.0/6},
+	{buzzerD, 1.0/6},
+	
+	{buzzerC, 1.0/6},
+	{buzzerD, 1.0/6},
+	{buzzerC, 1.0/6},
+	{buzzerB, 1.0/2},
+		
+	{buzzerC, 1.0/8},
+	{buzzerC, 1.0/8},
+	{buzzerC, 1.0/8},
+	{buzzerC, 1.0/8},
+	{buzzerC, 1.0/8},
+	{buzzerC, 1.0/8},
+	{buzzerC, 1.0/8},
+	{buzzerC, 1.0/8},
 };
 
 #define NOTES_LEN 16
