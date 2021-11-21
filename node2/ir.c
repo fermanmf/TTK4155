@@ -1,4 +1,3 @@
-// Setup the internal adc on the arduino
 #include "ir.h"
 
 #include "sam.h"
@@ -41,7 +40,7 @@ void ir_init(void (*callback)()) {
 
 	
 	TC1->TC_CHANNEL[2].TC_IER = TC_IER_CPCS;
-	TC1->TC_CHANNEL[2].TC_RC = 65625/10; // 20 hz?
+	TC1->TC_CHANNEL[2].TC_RC = 65625/10;
 	TC1->TC_CHANNEL[2].TC_CMR = TC_CMR_TCCLKS_TIMER_CLOCK4 | TC_CMR_WAVE | TC_CMR_WAVSEL_UP_RC;
 	TC1->TC_CHANNEL[2].TC_CCR = TC_CCR_CLKEN | TC_CCR_SWTRG; 
 	

@@ -25,4 +25,8 @@ void node3_countdown();
  */
 void node3_snake(EmJoystickDirection direction);
 
+/**
+* @brief Blanks node3 display
+*
+*/
 void node3_blank();
