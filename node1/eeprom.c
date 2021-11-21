@@ -25,9 +25,9 @@ void eeprom_write(uint8_t adress, uint8_t data){
 uint8_t eeprom_read(uint8_t adress){
 	  
 	while(EECR & (1 << EEWE));
-
-	EEAR = adress;
 	cli();
+	EEAR = adress;
+	
 	   
 	EECR |= (1 << EERE);
 

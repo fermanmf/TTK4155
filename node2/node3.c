@@ -14,10 +14,14 @@
 void node3_init() {
 	PIOC->PIO_PER = VALID | COM1 | COM2 | COM3;
 	PIOC->PIO_OER = VALID | COM1 | COM2 | COM3;
+	PIOC->PIO_CODR = COM1 | COM2 | COM3;
+	PIOC->PIO_SODR = VALID;
 }
 
 void node3_blank() {
+	PIOC->PIO_CODR = VALID;
 	PIOC->PIO_CODR = COM1 | COM2 | COM3;
+	PIOC->PIO_SODR = VALID;
 }
 
 void node3_countdown() {
@@ -34,24 +38,20 @@ void node3_snake(EmJoystickDirection direction) {
 	PIOC->PIO_CODR = VALID;
 	switch(direction) {
 		case emJoystickUp: // 0b00
-		printf("UUUUP x\n\r");
 			PIOC->PIO_CODR = COM2 | COM3;
 			break;
 		
 		case emJoystickDown: // 0b01
-		printf("DOWN x\n\r");
 			PIOC->PIO_CODR = COM2;
 			PIOC->PIO_SODR = COM3;
 			break;
 		
 		case emJoystickLeft: // 0b10
-		printf("joystick left\n\r");
 			PIOC->PIO_SODR = COM2;
 			PIOC->PIO_CODR = COM3;
 			break;
 		
 		case emJoystickRight: // 0b11
-		printf("joystick right!!!!\n\r");
 			PIOC->PIO_SODR = COM2 | COM3;
 			break;
 		

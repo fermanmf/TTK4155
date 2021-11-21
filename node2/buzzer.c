@@ -58,35 +58,6 @@ Note NOTES[] = {
 	{buzzerD, 1.0/6},
 	{buzzerC, 1.0/6},
 	{buzzerB, 1.0/2},
-		
-	{buzzerE, 3.0/8},
-	{buzzerE, 1.0/8},
-	{buzzerG, 1.0/6},
-	{buzzerE, 1.0/6},
-	{buzzerD, 1.0/6},
-	
-	{buzzerC, 1.0/2},
-	{buzzerB, 1.0/2},
-	
-	{buzzerE, 3.0/8},
-	{buzzerE, 1.0/8},
-	{buzzerG, 1.0/6},
-	{buzzerE, 1.0/6},
-	{buzzerD, 1.0/6},
-	
-	{buzzerC, 1.0/6},
-	{buzzerD, 1.0/6},
-	{buzzerC, 1.0/6},
-	{buzzerB, 1.0/2},
-		
-	{buzzerC, 1.0/8},
-	{buzzerC, 1.0/8},
-	{buzzerC, 1.0/8},
-	{buzzerC, 1.0/8},
-	{buzzerC, 1.0/8},
-	{buzzerC, 1.0/8},
-	{buzzerC, 1.0/8},
-	{buzzerC, 1.0/8},
 };
 
 #define NOTES_LEN 16
@@ -100,7 +71,7 @@ static void play_next_note() {
 		playing = false;
 	} else {
 		const Note note = NOTES[++i];
-		buzzer_play_note(note.tone, 0.95*note.duration);
+		buzzer_play_note(note.tone, 1.55*note.duration);
 		playing = true;
 	}
 }

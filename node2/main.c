@@ -37,7 +37,6 @@ void setup(){
 	dac_init();
 	buzzer_init();
 	node3_init();
-	node3_snake(emJoystickLeft);
 }
 
 void _main(){
@@ -120,6 +119,8 @@ void _main(){
 						buzzer_play_note(buzzerA,2);
 						break;
 					case EmSnakeStarted:
+						buzzer_play_seven_nation_army();
+						node3_snake(emJoystickRight);
 						state = inSnake;
 						break;
 
@@ -127,6 +128,7 @@ void _main(){
 						break;
 				}
 				break;
+				
 			case(inGame):
 				printf("time: %d\n\r",timer_get_game_clock_dseconds());
 				switch(event.type) {
@@ -155,10 +157,9 @@ void _main(){
 						break;
 				}
 				break;
+				
 			case(inReplay):
-
 				switch(event.type) {
-
 					case EmReplayEnded:
 						printf("From inReplay to idle\n\r");
 						timer_game_clock_disable();
@@ -170,19 +171,17 @@ void _main(){
 						break;
 				}
 				break;
+				
 			case inSnake:
 				switch(event.type) {
-
 					case EmSnakeEnded:
 						node3_blank();
 						state = idle;
 						break;
 					case EmJoystickXDirectionChanged:
-						printf("run snake x\n\r");
 						node3_snake(event.joystick_x_direction);
 						break;
 					case EmJoystickYDirectionChanged:
-						printf("run snake y\n\r");
 						node3_snake(event.joystick_y_direction);
 						break;	
 					default:
@@ -207,5 +206,4 @@ int main(){
 	printf("Done setting up. Starting main\n\r");
 	_main();
 	printf("Main is done\n\r");
-	
 }
