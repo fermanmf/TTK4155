@@ -71,7 +71,7 @@ static void play_next_note() {
 		playing = false;
 	} else {
 		const Note note = NOTES[++i];
-		buzzer_play_note(note.tone, note.duration);
+		buzzer_play_note(note.tone, 0.95*note.duration);
 		playing = true;
 	}
 }
