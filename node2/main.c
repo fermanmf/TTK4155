@@ -114,6 +114,7 @@ void _main(){
 						state = inGame;
 						timer_pid_clock_start();
 						timer_game_clock_start(false);
+						buzzer_play_seven_nation_army();
 						break;
 					case EmBeep:
 						buzzer_play_note(buzzerA,2);
