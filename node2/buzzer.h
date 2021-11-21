@@ -6,6 +6,7 @@
 
 #include <stdint.h>
 
+#define buzzerBreak		0
 #define buzzerB			246.94
 #define buzzerC			261.63
 #define buzzerCSharp	277.18
@@ -19,7 +20,6 @@
 #define buzzerA			440.00
 #define buzzerASharp	466.16
 
-
 /**
  * @brief Initializes driver
  * 
@@ -30,7 +30,7 @@ void buzzer_init();
  * @brief Plays note
  * 
  * @param tone[in] Frequency of tone. Recomended to be used with macros defined in this module
- * @param duration[in] Duration of the note
+ * @param duration[in] Duration of the note in seconds
  */
 void buzzer_play_note(float tone, float duration);
 
