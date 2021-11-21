@@ -173,8 +173,7 @@ void _main(){
 				switch(event.type) {
 
 					case EmSnakeEnded:
-						timer_game_clock_disable();
-						timer_pid_clock_disable();
+						node3_blank();
 						state = idle;
 						break;
 					case EmJoystickXDirectionChanged:

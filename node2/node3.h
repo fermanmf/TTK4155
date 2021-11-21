@@ -24,3 +24,5 @@ void node3_countdown();
  * @param direction[in] Direction of joystick
  */
 void node3_snake(EmJoystickDirection direction);
+
+void node3_blank();

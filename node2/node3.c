@@ -16,6 +16,10 @@ void node3_init() {
 	PIOC->PIO_OER = VALID | COM1 | COM2 | COM3;
 }
 
+void node3_blank() {
+	PIOC->PIO_CODR = COM1 | COM2 | COM3;
+}
+
 void node3_countdown() {
 	PIOC->PIO_CODR = VALID;
 	PIOC->PIO_CODR = COM1 | COM2;
