@@ -9,7 +9,6 @@
 #include "spi.h"
 #include "mcp2515_consts.h"
 #include "consts.h"
-#include "panic.h"
 
 #define SS 4
 
